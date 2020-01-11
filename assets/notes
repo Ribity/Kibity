@@ -1,0 +1,34 @@
+AsyncStorage -
+    CurrStory#
+    CurrProfile#
+    Completed line 1
+    Profiles
+    Favorites by active Profile - Also keeps profile to use for each story
+****
+local_list = require the local_story_list.json
+remote_list = require the remote_story_list.json and merge.
+master_list = [...remote_list, local_list
+
+local_story_list.json master list of stories
+    {
+        name: mGrandmasHouse.json  or
+        gender:   1, 2, 3
+        length_time:
+        filename:
+        web_uri: false,   // set to true on web version
+        date_published:
+    }
+
+const data = require("../assets/story1.json");
+story1.json
+{
+    line: [{
+        speak: "Mark King was here",
+        speak: "And so was Beth",
+        special: {pause: 1},
+        special: {sound: "dog_barking.wav"}.
+    }]
+
+    speech.speak(data.line[0]);
+
+

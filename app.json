@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Magical Adventure Stories",
-    "slug": "Magi",
+    "name": "Cribity",
+    "slug": "Cribity",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [
@@ -9,22 +9,38 @@
       "android",
       "web"
     ],
+    "scheme": "cribity",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "primaryColor": "#008000",
+    "icon": "./assets/images/PurpleFaceIcon1024.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/images/PurpleFaceSplash1024.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FFD700"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 30000
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
-    }
+      "supportsTablet": true,
+      "bundleIdentifier": "com.cribity.cribity",
+      "icon": "./assets/images/PurpleFaceIcon1024.png"
+    },
+    "android": {
+      "package": "com.cribity.cribity",
+      "versionCode": 1,
+      "icon": "./assets/images/purpleFaceIcon512.png",
+      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.cribity.cribity"
+    },
+    "androidStatusBarColor": "#000000",
+    "androidStatusBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#000000"
+    },
+  "description": "Personalized children's stories"
   }
 }

@@ -3,7 +3,7 @@ import React from 'react';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { mapping, light, dark } from '@eva-design/eva';
-import { AppNavigator } from './navigation.component';
+import { AppNavigator } from './navigation';
 import { ThemeContext } from './theme-context';
 // import { default as customMapping } from './custom-mapping.json'; // <-- import custom mapping
 
@@ -33,8 +33,7 @@ const App = () => {
             </ThemeContext.Provider>
         </React.Fragment>
     );
-};
-
+}
 
 
 // import React from 'react';
