@@ -19,16 +19,5 @@ local_story_list.json master list of stories
         date_published:
     }
 
-const data = require("../assets/story1.json");
-story1.json
-{
-    line: [{
-        speak: "Mark King was here",
-        speak: "And so was Beth",
-        special: {pause: 1},
-        special: {sound: "dog_barking.wav"}.
-    }]
-
-    speech.speak(data.line[0]);
 
 

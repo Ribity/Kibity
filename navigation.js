@@ -3,25 +3,22 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator} from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import {Ionicons} from '@expo/vector-icons';
+import {Button} from "@ui-kitten/components";
 
-
-import { AudioScreen } from './screens/audio';
-import { StoriesScreen } from './screens/stories';
-import { ProfilesScreen } from './screens/profiles';
-import { SettingsScreen } from './screens/settings';
+import AudioScreen  from './screens/audio';
+import StoriesScreen from './screens/stories';
+import ProfilesScreen  from './screens/profiles';
+import SettingsScreen from './screens/settings';
 
 const AudioStack = createStackNavigator({
     Audio: AudioScreen,
 });
-
 const StoriesStack = createStackNavigator({
     Stories: StoriesScreen,
 });
-
 const ProfilesStack = createStackNavigator({
     Profiles: ProfilesScreen,
 });
-
 const SettingsStack = createStackNavigator({
     Settings: SettingsScreen,
 });
@@ -29,19 +26,15 @@ const SettingsStack = createStackNavigator({
 AudioStack.navigationOptions = {
     tabBarLabel: "Audio",
 };
-
 StoriesStack.navigationOptions = {
     title: 'Stories',
     };
-
 ProfilesStack.navigationOptions = {
     title: 'Profiles',
 };
-
 SettingsStack.navigationOptions = {
     title: 'Settings',
 };
-
 
 const bottomTabNavigator = createBottomTabNavigator({
     AudioStack,

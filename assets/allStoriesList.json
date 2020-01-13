@@ -1,0 +1,20 @@
+{
+    "stories": [
+    {
+        "story_num": 1,
+        "name": "I shortened Beths test story",
+        "gender": 1,
+        "num_lines": 23,
+        "filename": "testTwoStory.json",
+        "date_published": "Jan 12, 2019",
+    },
+    {
+        "story_num": 2,
+        "name": "Second test story by Beth",
+        "gender": 1,
+        "num_lines": 23,
+        "filename": "testTwoStory2.json",
+        "date_published": "Jan 12, 2019"
+    }
+]
+}
