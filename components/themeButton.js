@@ -9,9 +9,7 @@ export const ThemeButton = () => {
         themeContext.toggleTheme();
     };
     return (
-        <Layout style={{flex: 1, justifyContent: 'top', alignItems: 'center'}}>
             <Button style={{marginVertical: 10, backgroundColor: 'grey'}}
                     onPress={onThemePress}>Toggle Light/Dark Theme</Button>
-        </Layout>
     );
 };

@@ -73,7 +73,10 @@ class myStories {
     getStory_p_to_s = (storyName) => {
         let storyToUse = -1;
         try {
-            switch (storyName) {    // images in assets/images
+            switch (storyName) {
+                case 'summerVacationAtGrandmas.json':
+                    storyToUse = require('../assets/stories/summerVacationAtGrandmas.json');
+                    break;
                 default:
                     break;
             }
@@ -93,6 +96,9 @@ class myStories {
                     break;
                 case 'testTwoStory2.json':
                     storyToUse = require('../assets/stories/testTwoStory2.json');
+                    break;
+                case 'uncleNedsFireworks.json':
+                    storyToUse = require('../assets/stories/uncleNedsFireworks.json');
                     break;
                 default:
                     break;

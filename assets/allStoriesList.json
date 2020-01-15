@@ -1,20 +1,23 @@
 {
     "stories": [
+
     {
         "story_num": 1,
-        "name": "I shortened Beths test story",
+        "title": "Uncle Ned's Fireworks",
+
         "gender": 1,
-        "num_lines": 23,
-        "filename": "testTwoStory.json",
-        "date_published": "Jan 12, 2019",
+        "num_lines": 48,
+        "filename": "uncleNedsFireworks.json",
+        "date_published": "Jan 13, 2019",
     },
     {
         "story_num": 2,
-        "name": "Second test story by Beth",
-        "gender": 1,
-        "num_lines": 23,
-        "filename": "testTwoStory2.json",
-        "date_published": "Jan 12, 2019"
+        "title": "Summer Vacation at Grandmother's",
+        "gender": 2,
+        "num_lines": 80,
+        "filename": "summerVacationAtGrandmas.json",
+        "date_published": "Jan 13, 2019",
     }
-]
+
+    ]
 }

@@ -14,6 +14,17 @@ export default {
             web_uri: false,
             date_published: "Jan 23, 2019",
         }
-    }
+    },
+    default_profile: {
+          mainChar: 'Michael',
+          mainCharGender: 'male',
+          charTwo: 'Brandon',
+          charTwoGender: 'male',
+          charThree: 'Elizabeth',
+          charThreeGender: 'female',
+          team: 'Washington Redskins',
+          sport: 'football',
+          pet: 'monkey',
+    },
 }
 
