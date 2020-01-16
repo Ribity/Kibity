@@ -3,8 +3,6 @@ import { SafeAreaView } from 'react-navigation';
 import {Layout, Text, Button} from '@ui-kitten/components';
 
 import { connect } from 'react-redux';
-import {bindActionCreators} from "redux";
-import { setTest } from '../actions/testActions';
 
 class ProfilesScreen extends React.Component {
 
@@ -15,7 +13,7 @@ class ProfilesScreen extends React.Component {
     };
 
     logTest = () => {
-        this.props.setTest(!this.props.test);
+        // this.props.setTest(!this.props.test);
         console.log(this.props);
     };
 
@@ -31,14 +29,8 @@ class ProfilesScreen extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
-    const { test } = state;
-    return { test }
+    const { stories_list } = state;
+    return { stories_list }
 };
 
-const mapDispatchToProps = dispatch => (
-    bindActionCreators({
-        setTest,
-    }, dispatch)
-);
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfilesScreen);
+export default connect(mapStateToProps)(ProfilesScreen);

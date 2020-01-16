@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
-import testReducer from './TestReducer'
+import storiesListReducer from './StoriesListReducer'
 
 export const rootReducer = combineReducers({
-    test: testReducer,
+    stories_list: storiesListReducer,
 });

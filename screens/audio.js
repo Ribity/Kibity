@@ -7,15 +7,21 @@ import {ThemeButton} from "../components/themeButton";
 import MyDefines from '../constants/MyDefines';
 import mystories from '../services/myStories';
 import storyconversion from '../services/storyConversion';
+import { updateStoriesList } from '../actions/storiesListActions';
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
 
-let story_num = 1;
+
+let willUnmount = false;
+let story_num = 2;
 let myStory = null;
 let myIdx = 0;
 let delayedPlay = null;
 let otherTimeout = null;
 let overrideTheNextLine = false;
 let my_story_list = MyDefines.default_asyncStorage.local_story_list;
-export default class AudioScreen extends React.Component {
+
+class AudioScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,11 +34,14 @@ export default class AudioScreen extends React.Component {
         };
     };
     componentDidMount() {
-        my_story_list = require('../assets/allStoriesList.json')
+        my_story_list = require('../assets/allStoriesList.json');
+        this.props.updateStoriesList(my_story_list);
         console.log(my_story_list.stories);
         this.getItAndPlay();
     }
     componentWillUnmount() {
+        willUnmount = true;
+        console.log("audioScreen will unmount");
         Speech.stop();
         if (delayedPlay !== null) {
             clearTimeout(delayedPlay);
@@ -79,7 +88,7 @@ export default class AudioScreen extends React.Component {
         if (myStory !== null) {
 
             myStory = storyconversion.convertIt(myStory, null);
-            console.log("convertedStory:", myStory);
+            // console.log("convertedStory:", myStory);
 
             console.log("Setting state vars");
             this.setState({num_lines: myStory.line.length});
@@ -130,13 +139,17 @@ export default class AudioScreen extends React.Component {
         }
     };
     playNextLine = () => {
-        this.clearPotentialPlay();
-        console.log("Done, playNext");
-        if (!overrideTheNextLine) {
-            let mSecs = 1000;
-            Speech.stop();
-            myIdx++;
-            delayedPlay = setTimeout(() => {this.playLineNum(myIdx);}, mSecs);
+        if (!willUnmount) {             // Added this because when speech.speak finishes, it might call playNextLine inadvertently
+            this.clearPotentialPlay();
+            console.log("Done, playNext");
+            if (!overrideTheNextLine) {
+                let mSecs = 1000;
+                Speech.stop();
+                myIdx++;
+                delayedPlay = setTimeout(() => {
+                    this.playLineNum(myIdx);
+                }, mSecs);
+            }
         }
     };
     pauseIt = () => {
@@ -184,36 +197,76 @@ export default class AudioScreen extends React.Component {
         return (
             <SafeAreaView style={{flex: 1}}>
                     <Layout style={{flex: 1, justifyContent: 'top', alignItems: 'center'}}>
-                        <ThemeButton/>
+                        {/*<ThemeButton/>*/}
+                        {this.state.playing &&
+                            <Text style={styles.audioTitle}>{this.state.story_title}</Text>
+                        }
 
-                        <Text style={{fontSize: 20, fontWeight: 'bold',lineHeight: 25, paddingBottom: 5,
-                                    color: 'purple', marginHorizontal: 20,}}>Part {this.state.idx+1} of {this.state.num_lines}</Text>
+                        <Text style={styles.audioCountdown}>Part {this.state.idx+1} of {this.state.num_lines}</Text>
                         <Layout style={{flexDirection: 'row'}}>
                             {!this.state.paused ?
-                                <Button style={{marginVertical: 4, marginHorizontal: 4, backgroundColor: 'purple'}}
+                                <Button style={styles.audioButton}
                                         onPress={this.pauseIt}> Pause </Button>
                                 :
-                                <Button style={{marginVertical: 4, marginHorizontal: 4, backgroundColor: 'purple'}}
+                                <Button style={styles.audioButton}
                                         onPress={this.resumeIt}>Resume</Button>
                             }
-                            <Button style={{marginVertical: 4, marginHorizontal: 4, backgroundColor: 'purple'}}
+                            <Button style={styles.audioButton}
                                     onPress={this.backward}>Back</Button>
-                            <Button style={{marginVertical: 4, marginHorizontal: 4, backgroundColor: 'purple'}}
+                            <Button style={styles.audioButton}
                                     onPress={this.forward}>Forward</Button>
-                            <Button style={{marginVertical: 4, marginHorizontal: 4, backgroundColor: 'purple'}}
+                            <Button style={styles.audioButton}
                                     onPress={this.restartIt}>Restart</Button>
                         </Layout>
 
                         {this.state.playing &&
-                            <Layout style={{flex: 1, justifyContent: 'top', alignItems: 'center'}}>
-                                <Text style={{fontSize: 20,fontWeight: 'bold', lineHeight: 25,
-                                    color: 'goldenrod', marginHorizontal: 20, marginVertical: 10,paddingTop:10}}>"{this.state.story_title}"</Text>
-                                <Text style={{fontSize: 25,lineHeight: 35, textAlign: 'justify',
-                                    color: 'purple', marginHorizontal: 10, marginVertical: 10,}}>{this.state.curr_text}</Text>
-                            </Layout>
+                            <Text style={styles.currentText}>{this.state.curr_text}</Text>
                         }
                     </Layout>
             </SafeAreaView>
         );
     }
 };
+const styles = StyleSheet.create({
+    audioButton: {
+        marginVertical: 4,
+        marginHorizontal: 4,
+        backgroundColor: 'purple',
+    },
+    audioCountdown: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        lineHeight: 25,
+        paddingBottom: 5,
+        color: 'purple',
+        marginHorizontal: 20,
+    },
+    audioTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        lineHeight: 25,
+        color: 'goldenrod',
+        marginHorizontal: 10,
+        marginVertical: 10,
+        paddingTop:10
+    },
+    currentText: {
+        fontSize: 25,
+        lineHeight: 35,
+        // textAlign: 'justify',
+        color: 'purple',
+        marginHorizontal: 10,
+        paddingTop: 20,
+    },
+});
+
+const mapStateToProps = (state) => {
+    const { stories_list } = state;
+    return { stories_list }
+};
+const mapDispatchToProps = dispatch => (
+    bindActionCreators({
+        updateStoriesList,
+    }, dispatch)
+);
+export default connect(mapStateToProps, mapDispatchToProps)(AudioScreen);
