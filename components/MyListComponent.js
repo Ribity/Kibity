@@ -31,15 +31,14 @@ class MyListComponent extends React.Component {
             // myfuncs.mySentry(error);
         }
     }
-            // willReceiveProps is needed specifically for when user clicks on a spotlist, goes back to map,
-            //  then clicks on a second spotlist
-    static getDerivedStateFromProps(nextProps, prevState){
-        console.log("GetDerivedStateFromProps myListComponent");
-        if (prevState.myList !== nextProps.myList) {
-            return{data: nextProps.myList};
-        } else return null;
-    };
+    // static getDerivedStateFromProps(nextProps, prevState){
+    //     console.log("GetDerivedStateFromProps myListComponent");
+    //     if (prevState.myList !== nextProps.myList) {
+    //         return{data: nextProps.myList};
+    //     } else return null;
+    // };
     componentDidUpdate(prevProps, prevState) {
+        console.log("MyListComponentDidUpdate");
         this.arrayholder = this.props.myList;
     }
 
@@ -67,20 +66,28 @@ class MyListComponent extends React.Component {
             const wordArray = searchString.split(" ");
 
             const newData = this.arrayholder.filter(item => {
-            let itemData = "";
-                if (item.title != null)
-                    itemData = item.title.toLowerCase();
-                if (item.date_published != null)
-                    itemData += item.date_published.toLowerCase();
-                for (let j=0; j<wordArray.length; j++) {    // Loop thru all
-                    if (itemData.indexOf(wordArray[j]) < 0)
-                        return false;
-                }
-                return true;
+                let itemData = "";
+                    if (item.title !== null)
+                        itemData = item.title.toLowerCase();
+                    // console.log("Here", itemData);
+                    // console.log("Her2", wordArray);
+
+                    if (item.date_published !== null)
+                        itemData += item.date_published.toLowerCase();
+
+                    if (item.snippet !== null)
+                        itemData += item.snippet.toLowerCase();
+
+                    for (let j=0; j<wordArray.length; j++) {    // Loop thru all
+                        if (itemData.indexOf(wordArray[j]) < 0) {
+                            return false;
+                        }
+                    }
+
+                    return true;
             });
-            this.setState({
-                data: newData,
-            });
+            console.log("newData: ", newData);
+            this.setState({data: newData});
         } catch (error) {
             // myfuncs.mySentry(error);
         }
@@ -105,27 +112,48 @@ class MyListComponent extends React.Component {
 
     renderItem = (({item, index}) => {
             try {
-                let subtitle =  "";
-                let title = "";
                 let color = 'white';
+                let image = "";
 
-                console.log(item);
+                // console.log(item);
 
-                title += item.title;
-                subtitle = item.date_published;
-                return (
-                    <TouchableOpacity onPress={() => this.props.onPressItem(item, index)}>
-                        <ListItem
-                            title={
-                                <Text style={styles.titleView}>{title}</Text>
-                            }
-                            subtitle={
-                                <Text style={styles.subtitleView}>{subtitle}</Text>
-                            }
-                            containerStyle={{borderBottomWidth: 0, backgroundColor: color }}
-                        />
-                    </TouchableOpacity>
-                )
+                let title = item.title;
+                let subtitle = item.date_published + "\r\n";
+                if (item.num_lines) {
+                    subtitle += "Number of Lines: " + item.num_lines.toString() + "\r\n";
+                    subtitle += item.snippet;
+                }
+
+                if (image === "") {
+                    return (
+                        <TouchableOpacity onPress={() => this.props.onPressItem(item, index)}>
+                            <ListItem
+                                title={
+                                    <Text style={styles.titleView}>{title}</Text>
+                                }
+                                subtitle={
+                                    <Text style={styles.subtitleView}>{subtitle}</Text>
+                                }
+                                containerStyle={{borderBottomWidth: 0, backgroundColor: color }}
+                            />
+                        </TouchableOpacity>
+                    )
+                } else {
+                    return (
+                        <TouchableOpacity onPress={() => this.props.onPressItem(item, index)}>
+                            <ListItem
+                                title={
+                                    <Text style={styles.titleView}>{title}</Text>
+                                }
+                                subtitle={
+                                    <Text style={styles.subtitleView}>{subtitle}</Text>
+                                }
+                                leftAvatar={{source: image, height: 45, width: 31}}
+                                containerStyle={{borderBottomWidth: 0, backgroundColor: color }}
+                            />
+                        </TouchableOpacity>
+                    )
+                }
             } catch (error) {
                 // myfuncs.mySentry(error);
             }
@@ -133,9 +161,10 @@ class MyListComponent extends React.Component {
 
     render() {
         try {
+            console.log("render state.data:", this.state.data);
             return (
                 <View>
-                    {this.state.data.length > 0 ?
+                    {this.props.myList.length > 0 ?
                         <View>
                             <FlatList
                                 style={styles.myFlat}
@@ -144,6 +173,8 @@ class MyListComponent extends React.Component {
                                 ItemSeparatorComponent={this.renderSeparator}
                                 ListHeaderComponent={this.renderHeader}
                                 renderItem={this.renderItem}
+                                // renderItem={(item, index) => this.renderItem(item, index)}
+
                                 contentContainerStyle={{paddingBottom: 150}}
                             />
                         </View>

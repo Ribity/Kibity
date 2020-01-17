@@ -1,25 +1,24 @@
 import React from 'react';
-import {Alert,StyleSheet, ScrollView} from 'react-native';
+import {Alert,StyleSheet, AppState} from 'react-native';
 import {SafeAreaView} from "react-navigation";
-import {Button, Layout, Text, Card, CardHeader} from "@ui-kitten/components";
+import {Button, Layout, Text} from "@ui-kitten/components";
 import * as Speech from "expo-speech";
 import {ThemeButton} from "../components/themeButton";
 import MyDefines from '../constants/MyDefines';
 import mystories from '../services/myStories';
 import storyconversion from '../services/storyConversion';
-import { updateStoriesList } from '../actions/storiesListActions';
-import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 
 
 let willUnmount = false;
-let story_num = 2;
 let myStory = null;
 let myIdx = 0;
 let delayedPlay = null;
 let otherTimeout = null;
+let playingStory = null;
 let overrideTheNextLine = false;
-let my_story_list = MyDefines.default_asyncStorage.local_story_list;
+let story_idx = -1;
+
 
 class AudioScreen extends React.Component {
     constructor(props) {
@@ -29,18 +28,49 @@ class AudioScreen extends React.Component {
             curr_text: "",
             story_title: "",
             paused: false,
-            idx: 0,
+            line_idx: 0,
             num_lines: 0,
         };
+        this.componentWillFocus = this.componentWillFocus.bind(this);
+        this.componentWillUnmount = this.componentWillUnmount.bind(this);
     };
     componentDidMount() {
-        my_story_list = require('../assets/allStoriesList.json');
-        this.props.updateStoriesList(my_story_list);
-        console.log(my_story_list.stories);
-        this.getItAndPlay();
+        this.subs = [
+            this.props.navigation.addListener('willFocus', this.componentWillFocus),
+        ];
+    };
+    // static getDerivedStateFromProps(nextProps, prevState){
+    //     let update = {};
+    //
+    //     console.log("getDerivedStateFromProps");
+    //     if (prevState.stories_list !== nextProps.stories_list) {
+    //         update.stories_list = nextProps.stories_list;
+    //     }
+    //     if (prevState.stories_list !== nextProps.stories_list) {
+    //         update.story_idx = nextProps.story_idx;
+    //         if (playingStory !== null)
+    //             clearTimeout(playingStory);
+    //
+    //         playingStory = setTimeout(() => {this.getItAndPlay();}, 1000);
+    //     }
+    //
+    //     return Object.keys(update).length ? update: null;
+    // };
+
+    componentWillFocus() {
+        try {
+            console.log("Focused props.story_idx:", this.props.story_idx, "story_idx:", story_idx);
+            if (this.props.story_idx !== story_idx)
+                story_idx = this.props.story_idx;
+                if (story_idx !== -1)
+                    this.getItAndPlay();
+        } catch (error) {
+            // myfuncs.mySentry(error);
+        }
     }
     componentWillUnmount() {
         willUnmount = true;
+        AppState.removeEventListener('change', this._handleAppStateChange);
         console.log("audioScreen will unmount");
         Speech.stop();
         if (delayedPlay !== null) {
@@ -49,10 +79,14 @@ class AudioScreen extends React.Component {
         if (otherTimeout !== null) {
             clearTimeout(otherTimeout);
         }
-    }
-
+        if (playingStory !== null) {
+            clearTimeout(playingStory);
+        }
+        this.subs.forEach(sub => sub.remove());  // removes the componentWillFocus listener
+    };
     getItAndPlay = () => {
-        myStory = mystories.getStory(my_story_list.stories[story_num-1].filename);
+        // console.log("getItAndPlay:", this.props.story_list);
+        myStory = mystories.getStory(this.props.story_list.stories[story_idx].filename);
         // console.log("Mine", myStory);
 
         if (myStory !== null) {
@@ -63,7 +97,7 @@ class AudioScreen extends React.Component {
         }
     };
     getStoryFromServer = () => {
-        let story_url = MyDefines.stories_url_bucket + my_story_list.stories[story_num-1].filename;
+        let story_url = MyDefines.stories_url_bucket + this.props.story_list.stories[story_idx].filename;
         // console.log("mystory1", story_url);
 
         fetch(story_url)
@@ -92,7 +126,7 @@ class AudioScreen extends React.Component {
 
             console.log("Setting state vars");
             this.setState({num_lines: myStory.line.length});
-            this.setState({story_title: my_story_list.stories[story_num-1].title});
+            this.setState({story_title: this.props.story_list.stories[story_idx].title});
         }
         overrideTheNextLine = true;
         Speech.stop();
@@ -117,7 +151,7 @@ class AudioScreen extends React.Component {
         this.setState({paused: false});
         this.setState({playing: true});
         if (myIdx < myStory.line.length) {
-            this.setState({idx: myIdx});
+            this.setState({line_idx: myIdx});
             console.log("speak: ", myStory.line[myIdx]);
             Speech.speak(myStory.line[myIdx], {
                 // voice: "com.apple.ttsbundle.Samantha-compact",
@@ -131,7 +165,7 @@ class AudioScreen extends React.Component {
         } else {
             this.setState({playing: false});
             console.log("Finished story");
-            // if (story_num < my_story_list.stories.length )
+            // if (story_num < this.props.story_list.stories.length )
             //     story_num++;      // mk1 temp
             // else
             //     story_num = 1;      // mk1 temp
@@ -197,12 +231,12 @@ class AudioScreen extends React.Component {
         return (
             <SafeAreaView style={{flex: 1}}>
                     <Layout style={{flex: 1, justifyContent: 'top', alignItems: 'center'}}>
-                        {/*<ThemeButton/>*/}
+                        <ThemeButton/>
                         {this.state.playing &&
                             <Text style={styles.audioTitle}>{this.state.story_title}</Text>
                         }
 
-                        <Text style={styles.audioCountdown}>Part {this.state.idx+1} of {this.state.num_lines}</Text>
+                        <Text style={styles.audioCountdown}>Part {this.state.line_idx+1} of {this.state.num_lines}</Text>
                         <Layout style={{flexDirection: 'row'}}>
                             {!this.state.paused ?
                                 <Button style={styles.audioButton}
@@ -261,12 +295,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-    const { stories_list } = state;
-    return { stories_list }
+    const { story_list } = state;
+    const { story_idx } = state;
+    return { story_list, story_idx }
 };
-const mapDispatchToProps = dispatch => (
-    bindActionCreators({
-        updateStoriesList,
-    }, dispatch)
-);
-export default connect(mapStateToProps, mapDispatchToProps)(AudioScreen);
+export default connect(mapStateToProps)(AudioScreen);

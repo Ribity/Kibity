@@ -8,6 +8,7 @@
         "num_lines": 48,
         "filename": "uncleNedsFireworks.json",
         "date_published": "Jan 13, 2019",
+        "snippet": "What's that smell?  The river, Uncle Ned's fireworks or maybe something else."
     },
     {
         "story_num": 2,
@@ -16,7 +17,63 @@
         "num_lines": 80,
         "filename": "summerVacationAtGrandmas.json",
         "date_published": "Jan 13, 2019",
-    }
+        "snippet": "A week-long stay at Grandma's takes a turn at the local store."
+    },
 
+
+        {
+            "story_num": 3,
+            "title": "Uncle Ned's Fireworks",
+            "gender": 1,
+            "num_lines": 48,
+            "filename": "uncleNedsFireworks.json",
+            "date_published": "Jan 13, 2019",
+            "snippet": "What's that smell?  The river, Uncle Ned's fireworks or maybe something else."
+        },
+        {
+            "story_num": 4,
+            "title": "Summer Vacation at Grandmother's",
+            "gender": 2,
+            "num_lines": 80,
+            "filename": "summerVacationAtGrandmas.json",
+            "date_published": "Jan 13, 2019",
+            "snippet": "A week-long stay at Grandma's takes a turn at the local store."
+        },
+        {
+            "story_num": 5,
+            "title": "Uncle Ned's Fireworks",
+            "gender": 1,
+            "num_lines": 48,
+            "filename": "uncleNedsFireworks.json",
+            "date_published": "Jan 13, 2019",
+            "snippet": "What's that smell?  The river, Uncle Ned's fireworks or maybe something else."
+        },
+        {
+            "story_num": 6,
+            "title": "Summer Vacation at Grandmother's",
+            "gender": 2,
+            "num_lines": 80,
+            "filename": "summerVacationAtGrandmas.json",
+            "date_published": "Jan 13, 2019",
+            "snippet": "A week-long stay at Grandma's takes a turn at the local store."
+        },
+        {
+            "story_num": 8,
+            "title": "Uncle Ned's Fireworks",
+            "gender": 1,
+            "num_lines": 48,
+            "filename": "uncleNedsFireworks.json",
+            "date_published": "Jan 13, 2019",
+            "snippet": "What's that smell?  The river, Uncle Ned's fireworks or maybe something else."
+        },
+        {
+            "story_num": 9,
+            "title": "Summer Vacation at Grandmother's",
+            "gender": 2,
+            "num_lines": 80,
+            "filename": "summerVacationAtGrandmas.json",
+            "date_published": "Jan 13, 2019",
+            "snippet": "A week-long stay at Grandma's takes a turn at the local store."
+        },
     ]
 }

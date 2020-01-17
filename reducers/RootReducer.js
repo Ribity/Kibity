@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux'
-import storiesListReducer from './StoriesListReducer'
+import storiesListReducer from './StoryListReducer'
+import storyIdxReducer from './StoryIdxReducer'
 
 export const rootReducer = combineReducers({
-    stories_list: storiesListReducer,
+    story_list: storiesListReducer,
+    story_idx: storyIdxReducer,
 });

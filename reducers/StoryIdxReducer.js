@@ -1,12 +1,12 @@
-import {UPDATE_STORIES_LIST} from '../actions/storiesListActions';
+import {UPDATE_STORY_IDX} from '../actions/storyIdxActions';
 
 const INITIAL_STATE = [];
 
-let storiesListReducer;
-export default storiesListReducer = (state = INITIAL_STATE, action) => {
+let storyIdxReducer;
+export default storyIdxReducer = (state = INITIAL_STATE, action) => {
 
     switch (action.type) {
-        case UPDATE_STORIES_LIST:
+        case UPDATE_STORY_IDX:
             if (action.payload === null) {
                 return state
             }

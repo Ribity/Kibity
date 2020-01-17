@@ -26,5 +26,18 @@ export default {
           sport: 'football',
           pet: 'monkey',
     },
+    default_story_list:
+        {
+            stories: [
+                {
+                    "story_num": 1,
+                    "title": "",
+                    "gender": 1,
+                    "num_lines": 0,
+                    "filename": "uncleNedsFireworks.json",
+                    "date_published": "",
+                },
+            ]
+        },
 }
 

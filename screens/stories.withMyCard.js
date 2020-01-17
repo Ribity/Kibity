@@ -3,17 +3,15 @@ import {
     StyleSheet,
     Text,
     View,
-    // ScrollView,
+    ScrollView,
 } from "react-native";
 
 import MyDefines from '../constants/MyDefines';
-// import MyCard from "../components/myCard";
-import MyListComponent from '../components/MyListComponent';
+import MyCard from "../components/myCard";
 import { updateStoryList } from '../actions/storyListActions';
 import { updateStoryIdx } from '../actions/storyIdxActions';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-
 
 class StoriesScreen extends React.Component {
     constructor(props) {
@@ -27,11 +25,14 @@ class StoriesScreen extends React.Component {
         let my_story_list = require('../assets/allStoriesList.json');
         this.setState({story_list: my_story_list});
         this.props.updateStoryList(my_story_list);
-        console.log("StoriesScreen DidMount");
+        console.log(my_story_list);
         this.setState({num_stories: my_story_list.stories.length});
+
+        // this.getItAndPlay();
     }
-    onPressStorySelection = (story, idx) => {
-        console.log("onPressStorySelection:", idx );
+    goPlayIt = (idx) => {
+        // this.setState({text: "clicked it"})
+        console.log("selected: ", idx);
         this.props.updateStoryIdx(idx);
         this.props.navigation.navigate("Audio");
     };
@@ -43,12 +44,22 @@ class StoriesScreen extends React.Component {
                 </View>
                 <View style={{paddingTop: 5}}/>
 
-                {this.props.story_list.stories.length > 1 &&
-                <MyListComponent navigation={this.props.navigation}
-                                 myList={this.state.story_list.stories}
-                                 screenType={'Stories'}
-                                 onPressItem={this.onPressStorySelection}/>
-                }
+                <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        contentContainerStyle={styles.list}
+                    >
+                        {this.state.story_list.stories.map((story, index) => (
+                                <MyCard
+                                key={index}
+                                story={story}
+                                story_idx={index}
+                                selectCard={(idx) =>
+                                    this.goPlayIt(idx)
+                                }
+                            />
+                        ))}
+
+                    </ScrollView>
             </View>
         );
     }
@@ -57,19 +68,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "purple",
-        justifyContent:'center',
-        alignItems: 'center',
-        paddingTop: 25,
+        justifyContent:'space-between',
+        padding: 10,
     },
-    // container: {
-    //     flexGrow: 1,
-    //     justifyContent: 'center',
-    //     alignItems: 'center',
-    //     backgroundColor: 'lightgrey',
-    //     // paddingTop: 50,
-    //     // paddingBottom: 50,
-    //
-    // },
     title: {
         // height: 50,
         backgroundColor: "lightgrey",
