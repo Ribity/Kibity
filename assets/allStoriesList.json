@@ -8,7 +8,8 @@
         "num_lines": 48,
         "filename": "uncleNedsFireworks.json",
         "date_published": "Jan 13, 2019",
-        "snippet": "What's that smell?  The river, Uncle Ned's fireworks or maybe something else."
+        "written_by": "Mark King",
+        "keywords": "River, smell, straw, bridge, gamma",
     },
     {
         "story_num": 2,
@@ -17,7 +18,9 @@
         "num_lines": 80,
         "filename": "summerVacationAtGrandmas.json",
         "date_published": "Jan 13, 2019",
-        "snippet": "A week-long stay at Grandma's takes a turn at the local store."
+        "snippet": "A week-long stay at Grandma's takes a turn at the local store.",
+        "written_by": "Beth Allen",
+        "keywords": "Gems, garden, dog, Lucky",
     },
 
 
@@ -27,8 +30,6 @@
             "gender": 1,
             "num_lines": 48,
             "filename": "uncleNedsFireworks.json",
-            "date_published": "Jan 13, 2019",
-            "snippet": "What's that smell?  The river, Uncle Ned's fireworks or maybe something else."
         },
         {
             "story_num": 4,

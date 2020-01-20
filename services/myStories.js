@@ -3,7 +3,7 @@ class myStories {
     getStory = (storyName) => {
         try {
             let storyToUse = -1;
-            console.log("mystories");
+            console.log("mystories.getStory");
 
             if (storyName < 'c')
                 storyToUse = this.getStory_a_to_b(storyName);

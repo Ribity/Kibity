@@ -8,7 +8,14 @@ import MyDefines from '../constants/MyDefines';
 import mystories from '../services/myStories';
 import storyconversion from '../services/storyConversion';
 import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import {updateStoryIdx} from "../actions/storyIdxActions";
+import {updateCurrentProfile} from "../actions/currentProfileActions";
+import {setFavoritesIdx} from "../actions/currentProfileActions";
+import {setPlayListIdx} from "../actions/currentProfileActions";
 
+import AUDIO_PLAYING_FAVORITES from '../constants/MyDefines';
+import AUDIO_PLAYING_PLAYLIST from '../constants/MyDefines';
 
 let willUnmount = false;
 let myStory = null;
@@ -60,10 +67,12 @@ class AudioScreen extends React.Component {
     componentWillFocus() {
         try {
             console.log("Focused props.story_idx:", this.props.story_idx, "story_idx:", story_idx);
-            if (this.props.story_idx !== story_idx)
+            if (this.props.story_idx !== story_idx) {
+                console.log("FocusingToAudio, props.story_idx:", this.props.story_idx, "story_idx:", story_idx);
                 story_idx = this.props.story_idx;
                 if (story_idx !== -1)
                     this.getItAndPlay();
+            }
         } catch (error) {
             // myfuncs.mySentry(error);
         }
@@ -165,11 +174,32 @@ class AudioScreen extends React.Component {
         } else {
             this.setState({playing: false});
             console.log("Finished story");
-            // if (story_num < this.props.story_list.stories.length )
-            //     story_num++;      // mk1 temp
-            // else
-            //     story_num = 1;      // mk1 temp
-            // this.getItAndPlay();
+            // console.log(this.props.current_profile);
+            if (this.props.current_profile.audioPlayType === 1) {  // If playing favorites
+                console.log("Play next favorite story");
+                if (this.props.current_profile.currFavoritesIdx < this.props.current_profile.favorites.length-1) {
+                    console.log("attempt play next fave");
+                    story_idx = this.props.current_profile.favorites[this.props.current_profile.currFavoritesIdx+1];
+                    this.props.updateStoryIdx(story_idx);
+                    console.log("calling setFavoritesIdx");
+                    this.props.setFavoritesIdx(this.props.current_profile.currFavoritesIdx+1);
+                    this.getItAndPlay();
+                } else {
+                    this.resetAndGoToStoriesScreen();
+                }
+            } else if (this.props.current_profile.audioPlayType === 2) {  // If playing playlist
+                if (this.props.current_profile.currPlayListIdx < this.props.current_profile.playList.length-1) {
+                    story_idx = this.props.current_profile.favorites[this.props.current_profile.currPlayListIdx+1];
+                    this.props.updateStoryIdx(story_idx);
+                    this.props.setPlayListIdx(this.props.current_profile.currPlayListIdx+1);
+                    this.getItAndPlay();
+                } else {
+                    this.resetAndGoToStoriesScreen();
+                }
+            } else {
+                this.resetAndGoToStoriesScreen();
+            }
+
         }
     };
     playNextLine = () => {
@@ -227,16 +257,38 @@ class AudioScreen extends React.Component {
         }
     };
 
+    resetAndGoToStoriesScreen = () => {
+        this.setState({
+            playing: false,
+            curr_text: "",
+            story_title: "",
+            paused: false,
+            line_idx: 0,
+            num_lines: 0
+        });
+
+        this.goToStoriesScreen();
+    };
+    goToStoriesScreen = () => {
+        this.props.navigation.navigate("Stories");
+    };
+
     render() {
         return (
             <SafeAreaView style={{flex: 1}}>
                     <Layout style={{flex: 1, justifyContent: 'top', alignItems: 'center'}}>
-                        <ThemeButton/>
+                        {/*<ThemeButton/>*/}
                         {this.state.playing &&
-                            <Text style={styles.audioTitle}>{this.state.story_title}</Text>
+                        <Text style={styles.audioTitle}>{this.state.story_title}</Text>
                         }
 
-                        <Text style={styles.audioCountdown}>Part {this.state.line_idx+1} of {this.state.num_lines}</Text>
+                        {this.state.num_lines > 0 ?
+                            <Text
+                                style={styles.audioCountdown}>Part {this.state.line_idx + 1} of {this.state.num_lines}</Text>
+                            :
+                            <Button style={styles.selectButton}
+                                    onPress={this.goToStoriesScreen}>Select a Story to Play</Button>
+                        }
                         <Layout style={{flexDirection: 'row'}}>
                             {!this.state.paused ?
                                 <Button style={styles.audioButton}
@@ -250,11 +302,11 @@ class AudioScreen extends React.Component {
                             <Button style={styles.audioButton}
                                     onPress={this.forward}>Forward</Button>
                             <Button style={styles.audioButton}
-                                    onPress={this.restartIt}>Restart</Button>
+                                    onPress={this.restartIt}>Start Over</Button>
                         </Layout>
 
                         {this.state.playing &&
-                            <Text style={styles.currentText}>{this.state.curr_text}</Text>
+                        <Text style={styles.currentText}>{this.state.curr_text}</Text>
                         }
                     </Layout>
             </SafeAreaView>
@@ -262,6 +314,11 @@ class AudioScreen extends React.Component {
     }
 };
 const styles = StyleSheet.create({
+    selectButton: {
+        marginVertical: 30,
+        marginHorizontal: 30,
+        backgroundColor: 'green',
+    },
     audioButton: {
         marginVertical: 4,
         marginHorizontal: 4,
@@ -297,6 +354,15 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
     const { story_list } = state;
     const { story_idx } = state;
-    return { story_list, story_idx }
+    const { current_profile } = state;
+    return { story_list, story_idx, current_profile }
 };
-export default connect(mapStateToProps)(AudioScreen);
+const mapDispatchToProps = dispatch => (
+    bindActionCreators({
+        updateStoryIdx,
+        updateCurrentProfile,
+        setFavoritesIdx,
+        setPlayListIdx,
+    }, dispatch)
+);
+export default connect(mapStateToProps, mapDispatchToProps)(AudioScreen);

@@ -34,7 +34,7 @@ class storyConversion {
 
     initText = (profile) => {
         if (profile === null)
-            profile = MyDefines.default_profile;
+            profile = MyDefines.default_current_profile;
 
         if (profile.mainCharGender === 'male') {
             OneBoyOrGirl = 'Boy';
@@ -83,7 +83,7 @@ class storyConversion {
         let rLine;
 
         if (profile === null)
-            profile = MyDefines.default_profile;
+            profile = MyDefines.default_current_profile;
 
         let i;
         for (i = 0; i < inStory.line.length; i++) {

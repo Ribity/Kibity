@@ -14,22 +14,40 @@ import { updateStoryIdx } from '../actions/storyIdxActions';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 
+// let my_story_list =
 
 class StoriesScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             story_list: MyDefines.default_story_list,
-            num_stories: 0,
         };
     };
     componentDidMount() {
+        this.buildStoryList();
+        // setTimeout(this.buildStoryList, 1000);  // mk1 be sure to clear the timeout on unmount
+        this.buildStoryList();  // mk1 be sure to clear the timeout on unmount
+
+        console.log("StoriesScreen DidMount:", this.props.story_list);
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState){
+        console.log("GetDerivedStateFromProps StoriesScreen");
+        if (prevState.story_list !== nextProps.story_list) {
+            console.log("StoriesScreen next props:", nextProps.story_list);
+            return{data: nextProps.story_list};
+        } else return null;
+    };
+    // componentDidUpdate(prevProps, prevState) {
+    //     console.log("StoriesScreenDidUpdate");
+    // }
+    buildStoryList = () => {
         let my_story_list = require('../assets/allStoriesList.json');
         this.setState({story_list: my_story_list});
         this.props.updateStoryList(my_story_list);
-        console.log("StoriesScreen DidMount");
-        this.setState({num_stories: my_story_list.stories.length});
-    }
+        this.setState({data: this.props.story_list});
+        console.log("StoryList:", this.props.story_list);
+    };
     onPressStorySelection = (story, idx) => {
         console.log("onPressStorySelection:", idx );
         this.props.updateStoryIdx(idx);
@@ -55,21 +73,12 @@ class StoriesScreen extends React.Component {
 }
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flexGrow: 1,
         backgroundColor: "purple",
         justifyContent:'center',
         alignItems: 'center',
         paddingTop: 25,
     },
-    // container: {
-    //     flexGrow: 1,
-    //     justifyContent: 'center',
-    //     alignItems: 'center',
-    //     backgroundColor: 'lightgrey',
-    //     // paddingTop: 50,
-    //     // paddingBottom: 50,
-    //
-    // },
     title: {
         // height: 50,
         backgroundColor: "lightgrey",

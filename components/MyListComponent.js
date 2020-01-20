@@ -22,7 +22,6 @@ class MyListComponent extends React.Component {
             // myfuncs.mySentry(error);
         }
     };
-
     componentDidMount() {
         try {
             this.setState({data: this.props.myList});
@@ -37,10 +36,10 @@ class MyListComponent extends React.Component {
     //         return{data: nextProps.myList};
     //     } else return null;
     // };
-    componentDidUpdate(prevProps, prevState) {
-        console.log("MyListComponentDidUpdate");
-        this.arrayholder = this.props.myList;
-    }
+    // componentDidUpdate(prevProps, prevState) {
+    //     console.log("MyListComponentDidUpdate");
+    //     this.arrayholder = this.props.myList;
+    // }
 
     renderSeparator = () => {
         try {
@@ -78,6 +77,12 @@ class MyListComponent extends React.Component {
                     if (item.snippet !== null)
                         itemData += item.snippet.toLowerCase();
 
+                    if (item.written_by !== null)
+                        itemData += item.written_by.toLowerCase();
+
+                    if (item.keywords !== null)
+                        itemData += item.keywords.toLowerCase();
+
                     for (let j=0; j<wordArray.length; j++) {    // Loop thru all
                         if (itemData.indexOf(wordArray[j]) < 0) {
                             return false;
@@ -114,15 +119,22 @@ class MyListComponent extends React.Component {
             try {
                 let color = 'white';
                 let image = "";
+                let subtitle = "";
 
                 // console.log(item);
 
                 let title = item.title;
-                let subtitle = item.date_published + "\r\n";
-                if (item.num_lines) {
-                    subtitle += "Number of Lines: " + item.num_lines.toString() + "\r\n";
-                    subtitle += item.snippet;
-                }
+
+                if (item.written_by !== null && item.written_by !== "" && item.written_by !== undefined)
+                    subtitle += "Written by:" + item.written_by + "\r\n";
+                if (item.date_published !== null && item.date_published !== "" && item.date_published !== undefined)
+                    subtitle += item.date_published + "  ";
+                if (item.num_lines !== null && item.num_lines !== "" && item.num_lines !== undefined)
+                    subtitle += "#Lines: " + item.num_lines.toString();
+                if (item.snippet !== null && item.snippet !== "" && item.snippet !== undefined)
+                    subtitle += "\r\n" + item.snippet;
+                if (item.keywords !== null && item.keywords !== "" && item.keywords !== undefined)
+                    subtitle += "\r\n" + item.keywords;
 
                 if (image === "") {
                     return (
@@ -195,10 +207,11 @@ const styles = StyleSheet.create({
     titleView: {
         fontSize: 20,
         fontWeight: 'bold',
+        color: 'purple',
     },
     subtitleView: {
         fontStyle: 'italic',
-        fontWeight: '100',
+        // fontWeight: '100',
         fontSize: 17,
     },
     myFlat: {
