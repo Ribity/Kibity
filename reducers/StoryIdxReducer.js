@@ -1,6 +1,6 @@
 import {UPDATE_STORY_IDX} from '../actions/storyIdxActions';
 
-const INITIAL_STATE = [];
+const INITIAL_STATE = -1;
 
 let storyIdxReducer;
 export default storyIdxReducer = (state = INITIAL_STATE, action) => {

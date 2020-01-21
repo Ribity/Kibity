@@ -173,7 +173,7 @@ class MyListComponent extends React.Component {
 
     render() {
         try {
-            console.log("render state.data:", this.state.data);
+            // console.log("render state.data:", this.state.data);
             return (
                 <View>
                     {this.props.myList.length > 0 ?

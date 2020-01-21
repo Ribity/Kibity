@@ -41,13 +41,13 @@ export default {
             team: 'Washington Redskins',
             sport: 'football',
             pet: 'dog',
-            favorites: [0,0,3],  // list of story indexes (integers) 0-based, must match allStoriesList.json indexes
-            playList: [0,0],       // list to story indexes (integers) 1-based, must match allStoriesList.json indexes
+            favorites: [1],   // list of story indexes (integers) 0-based, must match allStoriesList.json indexes
+            playList: [],       // list to story indexes (integers) 1-based, must match allStoriesList.json indexes
 
             active_profile: 0,  // zero-based
             currFavoritesIdx: 0,
             currPlayListIdx: 0,
-            audioPlayType: 2,
+            audioPlayType: 0,
         },
 
     default_profiles:

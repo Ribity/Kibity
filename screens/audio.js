@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert,StyleSheet, AppState} from 'react-native';
+import {Alert,StyleSheet, View} from 'react-native';
 import {SafeAreaView} from "react-navigation";
 import {Button, Layout, Text} from "@ui-kitten/components";
 import * as Speech from "expo-speech";
@@ -26,18 +26,19 @@ let playingStory = null;
 let overrideTheNextLine = false;
 let story_idx = -1;
 
+const initialState = {
+    playing: false,
+    curr_text: "",
+    story_title: "",
+    paused: false,
+    line_idx: 0,
+    num_lines: 0,
+};
 
 class AudioScreen extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            playing: false,
-            curr_text: "",
-            story_title: "",
-            paused: false,
-            line_idx: 0,
-            num_lines: 0,
-        };
+        this.state = initialState;
         this.componentWillFocus = this.componentWillFocus.bind(this);
         this.componentWillUnmount = this.componentWillUnmount.bind(this);
     };
@@ -45,6 +46,9 @@ class AudioScreen extends React.Component {
         this.subs = [
             this.props.navigation.addListener('willFocus', this.componentWillFocus),
         ];
+        this.props.setFavoritesIdx(0);
+        this.props.setPlayListIdx(0);
+        this.props.updateStoryIdx(-1);
     };
     // static getDerivedStateFromProps(nextProps, prevState){
     //     let update = {};
@@ -79,7 +83,7 @@ class AudioScreen extends React.Component {
     }
     componentWillUnmount() {
         willUnmount = true;
-        AppState.removeEventListener('change', this._handleAppStateChange);
+        // AppState.removeEventListener('change', this._handleAppStateChange);
         console.log("audioScreen will unmount");
         Speech.stop();
         if (delayedPlay !== null) {
@@ -176,28 +180,27 @@ class AudioScreen extends React.Component {
             console.log("Finished story");
             // console.log(this.props.current_profile);
             if (this.props.current_profile.audioPlayType === 1) {  // If playing favorites
-                console.log("Play next favorite story");
                 if (this.props.current_profile.currFavoritesIdx < this.props.current_profile.favorites.length-1) {
-                    console.log("attempt play next fave");
                     story_idx = this.props.current_profile.favorites[this.props.current_profile.currFavoritesIdx+1];
                     this.props.updateStoryIdx(story_idx);
-                    console.log("calling setFavoritesIdx");
                     this.props.setFavoritesIdx(this.props.current_profile.currFavoritesIdx+1);
                     this.getItAndPlay();
                 } else {
-                    this.resetAndGoToStoriesScreen();
+                    this.finishedStories();
                 }
             } else if (this.props.current_profile.audioPlayType === 2) {  // If playing playlist
+                console.log("audioPlayType:", this.props.current_profile.currPlayListIdx, ":", this.props.current_profile.playList.length);
                 if (this.props.current_profile.currPlayListIdx < this.props.current_profile.playList.length-1) {
+                    console.log("play another from playlist");
                     story_idx = this.props.current_profile.favorites[this.props.current_profile.currPlayListIdx+1];
                     this.props.updateStoryIdx(story_idx);
                     this.props.setPlayListIdx(this.props.current_profile.currPlayListIdx+1);
                     this.getItAndPlay();
                 } else {
-                    this.resetAndGoToStoriesScreen();
+                    this.finishedStories();
                 }
             } else {
-                this.resetAndGoToStoriesScreen();
+                this.finishedStories();
             }
 
         }
@@ -256,58 +259,85 @@ class AudioScreen extends React.Component {
             delayedPlay = null;
         }
     };
+    finishedStories = () => {
+        this.setState(initialState);
+        story_idx = -1;
+        overrideTheNextLine = false;
+        this.props.setFavoritesIdx(0);
+        this.props.setPlayListIdx(0);
+        this.props.updateStoryIdx(-1);
 
-    resetAndGoToStoriesScreen = () => {
-        this.setState({
-            playing: false,
-            curr_text: "",
-            story_title: "",
-            paused: false,
-            line_idx: 0,
-            num_lines: 0
-        });
-
-        this.goToStoriesScreen();
+        if (this.props.current_profile.favorites.length < 1 && this.props.current_profile.playList.length < 1)
+            this.goToStoriesScreen();
     };
+
+    // resetAndGoToStoriesScreen = () => {
+    //     this.setState({
+    //         playing: false,
+    //         curr_text: "",
+    //         story_title: "",
+    //         paused: false,
+    //         line_idx: 0,
+    //         num_lines: 0
+    //     });
+    //
+    //     this.goToStoriesScreen();
+    // };
     goToStoriesScreen = () => {
         this.props.navigation.navigate("Stories");
+    };
+    playFavorites = () => {
+    };
+    playPlayList = () => {
     };
 
     render() {
         return (
             <SafeAreaView style={{flex: 1}}>
                     <Layout style={{flex: 1, justifyContent: 'top', alignItems: 'center'}}>
-                        {/*<ThemeButton/>*/}
+                        <ThemeButton/>
                         {this.state.playing &&
                         <Text style={styles.audioTitle}>{this.state.story_title}</Text>
                         }
 
                         {this.state.num_lines > 0 ?
-                            <Text
-                                style={styles.audioCountdown}>Part {this.state.line_idx + 1} of {this.state.num_lines}</Text>
-                            :
-                            <Button style={styles.selectButton}
-                                    onPress={this.goToStoriesScreen}>Select a Story to Play</Button>
-                        }
-                        <Layout style={{flexDirection: 'row'}}>
-                            {!this.state.paused ?
-                                <Button style={styles.audioButton}
-                                        onPress={this.pauseIt}> Pause </Button>
-                                :
-                                <Button style={styles.audioButton}
-                                        onPress={this.resumeIt}>Resume</Button>
-                            }
-                            <Button style={styles.audioButton}
-                                    onPress={this.backward}>Back</Button>
-                            <Button style={styles.audioButton}
-                                    onPress={this.forward}>Forward</Button>
-                            <Button style={styles.audioButton}
-                                    onPress={this.restartIt}>Start Over</Button>
-                        </Layout>
+                            <View style={{flex: 1, justifyContent: 'top', alignItems: 'center'}}>
+                            <Text style={styles.audioCountdown}>Part {this.state.line_idx + 1} of {this.state.num_lines}</Text>
+                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                    {!this.state.paused ?
+                                        <Button style={styles.audioButton}
+                                                onPress={this.pauseIt}> Pause </Button>
+                                        :
+                                        <Button style={styles.audioButton}
+                                                onPress={this.resumeIt}>Resume</Button>
+                                    }
+                                    <Button style={styles.audioButton}
+                                            onPress={this.backward}>Back</Button>
+                                    <Button style={styles.audioButton}
+                                            onPress={this.forward}>Forward</Button>
+                                    <Button style={styles.audioButton}
+                                            onPress={this.restartIt}>Start Over</Button>
+                                </View>
 
-                        {this.state.playing &&
-                        <Text style={styles.currentText}>{this.state.curr_text}</Text>
+                                {this.state.playing &&
+                                <Text style={styles.currentText}>{this.state.curr_text}</Text>
+                                }
+                            </View>
+                            :
+                            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                                <Button style={styles.selectButton}
+                                        onPress={this.goToStoriesScreen}>Select a Story to Play</Button>
+                                {this.props.current_profile.favorites.length > 0 &&
+                                    <Button style={styles.selectButton}
+                                            onPress={this.playFavorites}>Play Favorites</Button>
+                                }
+                                {this.props.current_profile.playList.length > 0 &&
+                                    <Button style={styles.selectButton}
+                                            onPress={this.playPlayList}>Play Playlist</Button>
+                                }
+                            </View>
                         }
+
                     </Layout>
             </SafeAreaView>
         );
@@ -317,7 +347,7 @@ const styles = StyleSheet.create({
     selectButton: {
         marginVertical: 30,
         marginHorizontal: 30,
-        backgroundColor: 'green',
+        backgroundColor: 'purple',
     },
     audioButton: {
         marginVertical: 4,

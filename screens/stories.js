@@ -28,13 +28,13 @@ class StoriesScreen extends React.Component {
         // setTimeout(this.buildStoryList, 1000);  // mk1 be sure to clear the timeout on unmount
         this.buildStoryList();  // mk1 be sure to clear the timeout on unmount
 
-        console.log("StoriesScreen DidMount:", this.props.story_list);
+        // console.log("StoriesScreen DidMount:", this.props.story_list);
     }
 
     static getDerivedStateFromProps(nextProps, prevState){
         console.log("GetDerivedStateFromProps StoriesScreen");
         if (prevState.story_list !== nextProps.story_list) {
-            console.log("StoriesScreen next props:", nextProps.story_list);
+            // console.log("StoriesScreen next props:", nextProps.story_list);
             return{data: nextProps.story_list};
         } else return null;
     };
@@ -46,7 +46,7 @@ class StoriesScreen extends React.Component {
         this.setState({story_list: my_story_list});
         this.props.updateStoryList(my_story_list);
         this.setState({data: this.props.story_list});
-        console.log("StoryList:", this.props.story_list);
+        // console.log("StoryList:", this.props.story_list);
     };
     onPressStorySelection = (story, idx) => {
         console.log("onPressStorySelection:", idx );
