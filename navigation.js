@@ -3,7 +3,8 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator} from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import {Ionicons} from '@expo/vector-icons';
-import {Button} from "@ui-kitten/components";
+import MyDefines from './constants/MyDefines';
+
 
 import AudioScreen  from './screens/audio';
 import StoriesScreen from './screens/stories';
@@ -50,7 +51,10 @@ const bottomTabNavigator = createBottomTabNavigator({
                 labelStyle: {
                     fontSize: 18,
                 },
-                style: {backgroundColor: 'white'},
+                style: {
+                    backgroundColor: 'white',
+                    height: MyDefines.myBottomTabBarHeight,
+                },
          },
          tabBarIcon: ({ focused, horizontal, tintColor }) => {
              const { routeName } = navigation.state;

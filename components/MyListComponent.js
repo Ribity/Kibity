@@ -126,11 +126,11 @@ class MyListComponent extends React.Component {
                 let title = item.title;
 
                 if (item.written_by !== null && item.written_by !== "" && item.written_by !== undefined)
-                    subtitle += "Written by:" + item.written_by + "\r\n";
+                    subtitle += "Written by: " + item.written_by + "\r\n";
                 if (item.date_published !== null && item.date_published !== "" && item.date_published !== undefined)
                     subtitle += item.date_published + "  ";
                 if (item.num_lines !== null && item.num_lines !== "" && item.num_lines !== undefined)
-                    subtitle += "#Lines: " + item.num_lines.toString();
+                    subtitle += " #Lines: " + item.num_lines.toString();
                 if (item.snippet !== null && item.snippet !== "" && item.snippet !== undefined)
                     subtitle += "\r\n" + item.snippet;
                 if (item.keywords !== null && item.keywords !== "" && item.keywords !== undefined)

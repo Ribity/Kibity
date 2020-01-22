@@ -1,7 +1,7 @@
 import React from 'react';
-import {Alert,StyleSheet, View} from 'react-native';
+import {Alert,StyleSheet, View, Dimensions} from 'react-native';
 import {SafeAreaView} from "react-navigation";
-import {Button, Layout, Text} from "@ui-kitten/components";
+import {Button, ButtonGroup, Layout, Text} from "@ui-kitten/components";
 import * as Speech from "expo-speech";
 import {ThemeButton} from "../components/themeButton";
 import MyDefines from '../constants/MyDefines';
@@ -22,9 +22,13 @@ let myStory = null;
 let myIdx = 0;
 let delayedPlay = null;
 let otherTimeout = null;
+let nextStoryTimeout = null;
 let playingStory = null;
 let overrideTheNextLine = false;
 let story_idx = -1;
+
+const {height, width} = Dimensions.get('window');
+
 
 const initialState = {
     playing: false,
@@ -33,7 +37,9 @@ const initialState = {
     paused: false,
     line_idx: 0,
     num_lines: 0,
+
 };
+
 
 class AudioScreen extends React.Component {
     constructor(props) {
@@ -49,6 +55,7 @@ class AudioScreen extends React.Component {
         this.props.setFavoritesIdx(0);
         this.props.setPlayListIdx(0);
         this.props.updateStoryIdx(-1);
+        console.log("height:", height, " width:", width, "statusbar:", MyDefines.myStatusBarHeight);
     };
     // static getDerivedStateFromProps(nextProps, prevState){
     //     let update = {};
@@ -91,6 +98,9 @@ class AudioScreen extends React.Component {
         }
         if (otherTimeout !== null) {
             clearTimeout(otherTimeout);
+        }
+        if (nextStoryTimeout !== null) {
+            clearTimeout(nextStoryTimeout);
         }
         if (playingStory !== null) {
             clearTimeout(playingStory);
@@ -179,30 +189,7 @@ class AudioScreen extends React.Component {
             this.setState({playing: false});
             console.log("Finished story");
             // console.log(this.props.current_profile);
-            if (this.props.current_profile.audioPlayType === 1) {  // If playing favorites
-                if (this.props.current_profile.currFavoritesIdx < this.props.current_profile.favorites.length-1) {
-                    story_idx = this.props.current_profile.favorites[this.props.current_profile.currFavoritesIdx+1];
-                    this.props.updateStoryIdx(story_idx);
-                    this.props.setFavoritesIdx(this.props.current_profile.currFavoritesIdx+1);
-                    this.getItAndPlay();
-                } else {
-                    this.finishedStories();
-                }
-            } else if (this.props.current_profile.audioPlayType === 2) {  // If playing playlist
-                console.log("audioPlayType:", this.props.current_profile.currPlayListIdx, ":", this.props.current_profile.playList.length);
-                if (this.props.current_profile.currPlayListIdx < this.props.current_profile.playList.length-1) {
-                    console.log("play another from playlist");
-                    story_idx = this.props.current_profile.favorites[this.props.current_profile.currPlayListIdx+1];
-                    this.props.updateStoryIdx(story_idx);
-                    this.props.setPlayListIdx(this.props.current_profile.currPlayListIdx+1);
-                    this.getItAndPlay();
-                } else {
-                    this.finishedStories();
-                }
-            } else {
-                this.finishedStories();
-            }
-
+            this.playNext();
         }
     };
     playNextLine = () => {
@@ -290,72 +277,154 @@ class AudioScreen extends React.Component {
     };
     playPlayList = () => {
     };
+    playPrevious = () => {
+        let listIdx;
+        if (this.props.current_profile.audioPlayType === 1) {  // If playing favorites
+            if (this.props.current_profile.currFavoritesIdx === 0) {
+                listIdx = this.props.current_profile.favorites.length-1;
+            } else {
+                listIdx = this.props.current_profile.currFavoritesIdx-1;
+            }
+            story_idx = this.props.current_profile.favorites[listIdx];
+            this.props.setFavoritesIdx(listIdx);
+            this.props.updateStoryIdx(story_idx);
+        } else if (this.props.current_profile.audioPlayType === 2) {  // If playing playlist
+            if (this.props.current_profile.currPlayListIdx === 0) {
+                listIdx = this.props.current_profile.playList.length-1;
+            } else {
+                listIdx = this.props.current_profile.currPlayListIdx-1;
+            }
+            story_idx = this.props.current_profile.playList[listIdx];
+            this.props.setPlayListIdx(listIdx);
+            this.props.updateStoryIdx(story_idx);
+        }
+        // nextStoryTimeout = setTimeout(() => {this.getItAndPlay()}, 2000);
+        this.getItAndPlay();
+    };
+    playNext = () => {
+        let listIdx;
+        if (this.props.current_profile.audioPlayType === 1) {  // If playing favorites
+            if (this.props.current_profile.currFavoritesIdx < this.props.current_profile.favorites.length - 1) {
+                listIdx = this.props.current_profile.currFavoritesIdx + 1;
+            } else {
+                listIdx = 0;
+            }
+            story_idx = this.props.current_profile.favorites[listIdx];
+            this.props.setFavoritesIdx(listIdx);
+            this.props.updateStoryIdx(story_idx);
+        } else if (this.props.current_profile.audioPlayType === 2) {  // If playing playlist
+            if (this.props.current_profile.currPlayListIdx < this.props.current_profile.playList.length - 1) {
+                listIdx = this.props.current_profile.currPlayListIdx + 1;
+            } else {
+                listIdx = 0;
+            }
+            story_idx = this.props.current_profile.playList[listIdx];
+            this.props.setPlayListIdx(listIdx);
+            this.props.updateStoryIdx(story_idx);
+        }
+        // nextStoryTimeout = setTimeout(() => {this.getItAndPlay()}, 2000);
+        this.getItAndPlay();
+    };
 
     render() {
         return (
-            <SafeAreaView style={{flex: 1}}>
-                    <Layout style={{flex: 1, justifyContent: 'top', alignItems: 'center'}}>
-                        <ThemeButton/>
-                        {this.state.playing &&
-                        <Text style={styles.audioTitle}>{this.state.story_title}</Text>
-                        }
-
-                        {this.state.num_lines > 0 ?
-                            <View style={{flex: 1, justifyContent: 'top', alignItems: 'center'}}>
-                            <Text style={styles.audioCountdown}>Part {this.state.line_idx + 1} of {this.state.num_lines}</Text>
+            <SafeAreaView style={styles.container}>
+                <Layout style={{flex: 1, alignItems: 'center'}}>
+                    <ThemeButton/>
+                    {this.state.playing &&
+                    <Text style={styles.audioTitle}>{this.state.story_title}</Text>
+                    }
+                    {this.state.num_lines > 0 ?
+                        <View style={{justifyContent: 'space-between'}}>
+                            <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center'}}>
+                                <Text style={styles.audioCountdown}>Part {this.state.line_idx + 1} of {this.state.num_lines}</Text>
                                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                     {!this.state.paused ?
                                         <Button style={styles.audioButton}
+                                                size='tiny'
                                                 onPress={this.pauseIt}> Pause </Button>
                                         :
                                         <Button style={styles.audioButton}
+                                                size='tiny'
                                                 onPress={this.resumeIt}>Resume</Button>
                                     }
                                     <Button style={styles.audioButton}
+                                            size='tiny'
                                             onPress={this.backward}>Back</Button>
                                     <Button style={styles.audioButton}
+                                            size='tiny'
                                             onPress={this.forward}>Forward</Button>
                                     <Button style={styles.audioButton}
+                                            size='tiny'
                                             onPress={this.restartIt}>Start Over</Button>
                                 </View>
-
                                 {this.state.playing &&
                                 <Text style={styles.currentText}>{this.state.curr_text}</Text>
                                 }
-                            </View>
-                            :
-                            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                                <Button style={styles.selectButton}
-                                        onPress={this.goToStoriesScreen}>Select a Story to Play</Button>
-                                {this.props.current_profile.favorites.length > 0 &&
-                                    <Button style={styles.selectButton}
-                                            onPress={this.playFavorites}>Play Favorites</Button>
+                                </View>
+                            <View style={styles.bottom}>
+                                { ((this.props.current_profile.audioPlayType === 1  &&
+                                    this.props.current_profile.favorites.length > 1) ||
+                                (this.props.current_profile.audioPlayType === 2  &&
+                                    this.props.current_profile.playList.length > 1)) &&
+                                <View>
+                                    <Button style={styles.bottomButtons}
+                                            onPress={this.playPrevious}>Previous Story</Button>
+                                        <Button style={styles.bottomButtons}
+                                                onPress={this.playNext}>Next Story</Button>
+                                </View>
                                 }
-                                {this.props.current_profile.playList.length > 0 &&
-                                    <Button style={styles.selectButton}
-                                            onPress={this.playPlayList}>Play Playlist</Button>
-                                }
                             </View>
-                        }
-
+                        </View>
+                        :
+                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                            <Button style={styles.selectButton}
+                                    onPress={this.goToStoriesScreen}>Select a Story to Play</Button>
+                            {this.props.current_profile.favorites.length > 0 &&
+                            <Button style={styles.selectButton}
+                                    onPress={this.playFavorites}>Play Favorites</Button>
+                            }
+                            {this.props.current_profile.playList.length > 0 &&
+                            <Button style={styles.selectButton}
+                                    onPress={this.playPlayList}>Play Playlist</Button>
+                            }
+                            </View>
+                    }
                     </Layout>
             </SafeAreaView>
         );
     }
 };
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        // backgroundColor: '#ecf0f1',
+        // justifyContent: 'space-between',
+    },
+    bottom: {
+        // position: 'absolute',
+        // flexDirection: 'row',
+        alignItems: 'center',
+        bottom: (MyDefines.myBottomTabBarHeight) + 100,
+    },
     selectButton: {
         marginVertical: 30,
         marginHorizontal: 30,
         backgroundColor: 'purple',
     },
-    audioButton: {
-        marginVertical: 4,
-        marginHorizontal: 4,
+    bottomButtons: {
+        marginVertical: 5,
+        marginHorizontal: 5,
         backgroundColor: 'purple',
     },
+    audioButton: {
+        marginVertical: 2,
+        marginHorizontal: 2,
+        backgroundColor: 'purple',
+        // maxWidth: '30%',
+    },
     audioCountdown: {
-        fontSize: 20,
+        fontSize: 25,
         fontWeight: 'bold',
         lineHeight: 25,
         paddingBottom: 5,

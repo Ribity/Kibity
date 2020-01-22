@@ -1,7 +1,12 @@
+import Constants from 'expo-constants';
+
 export const AUDIO_PLAYING_FAVORITES = 1;
 export const AUDIO_PLAYING_PLAYLIST = 2;
 
 export default {
+
+    myStatusBarHeight: Constants.statusBarHeight,
+    myBottomTabBarHeight: 45,
 
     stories_url_bucket: 'https://ribity.com/stories/',
     default_test: {
@@ -41,13 +46,13 @@ export default {
             team: 'Washington Redskins',
             sport: 'football',
             pet: 'dog',
-            favorites: [1],   // list of story indexes (integers) 0-based, must match allStoriesList.json indexes
-            playList: [],       // list to story indexes (integers) 1-based, must match allStoriesList.json indexes
+            favorites: [0,2,4],   // list of story indexes (integers) 0-based, must match allStoriesList.json indexes
+            playList: [0,2],       // list to story indexes (integers) 1-based, must match allStoriesList.json indexes
 
             active_profile: 0,  // zero-based
             currFavoritesIdx: 0,
             currPlayListIdx: 0,
-            audioPlayType: 0,
+            audioPlayType: 1,
         },
 
     default_profiles:

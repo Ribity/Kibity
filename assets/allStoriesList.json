@@ -7,7 +7,7 @@
         "gender": 1,
         "num_lines": 48,
         "filename": "uncleNedsFireworks.json",
-        "date_published": "Jan 13, 2019",
+        "date_published": "Jan 13, 2020",
         "written_by": "Mark King",
         "keywords": "River, smell, straw, bridge, gamma",
     },
@@ -17,7 +17,7 @@
         "gender": 2,
         "num_lines": 80,
         "filename": "summerVacationAtGrandmas.json",
-        "date_published": "Jan 13, 2019",
+        "date_published": "Jan 13, 2020",
         "snippet": "A week-long stay at Grandma's takes a turn at the local store.",
         "written_by": "Beth Allen",
         "keywords": "Gems, garden, dog, Lucky",
@@ -26,28 +26,28 @@
 
         {
             "story_num": 3,
-            "title": "Uncle Ned's Fireworks",
+            "title": "Story #3",
             "gender": 1,
-            "num_lines": 48,
+            "num_lines": 3,
             "filename": "uncleNedsFireworks.json",
         },
         {
             "story_num": 4,
-            "title": "Summer Vacation at Grandmother's",
-            "gender": 2,
-            "num_lines": 80,
-            "filename": "summerVacationAtGrandmas.json",
-            "date_published": "Jan 13, 2019",
-            "snippet": "A week-long stay at Grandma's takes a turn at the local store."
+            "title": "Story #4",
+            "gender": 1,
+            "num_lines": 3,
+            "filename": "uncleNedsFireworks.json",
+
+            "date_published": "Jan 30, 2019",
         },
         {
             "story_num": 5,
-            "title": "Uncle Ned's Fireworks",
-            "gender": 1,
-            "num_lines": 48,
+            "title": "Story #5",
+            "gender": 2,
+            "num_lines": 3,
             "filename": "uncleNedsFireworks.json",
-            "date_published": "Jan 13, 2019",
-            "snippet": "What's that smell?  The river, Uncle Ned's fireworks or maybe something else."
+
+            "date_published": "Jan 30, 2019",
         },
         {
             "story_num": 6,

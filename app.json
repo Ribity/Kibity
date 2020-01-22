@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Cribity",
-    "slug": "Cribity",
+    "name": "Kibity",
+    "slug": "Kibity",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [
@@ -9,7 +9,7 @@
       "android",
       "web"
     ],
-    "scheme": "cribity",
+    "scheme": "kibity",
     "version": "1.0.0",
     "orientation": "portrait",
     "primaryColor": "#008000",
@@ -17,7 +17,7 @@
     "splash": {
       "image": "./assets/images/PurpleFaceSplash1024.png",
       "resizeMode": "contain",
-      "backgroundColor": "#FFD700"
+      "backgroundColor": "#D4AF37"
     },
     "updates": {
       "fallbackToCacheTimeout": 30000
@@ -27,14 +27,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.cribity.cribity",
+      "bundleIdentifier": "com.kibity.kibity",
       "icon": "./assets/images/PurpleFaceIcon1024.png"
     },
     "android": {
-      "package": "com.cribity.cribity",
+      "package": "com.kibity.kibity",
       "versionCode": 1,
       "icon": "./assets/images/purpleFaceIcon512.png",
-      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.cribity.cribity"
+      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.kibity.kibity"
     },
     "androidStatusBarColor": "#000000",
     "androidStatusBar": {
