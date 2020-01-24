@@ -9,7 +9,7 @@ export const ThemeButton = () => {
         themeContext.toggleTheme();
     };
     return (
-            <Button style={{marginVertical: 10, backgroundColor: 'grey'}}
+            <Button style={{marginVertical: 5, backgroundColor: 'grey'}}
                     onPress={onThemePress}>Toggle Light/Dark Theme</Button>
     );
 };

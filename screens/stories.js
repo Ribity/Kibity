@@ -1,7 +1,7 @@
 import React from "react";
 import {
     StyleSheet,
-    Text,
+    Text, TouchableOpacity,
     View,
     // ScrollView,
 } from "react-native";
@@ -9,10 +9,11 @@ import {
 import MyDefines from '../constants/MyDefines';
 // import MyCard from "../components/myCard";
 import MyListComponent from '../components/MyListComponent';
-import { updateStoryList } from '../actions/storyListActions';
-import { updateStoryIdx } from '../actions/storyIdxActions';
+import { setStoryIdx, setListType, setListIdx} from '../actions/currentProfileActions';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
+import {Ionicons} from '@expo/vector-icons';
+
 
 // let my_story_list =
 
@@ -21,50 +22,117 @@ class StoriesScreen extends React.Component {
         super(props);
         this.state = {
             story_list: MyDefines.default_story_list,
+            current_profile: MyDefines.default_current_profile,
         };
     };
     componentDidMount() {
-        this.buildStoryList();
         // setTimeout(this.buildStoryList, 1000);  // mk1 be sure to clear the timeout on unmount
-        this.buildStoryList();  // mk1 be sure to clear the timeout on unmount
+        this.populateStateStoryList();  // mk1 be sure to clear the timeout on unmount
 
         // console.log("StoriesScreen DidMount:", this.props.story_list);
     }
 
-    static getDerivedStateFromProps(nextProps, prevState){
-        console.log("GetDerivedStateFromProps StoriesScreen");
-        if (prevState.story_list !== nextProps.story_list) {
-            // console.log("StoriesScreen next props:", nextProps.story_list);
-            return{data: nextProps.story_list};
-        } else return null;
+    // static getDerivedStateFromProps(nextProps, prevState){
+    //     console.log("GetDerivedStateFromProps StoriesScreen");
+    //     if (prevState.story_list !== nextProps.story_list) {
+    //         // console.log("StoriesScreen next props:", nextProps.story_list);
+    //         return{data: nextProps.story_list};
+    //     } else return null;
+    // };
+    // static getDerivedStateFromProps(nextProps, prevState){
+    //     let update = {};
+    //
+    //     console.log("stories getDerivedStateFromProps");
+    //     // if (prevState.stories_list !== nextProps.stories_list) {
+    //     //     update.stories_list = nextProps.stories_list;
+    //     // }
+    //     if (prevState.current_profile !== nextProps.current_profile) {
+    //         update.current_profile = nextProps.current_profile;
+    //     }
+    //     console.log("stories derivedState:", update);
+    //     return Object.keys(update).length ? update: null;
+    // };
+    // // componentDidUpdate(prevProps, prevState) {
+    // //     console.log("StoriesScreenDidUpdate");
+    // // }
+    populateStateStoryList = () => {
+        this.setState({story_list: this.props.story_list});
     };
-    // componentDidUpdate(prevProps, prevState) {
-    //     console.log("StoriesScreenDidUpdate");
-    // }
-    buildStoryList = () => {
-        let my_story_list = require('../assets/allStoriesList.json');
-        this.setState({story_list: my_story_list});
-        this.props.updateStoryList(my_story_list);
-        this.setState({data: this.props.story_list});
-        // console.log("StoryList:", this.props.story_list);
+    updateStoriesCurrentProfile = () => {
+        console.log("updateStoriesCurrentProfile");
+        this.setState({current_profile: this.props.current_profile});
     };
     onPressStorySelection = (story, idx) => {
         console.log("onPressStorySelection:", idx );
-        this.props.updateStoryIdx(idx);
+        this.props.setListType(0);
+        this.props.setStoryIdx(idx);
         this.props.navigation.navigate("Audio");
     };
+    playFavorites = () => {
+        console.log("Play faves");
+        if (this.state.current_profile.favorites.length) {
+            this.props.setListType(1);
+            this.props.setListIdx(0);
+            this.props.setStoryIdx(this.state.current_profile.favorites[0]);
+            this.props.navigation.navigate("Audio");
+        }
+    };
+    playPlayList = () => {
+        console.log("Play PlayList");
+        if (this.state.current_profile.playList.length) {
+            this.props.setListType(2);
+            this.props.setListIdx(0);
+            this.props.setStoryIdx(this.state.current_profile.playList[0]);
+            this.props.navigation.navigate("Audio");
+        }
+    };
     render() {
+        // if (this.state.story_list.stories.length !== myListLength)
+        //     unMount the MyListComponent;
+
         return (
             <View style={styles.container}>
-                <View style={styles.title}>
-                    <Text style={styles.titleText}>Select a story to play</Text>
+                <View style={styles.topRow}>
+
+                    {(this.state.current_profile.favorites.length > 0) &&
+                    <View>
+                        <TouchableOpacity onPress={this.playFavorites}>
+                            <View style={styles.faves}>
+                                <View>
+                                    <Text style={styles.pText}> Play</Text>
+                                    <Text style={styles.pText}>Faves</Text>
+                                </View>
+                                <Ionicons name={"ios-heart"} size={30} color={'red'}/>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    }
+
+                    <View style={styles.title}>
+                        <Text style={styles.titleText}>Select a story</Text>
+                    </View>
+
+                    {(this.state.current_profile.playList.length > 0) &&
+                        <View>
+                        <TouchableOpacity onPress={this.playPlayList}>
+                            <View style={styles.playList}>
+                                <Ionicons name={"ios-list-box"} size={30} color={'goldenrod'}/>
+                                <View>
+                                    <Text style={styles.pText}>Play</Text>
+                                    <Text style={styles.pText}>List</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                        </View>
+                    }
                 </View>
                 <View style={{paddingTop: 5}}/>
 
-                {this.props.story_list.stories.length > 1 &&
+                {this.state.story_list.stories.length > 1 &&
                 <MyListComponent navigation={this.props.navigation}
                                  myList={this.state.story_list.stories}
                                  screenType={'Stories'}
+                                 updateParentStoriesCurrentProfile={this.updateStoriesCurrentProfile}
                                  onPressItem={this.onPressStorySelection}/>
                 }
             </View>
@@ -73,11 +141,27 @@ class StoriesScreen extends React.Component {
 }
 const styles = StyleSheet.create({
     container: {
-        flexGrow: 1,
+        flex: 1,
         backgroundColor: "purple",
         justifyContent:'center',
         alignItems: 'center',
         paddingTop: 25,
+    },
+    topRow: {
+        // flex: 1,
+        flexDirection: 'row',
+        // justifyContent: 'center',
+    },
+    faves: {
+        flexDirection: 'row',
+        paddingRight: 15,
+    },
+    playList: {
+        flexDirection: 'row',
+        paddingLeft: 15,
+    },
+    pText: {
+        color: 'goldenrod',
     },
     title: {
         // height: 50,
@@ -117,12 +201,14 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     const { story_list } = state;
-    return { story_list }
+    const { current_profile } = state;
+    return { story_list, current_profile }
 };
 const mapDispatchToProps = dispatch => (
     bindActionCreators({
-        updateStoryList,
-        updateStoryIdx,
+        setListType,
+        setListIdx,
+        setStoryIdx,
     }, dispatch)
 );
 export default connect(mapStateToProps, mapDispatchToProps)(StoriesScreen);

@@ -1,7 +1,8 @@
 import React from 'react';
 import {Alert,StyleSheet, View, Dimensions} from 'react-native';
 import {SafeAreaView} from "react-navigation";
-import {Button, ButtonGroup, Layout, Text} from "@ui-kitten/components";
+import {Button, Layout, Text} from "@ui-kitten/components";
+import {Ionicons} from '@expo/vector-icons';
 import * as Speech from "expo-speech";
 import {ThemeButton} from "../components/themeButton";
 import MyDefines from '../constants/MyDefines';
@@ -9,10 +10,8 @@ import mystories from '../services/myStories';
 import storyconversion from '../services/storyConversion';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {updateStoryIdx} from "../actions/storyIdxActions";
-import {updateCurrentProfile} from "../actions/currentProfileActions";
-import {setFavoritesIdx} from "../actions/currentProfileActions";
-import {setPlayListIdx} from "../actions/currentProfileActions";
+import {setStoryIdx, setListType, setListIdx} from "../actions/currentProfileActions";
+import {updateStoryList} from "../actions/storyListActions";
 
 import AUDIO_PLAYING_FAVORITES from '../constants/MyDefines';
 import AUDIO_PLAYING_PLAYLIST from '../constants/MyDefines';
@@ -37,7 +36,7 @@ const initialState = {
     paused: false,
     line_idx: 0,
     num_lines: 0,
-
+    current_profile: MyDefines.default_current_profile,
 };
 
 
@@ -49,13 +48,15 @@ class AudioScreen extends React.Component {
         this.componentWillUnmount = this.componentWillUnmount.bind(this);
     };
     componentDidMount() {
+        this.buildStoryList();  // mk1 be sure to clear the timeout on unmount
+
         this.subs = [
             this.props.navigation.addListener('willFocus', this.componentWillFocus),
         ];
-        this.props.setFavoritesIdx(0);
-        this.props.setPlayListIdx(0);
-        this.props.updateStoryIdx(-1);
-        console.log("height:", height, " width:", width, "statusbar:", MyDefines.myStatusBarHeight);
+        this.props.setListIdx(0);
+        this.props.setStoryIdx(-1);
+        this.setState({current_profile: this.props.current_profile});
+        // console.log("height:", height, " width:", width, "statusbar:", MyDefines.myStatusBarHeight);
     };
     // static getDerivedStateFromProps(nextProps, prevState){
     //     let update = {};
@@ -77,10 +78,13 @@ class AudioScreen extends React.Component {
 
     componentWillFocus() {
         try {
-            console.log("Focused props.story_idx:", this.props.story_idx, "story_idx:", story_idx);
-            if (this.props.story_idx !== story_idx) {
-                console.log("FocusingToAudio, props.story_idx:", this.props.story_idx, "story_idx:", story_idx);
-                story_idx = this.props.story_idx;
+            this.setState({current_profile: this.props.current_profile});
+            if (MyDefines.log_details)
+                console.log("Focused props.story_idx:", this.props.current_profile.currStoryIdx, "story_idx:", story_idx);
+            if (this.props.current_profile.currStoryIdx !== story_idx) {
+                if (MyDefines.log_details)
+                    console.log("FocusingToAudio, props.story_idx:", this.props.current_profile.currStoryIdx, "story_idx:", story_idx);
+                story_idx = this.props.current_profile.currStoryIdx;
                 if (story_idx !== -1)
                     this.getItAndPlay();
             }
@@ -91,7 +95,8 @@ class AudioScreen extends React.Component {
     componentWillUnmount() {
         willUnmount = true;
         // AppState.removeEventListener('change', this._handleAppStateChange);
-        console.log("audioScreen will unmount");
+        if (MyDefines.log_details)
+            console.log("audioScreen will unmount");
         Speech.stop();
         if (delayedPlay !== null) {
             clearTimeout(delayedPlay);
@@ -107,13 +112,22 @@ class AudioScreen extends React.Component {
         }
         this.subs.forEach(sub => sub.remove());  // removes the componentWillFocus listener
     };
+    buildStoryList = () => {
+        let my_story_list = require('../assets/allStoriesList.json');
+        this.props.updateStoryList(my_story_list);
+        // console.log("StoryList:", this.props.story_list);
+    };
+
     getItAndPlay = () => {
-        // console.log("getItAndPlay:", this.props.story_list);
+        if (MyDefines.log_details)
+            console.log("getItAndPlay:", story_idx);
+        // console.log("getItAndPlaystories:", this.props.story_list);
         myStory = mystories.getStory(this.props.story_list.stories[story_idx].filename);
         // console.log("Mine", myStory);
 
         if (myStory !== null) {
-            console.log("Found local story");
+            if (MyDefines.log_details)
+                console.log("Found local story");
             this.playIt();
         } else {
              this.getStoryFromServer();
@@ -126,13 +140,15 @@ class AudioScreen extends React.Component {
         fetch(story_url)
             .then(response => response.json())
             .then(responseJson => {
-                console.log("fetched remote story");
+                if (MyDefines.log_details)
+                    console.log("fetched remote story");
                 // console.log("fetch",responseJson);
                 myStory = responseJson;
                 this.playIt();
             })
             .catch(error => {
-                console.log("file NOT retrieved from server", story_url);
+                if (MyDefines.log_details)
+                    console.log("file NOT retrieved from server", story_url);
                 Alert.alert("Error accessing the story you selected",
                     "Please select a different story for now",
                     );
@@ -147,7 +163,8 @@ class AudioScreen extends React.Component {
             myStory = storyconversion.convertIt(myStory, null);
             // console.log("convertedStory:", myStory);
 
-            console.log("Setting state vars");
+            if (MyDefines.log_details)
+                console.log("Setting state vars");
             this.setState({num_lines: myStory.line.length});
             this.setState({story_title: this.props.story_list.stories[story_idx].title});
         }
@@ -161,7 +178,8 @@ class AudioScreen extends React.Component {
     };
 
     playLineNum = (lineNum) => {
-        console.log("playLineNum:", lineNum+1);
+        if (MyDefines.log_details)
+            console.log("playLineNum:", lineNum+1);
         Speech.stop();
         this.clearPotentialPlay();
         myIdx = lineNum;
@@ -175,7 +193,8 @@ class AudioScreen extends React.Component {
         this.setState({playing: true});
         if (myIdx < myStory.line.length) {
             this.setState({line_idx: myIdx});
-            console.log("speak: ", myStory.line[myIdx]);
+            if (MyDefines.log_details)
+                console.log("speak: ", myStory.line[myIdx]);
             Speech.speak(myStory.line[myIdx], {
                 // voice: "com.apple.ttsbundle.Samantha-compact",
                 // language: 'en',
@@ -187,7 +206,8 @@ class AudioScreen extends React.Component {
             });
         } else {
             this.setState({playing: false});
-            console.log("Finished story");
+            if (MyDefines.log_details)
+                console.log("Finished story");
             // console.log(this.props.current_profile);
             this.playNext();
         }
@@ -195,7 +215,8 @@ class AudioScreen extends React.Component {
     playNextLine = () => {
         if (!willUnmount) {             // Added this because when speech.speak finishes, it might call playNextLine inadvertently
             this.clearPotentialPlay();
-            console.log("Done, playNext");
+            if (MyDefines.log_details)
+                console.log("Done, playNext");
             if (!overrideTheNextLine) {
                 let mSecs = 1000;
                 Speech.stop();
@@ -250,9 +271,8 @@ class AudioScreen extends React.Component {
         this.setState(initialState);
         story_idx = -1;
         overrideTheNextLine = false;
-        this.props.setFavoritesIdx(0);
-        this.props.setPlayListIdx(0);
-        this.props.updateStoryIdx(-1);
+        this.props.setListIdx(0);
+        this.props.setStoryIdx(-1);
 
         if (this.props.current_profile.favorites.length < 1 && this.props.current_profile.playList.length < 1)
             this.goToStoriesScreen();
@@ -274,53 +294,78 @@ class AudioScreen extends React.Component {
         this.props.navigation.navigate("Stories");
     };
     playFavorites = () => {
+        if (this.props.current_profile.favorites.length) {
+            this.props.setListType(1);
+            this.props.setListIdx(0);
+            story_idx = this.props.current_profile.favorites[0];
+            this.props.setStoryIdx(story_idx);
+            this.getItAndPlay();
+        }
     };
     playPlayList = () => {
+        if (this.props.current_profile.playList.length) {
+            this.props.setListType(2);
+            this.props.setListIdx(0);
+            story_idx = this.props.current_profile.playList[0];
+            this.props.setStoryIdx(story_idx);
+            this.getItAndPlay();
+        }
     };
     playPrevious = () => {
         let listIdx;
-        if (this.props.current_profile.audioPlayType === 1) {  // If playing favorites
-            if (this.props.current_profile.currFavoritesIdx === 0) {
+        if (this.props.current_profile.currListType === 1) {  // If playing favorites
+            if (this.props.current_profile.currListIdx === 0) {
                 listIdx = this.props.current_profile.favorites.length-1;
             } else {
-                listIdx = this.props.current_profile.currFavoritesIdx-1;
+                listIdx = this.props.current_profile.currListIdx-1;
             }
             story_idx = this.props.current_profile.favorites[listIdx];
-            this.props.setFavoritesIdx(listIdx);
-            this.props.updateStoryIdx(story_idx);
-        } else if (this.props.current_profile.audioPlayType === 2) {  // If playing playlist
-            if (this.props.current_profile.currPlayListIdx === 0) {
+            this.props.setListIdx(listIdx);
+            this.props.setStoryIdx(story_idx);
+        } else if (this.props.current_profile.currListType === 2) {  // If playing playlist
+            if (this.props.current_profile.currListIdx === 0) {
                 listIdx = this.props.current_profile.playList.length-1;
             } else {
-                listIdx = this.props.current_profile.currPlayListIdx-1;
+                listIdx = this.props.current_profile.currListIdx-1;
             }
             story_idx = this.props.current_profile.playList[listIdx];
-            this.props.setPlayListIdx(listIdx);
-            this.props.updateStoryIdx(story_idx);
+            this.props.setListIdx(listIdx);
+            this.props.setStoryIdx(story_idx);
         }
         // nextStoryTimeout = setTimeout(() => {this.getItAndPlay()}, 2000);
         this.getItAndPlay();
     };
+    validateListPlay = () => {
+        if ((this.props.current_profile.currListType === 1) &&
+            (this.props.current_profile.favorites.length === 0)) {  // This covers case where use removed all from playList while it was playing
+            this.props.setListType(0);
+        } else if ((this.props.current_profile.currListType === 2) &&
+            (this.props.current_profile.playList.length === 0)) {  // This covers case where use removed all from playList while it was playing
+            this.props.setListType(0);
+        }
+    };
     playNext = () => {
         let listIdx;
-        if (this.props.current_profile.audioPlayType === 1) {  // If playing favorites
-            if (this.props.current_profile.currFavoritesIdx < this.props.current_profile.favorites.length - 1) {
-                listIdx = this.props.current_profile.currFavoritesIdx + 1;
+        this.validateListPlay();
+
+        if (this.props.current_profile.currListType === 1) {  // If playing favorites
+            if (this.props.current_profile.currListIdx < this.props.current_profile.favorites.length - 1) {
+                listIdx = this.props.current_profile.currListIdx + 1;
             } else {
                 listIdx = 0;
             }
             story_idx = this.props.current_profile.favorites[listIdx];
-            this.props.setFavoritesIdx(listIdx);
-            this.props.updateStoryIdx(story_idx);
-        } else if (this.props.current_profile.audioPlayType === 2) {  // If playing playlist
-            if (this.props.current_profile.currPlayListIdx < this.props.current_profile.playList.length - 1) {
-                listIdx = this.props.current_profile.currPlayListIdx + 1;
+            this.props.setListIdx(listIdx);
+            this.props.setStoryIdx(story_idx);
+        } else if (this.props.current_profile.currListType === 2) {  // If playing playlist
+            if (this.props.current_profile.currListIdx < this.props.current_profile.playList.length - 1) {
+                listIdx = this.props.current_profile.currListIdx + 1;
             } else {
                 listIdx = 0;
             }
             story_idx = this.props.current_profile.playList[listIdx];
-            this.props.setPlayListIdx(listIdx);
-            this.props.updateStoryIdx(story_idx);
+            this.props.setListIdx(listIdx);
+            this.props.setStoryIdx(story_idx);
         }
         // nextStoryTimeout = setTimeout(() => {this.getItAndPlay()}, 2000);
         this.getItAndPlay();
@@ -363,15 +408,42 @@ class AudioScreen extends React.Component {
                                 }
                                 </View>
                             <View style={styles.bottom}>
-                                { ((this.props.current_profile.audioPlayType === 1  &&
-                                    this.props.current_profile.favorites.length > 1) ||
-                                (this.props.current_profile.audioPlayType === 2  &&
-                                    this.props.current_profile.playList.length > 1)) &&
+                                {this.state.current_profile.currListType === 0  &&
                                 <View>
+                                    {this.state.current_profile.favorites.length > 0 &&
                                     <Button style={styles.bottomButtons}
-                                            onPress={this.playPrevious}>Previous Story</Button>
+                                            onPress={this.playFavorites}>Start Favorites</Button>
+                                    }
+                                    {this.state.current_profile.playList.length > 0 &&
                                         <Button style={styles.bottomButtons}
-                                                onPress={this.playNext}>Next Story</Button>
+                                            onPress={this.playPlayList}>Start Playlist</Button>
+                                    }
+                                </View>
+                                }
+                                { (this.state.current_profile.currListType === 1  &&
+                                    this.state.current_profile.favorites.length > 0) &&
+                                <View>
+                                    <View style={styles.playRow}>
+                                        <Text style={styles.playType}>Playing Favorites</Text>
+                                        <Ionicons style={styles.playIcon} name={"ios-heart"} size={25} color={'red'}/>
+                                    </View>
+                                    <Button style={styles.bottomButtons}
+                                            onPress={this.playPrevious}>Previous Story from Favorites</Button>
+                                    <Button style={styles.bottomButtons}
+                                            onPress={this.playNext}>Next Story from Favorites</Button>
+                                </View>
+                                }
+                                { (this.state.current_profile.currListType === 2  &&
+                                    this.state.current_profile.playList.length > 0) &&
+                                <View>
+                                    <View style={styles.playRow}>
+                                        <Text style={styles.playType}>Playing Playlist</Text>
+                                        <Ionicons style={styles.playIcon} name={"ios-list-box"} size={25} color={'goldenrod'}/>
+                                    </View>
+                                    <Button style={styles.bottomButtons}
+                                            onPress={this.playPrevious}>Previous Story from PlayList</Button>
+                                    <Button style={styles.bottomButtons}
+                                            onPress={this.playNext}>Next Story from PlayList</Button>
                                 </View>
                                 }
                             </View>
@@ -380,11 +452,11 @@ class AudioScreen extends React.Component {
                         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                             <Button style={styles.selectButton}
                                     onPress={this.goToStoriesScreen}>Select a Story to Play</Button>
-                            {this.props.current_profile.favorites.length > 0 &&
+                            {this.state.current_profile.favorites.length > 0 &&
                             <Button style={styles.selectButton}
                                     onPress={this.playFavorites}>Play Favorites</Button>
                             }
-                            {this.props.current_profile.playList.length > 0 &&
+                            {this.state.current_profile.playList.length > 0 &&
                             <Button style={styles.selectButton}
                                     onPress={this.playPlayList}>Play Playlist</Button>
                             }
@@ -401,11 +473,29 @@ const styles = StyleSheet.create({
         // backgroundColor: '#ecf0f1',
         // justifyContent: 'space-between',
     },
+    playRow: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+    playIcon: {
+        lineHeight: 25,
+        marginHorizontal: 5,
+        marginVertical: 5,
+    },
+    playType: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        lineHeight: 25,
+        color: 'goldenrod',
+        marginHorizontal: 5,
+        marginVertical: 5,
+        textAlign: 'center',
+    },
     bottom: {
         // position: 'absolute',
         // flexDirection: 'row',
         alignItems: 'center',
-        bottom: (MyDefines.myBottomTabBarHeight) + 100,
+        bottom: (MyDefines.myBottomTabBarHeight) + 80,
     },
     selectButton: {
         marginVertical: 30,
@@ -414,7 +504,6 @@ const styles = StyleSheet.create({
     },
     bottomButtons: {
         marginVertical: 5,
-        marginHorizontal: 5,
         backgroundColor: 'purple',
     },
     audioButton: {
@@ -452,16 +541,15 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     const { story_list } = state;
-    const { story_idx } = state;
     const { current_profile } = state;
-    return { story_list, story_idx, current_profile }
+    return { story_list, current_profile }
 };
 const mapDispatchToProps = dispatch => (
     bindActionCreators({
-        updateStoryIdx,
-        updateCurrentProfile,
-        setFavoritesIdx,
-        setPlayListIdx,
+        updateStoryList,
+        setStoryIdx,
+        setListType,
+        setListIdx,
     }, dispatch)
 );
 export default connect(mapStateToProps, mapDispatchToProps)(AudioScreen);

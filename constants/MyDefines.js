@@ -5,6 +5,8 @@ export const AUDIO_PLAYING_PLAYLIST = 2;
 
 export default {
 
+    log_details: false,
+
     myStatusBarHeight: Constants.statusBarHeight,
     myBottomTabBarHeight: 45,
 
@@ -46,13 +48,14 @@ export default {
             team: 'Washington Redskins',
             sport: 'football',
             pet: 'dog',
-            favorites: [0,2,4],   // list of story indexes (integers) 0-based, must match allStoriesList.json indexes
-            playList: [0,2],       // list to story indexes (integers) 1-based, must match allStoriesList.json indexes
+            petName: "Fluffy",
+            favorites: [],   // list of story indexes (integers) 0-based, must match allStoriesList.json indexes
+            playList: [],       // list to story indexes (integers) 1-based, must match allStoriesList.json indexes
 
             active_profile: 0,  // zero-based
-            currFavoritesIdx: 0,
-            currPlayListIdx: 0,
-            audioPlayType: 1,
+            currStoryIdx: -1,
+            currListIdx: 0,
+            currListType: 0,
         },
 
     default_profiles:

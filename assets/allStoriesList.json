@@ -22,19 +22,22 @@
         "written_by": "Beth Allen",
         "keywords": "Gems, garden, dog, Lucky",
     },
-
-
         {
             "story_num": 3,
-            "title": "Story #3",
-            "gender": 1,
-            "num_lines": 3,
-            "filename": "uncleNedsFireworks.json",
+            "title": "The Pecan Tree",
+            "gender": 0,
+            "num_lines": 59,
+            "filename": "pecanTree.json",
+            "date_published": "Jan 23, 2020",
+            "written_by": "Beth Allen",
+            "keywords": "bird, summer, fort, tree house",
         },
+
+
         {
             "story_num": 4,
             "title": "Story #4",
-            "gender": 1,
+            "gender": 0,
             "num_lines": 3,
             "filename": "uncleNedsFireworks.json",
 
@@ -71,7 +74,7 @@
             "story_num": 9,
             "title": "Summer Vacation at Grandmother's",
             "gender": 2,
-            "num_lines": 80,
+            "num_lines": 81,
             "filename": "summerVacationAtGrandmas.json",
             "date_published": "Jan 13, 2019",
             "snippet": "A week-long stay at Grandma's takes a turn at the local store."

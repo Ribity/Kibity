@@ -77,6 +77,9 @@ class myStories {
                 case 'summerVacationAtGrandmas.json':
                     storyToUse = require('../assets/stories/summerVacationAtGrandmas.json');
                     break;
+                case 'pecanTree.json':
+                    storyToUse = require('../assets/stories/pecanTree.json');
+                    break;
                 default:
                     break;
             }
@@ -91,12 +94,6 @@ class myStories {
         let storyToUse = -1;    // This commented out code works. Use it if we want to package the
         try {
             switch (storyName) {    // images in assets/images
-                case 'testTwoStory.json':
-                    storyToUse = require('../assets/stories/testTwoStory.json');
-                    break;
-                case 'testTwoStory2.json':
-                    storyToUse = require('../assets/stories/testTwoStory2.json');
-                    break;
                 case 'uncleNedsFireworks.json':
                     storyToUse = require('../assets/stories/uncleNedsFireworks.json');
                     break;

@@ -88,15 +88,19 @@ class storyConversion {
         let i;
         for (i = 0; i < inStory.line.length; i++) {
             rLine = inStory.line[i].replace(/mainchar/gi, profile.mainChar);
+            rLine = rLine.replace(/char1/gi, OneBoyOrGirl);
             rLine = rLine.replace(/boy1/gi, OneBoyOrGirl);
             rLine = rLine.replace(/girl1/gi, OneBoyOrGirl);
             rLine = rLine.replace(/secondchar/gi, profile.charTwo);
+            rLine = rLine.replace(/char2/gi, profile.charTwo);
             rLine = rLine.replace(/boy2/gi, TwoBoyOrGirl);
             rLine = rLine.replace(/girl2/gi, TwoBoyOrGirl);
             rLine = rLine.replace(/thirdchar/gi, profile.charThree);
+            rLine = rLine.replace(/char3/gi, profile.charThree);
             rLine = rLine.replace(/boy3/gi, ThreeBoyOrGirl);
             rLine = rLine.replace(/girl3/gi, ThreeBoyOrGirl);
             rLine = rLine.replace(/pet1/gi, profile.pet);
+            rLine = rLine.replace(/petname1/gi, profile.petName);
             rLine = rLine.replace(/sport1/gi, profile.sport);
             rLine = rLine.replace(/team1/gi, profile.team);
             rLine = rLine.replace(/she1/gi, OneHeOrShe);

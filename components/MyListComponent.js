@@ -1,9 +1,16 @@
 import React from 'react';
-import {View, Text, StyleSheet, FlatList, TouchableOpacity, Dimensions} from 'react-native';
-import { ListItem, SearchBar} from 'react-native-elements';
+import {View, Text, StyleSheet, FlatList, TouchableOpacity, Dimensions,} from 'react-native';
+import { ListItem, SearchBar, Button} from 'react-native-elements';
+import {Ionicons} from '@expo/vector-icons';
+import Toast from 'react-native-easy-toast';
+
 import { connect } from 'react-redux';
 
 import myStyles from "../myStyles";
+// import {Button} from "@ui-kitten/components";
+import MyDefines from "../constants/MyDefines";
+import {bindActionCreators} from "redux";
+import {addFavorite, addPlayList, removeFavorite, removePlayList} from "../actions/currentProfileActions";
 
 const {height, width} = Dimensions.get('window');
 
@@ -48,7 +55,7 @@ class MyListComponent extends React.Component {
                     style={{
                         height: 1,
                         width: "86%",
-                        backgroundColor: "#CED0CE",
+                        backgroundColor: "gray",
                         marginLeft: "14%",
                     }}
                 />
@@ -114,7 +121,63 @@ class MyListComponent extends React.Component {
             // myfuncs.mySentry(error);
         }
     };
+    addToFaves = (index) => {
+        let msg = "Added to " + this.props.current_profile.mainChar + "'s Favorites";
+        this.refs.toast.show(msg, 500);
+        this.props.addFavorite(index);
+        this.setState({data: this.props.myList});
+        this.props.updateParentStoriesCurrentProfile();
+    };
+    removeFromFaves = (index) => {
+        let msg = "Removed from " + this.props.current_profile.mainChar + "'s Favorites";
+        this.refs.toast.show(msg, 500);
+        this.props.removeFavorite(index);
+        this.setState({data: this.props.myList});
+        this.props.updateParentStoriesCurrentProfile();
+    };
+    addToPlayList = (index) => {
+        let msg = "Added to " + this.props.current_profile.mainChar + "'s PlayList";
+        this.refs.toastPlay.show(msg, 500);
+        this.props.addPlayList(index);
+        this.setState({data: this.props.myList});
+        this.props.updateParentStoriesCurrentProfile();
+    };
+    removeFromPlayList = (index) => {
+        let msg = "Removed from " + this.props.current_profile.mainChar + "'s PlayList";
+        this.refs.toastPlay.show(msg, 500);
+        this.props.removePlayList(index);
+        this.setState({data: this.props.myList});
+        this.props.updateParentStoriesCurrentProfile();
+    };
+    rightIcons = (index) => {
+        // console.log("item:", index);
+        let bFave = false;
+        for (let fave of this.props.current_profile.favorites) {
+            if (index === fave)
+                bFave = true;
+        }
+        let bPlayList = false;
+        for (let play of this.props.current_profile.playList) {
+            if (index === play)
+                bPlayList = true;
+        }
 
+
+        return (
+            <View>
+                {bFave ?
+                    <Ionicons name={"ios-heart"} onPress={() => this.removeFromFaves(index)} size={25} color={'red'}/>
+                    :
+                    <Ionicons name={"ios-heart-empty"} onPress={() => this.addToFaves(index)}  size={25} color={'gray'}/>
+                }
+                {bPlayList ?
+                    <Ionicons name={"ios-list-box"} onPress={() => this.removeFromPlayList(index)} size={25} color={'goldenrod'}/>
+                    :
+                    <Ionicons name={"ios-list"} onPress={() => this.addToPlayList(index)} size={25} color={'gray'}/>
+                }
+            </View>
+        )
+    };
     renderItem = (({item, index}) => {
             try {
                 let color = 'white';
@@ -136,19 +199,27 @@ class MyListComponent extends React.Component {
                 if (item.keywords !== null && item.keywords !== "" && item.keywords !== undefined)
                     subtitle += "\r\n" + item.keywords;
 
+                if (item.gender === 1)
+                    color = 'powderblue';
+                else if (item.gender === 2)
+                    color = 'mistyrose';
+
                 if (image === "") {
                     return (
-                        <TouchableOpacity onPress={() => this.props.onPressItem(item, index)}>
-                            <ListItem
-                                title={
-                                    <Text style={styles.titleView}>{title}</Text>
-                                }
-                                subtitle={
-                                    <Text style={styles.subtitleView}>{subtitle}</Text>
-                                }
-                                containerStyle={{borderBottomWidth: 0, backgroundColor: color }}
-                            />
-                        </TouchableOpacity>
+                                <TouchableOpacity onPress={() => this.props.onPressItem(item, index)}>
+                                    <ListItem
+                                        title={
+                                            <Text style={styles.titleView}>{title}</Text>
+                                        }
+                                        subtitle={
+                                            <Text style={styles.subtitleView}>{subtitle}</Text>
+                                        }
+                                        containerStyle={{borderBottomWidth: 0, backgroundColor: color, borderRadius: 10 }}
+                                        // rightElement={this.rightIcons show=true}
+                                        rightElement={() => this.rightIcons(index)}
+
+                                    />
+                                </TouchableOpacity>
                     )
                 } else {
                     return (
@@ -176,6 +247,24 @@ class MyListComponent extends React.Component {
             // console.log("render state.data:", this.state.data);
             return (
                 <View>
+                    <Toast
+                        ref="toast"
+                        style={{backgroundColor:'red',borderRadius: 20,padding: 10}}
+                        position='top'
+                        positionValue={0}
+                        fadeOutDuration={1000}
+                        opacity={.8}
+                        textStyle={{color:'white',fontSize:15}}
+                    />
+                    <Toast
+                        ref="toastPlay"
+                        style={{backgroundColor:'purple',borderRadius: 20,padding: 10}}
+                        position='top'
+                        positionValue={0}
+                        fadeOutDuration={1000}
+                        opacity={.8}
+                        textStyle={{color:'gold',fontSize:15}}
+                    />
                     {this.props.myList.length > 0 ?
                         <View>
                             <FlatList
@@ -204,6 +293,19 @@ class MyListComponent extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    listitem: {
+        // justifyContent: 'flex-end',
+        position: 'absolute',
+        // alignItems: 'center',
+        left: 0,
+        // flexDirection: 'column'
+        flexGrow: 1,
+        flexBasis: 80,
+        flex: 1,
+    },
+    lastbutton: {
+        backgroundColor: 'purple',
+    },
     titleView: {
         fontSize: 20,
         fontWeight: 'bold',
@@ -221,8 +323,16 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-    const { user } = state;
-    return {user}
+    const { current_profile } = state;
+    return {current_profile}
 };
+const mapDispatchToProps = dispatch => (
+    bindActionCreators({
+        addFavorite,
+        addPlayList,
+        removeFavorite,
+        removePlayList,
+    }, dispatch)
+);
 
-export default connect(mapStateToProps)(MyListComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(MyListComponent);
