@@ -47,6 +47,9 @@ class myStories {
         let storyToUse = -1;
         try {
             switch (storyName) {    // images in assets/images
+                case 'hotelSedonia.json':
+                    storyToUse = require('../assets/stories/hotelSedonia.json');
+                    break;
                 default:
                     break;
             }

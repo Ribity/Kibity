@@ -1,8 +1,5 @@
 import Constants from 'expo-constants';
 
-export const AUDIO_PLAYING_FAVORITES = 1;
-export const AUDIO_PLAYING_PLAYLIST = 2;
-
 export default {
 
     log_details: false,
@@ -49,6 +46,7 @@ export default {
             sport: 'football',
             pet: 'dog',
             petName: "Fluffy",
+            city: "Roanoke Rapids, North Carolina",
             favorites: [],   // list of story indexes (integers) 0-based, must match allStoriesList.json indexes
             playList: [],       // list to story indexes (integers) 1-based, must match allStoriesList.json indexes
 

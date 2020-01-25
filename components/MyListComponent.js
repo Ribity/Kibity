@@ -67,40 +67,43 @@ class MyListComponent extends React.Component {
 
     searchFilterFunction = text => {
         try {
+            console.log("SearchFilter");
             this.query = text;
             const searchString = this.query.toLowerCase();
             const wordArray = searchString.split(" ");
 
             const newData = this.arrayholder.filter(item => {
                 let itemData = "";
-                    if (item.title !== null)
+                    if (item.title !== null && item.title !== undefined)
                         itemData = item.title.toLowerCase();
                     // console.log("Here", itemData);
                     // console.log("Her2", wordArray);
 
-                    if (item.date_published !== null)
+                    if (item.date_published !== null && item.date_published !== undefined)
                         itemData += item.date_published.toLowerCase();
 
-                    if (item.snippet !== null)
+                    if (item.snippet !== null && item.snippet !== undefined)
                         itemData += item.snippet.toLowerCase();
 
-                    if (item.written_by !== null)
+                    if (item.written_by !== null && item.written_by !== undefined)
                         itemData += item.written_by.toLowerCase();
 
-                    if (item.keywords !== null)
+                    if (item.keywords !== null && item.keywords !== undefined)
                         itemData += item.keywords.toLowerCase();
 
                     for (let j=0; j<wordArray.length; j++) {    // Loop thru all
                         if (itemData.indexOf(wordArray[j]) < 0) {
+                            console.log("return false");
                             return false;
                         }
                     }
-
+                    console.log("Return true");
                     return true;
             });
             console.log("newData: ", newData);
             this.setState({data: newData});
         } catch (error) {
+            console.log(error);
             // myfuncs.mySentry(error);
         }
     };

@@ -56,6 +56,7 @@ class AudioScreen extends React.Component {
         this.props.setListIdx(0);
         this.props.setStoryIdx(-1);
         this.setState({current_profile: this.props.current_profile});
+
         // console.log("height:", height, " width:", width, "statusbar:", MyDefines.myStatusBarHeight);
     };
     // static getDerivedStateFromProps(nextProps, prevState){
@@ -209,7 +210,7 @@ class AudioScreen extends React.Component {
             if (MyDefines.log_details)
                 console.log("Finished story");
             // console.log(this.props.current_profile);
-            this.playNext();
+            this.finishedStory();
         }
     };
     playNextLine = () => {
@@ -267,15 +268,16 @@ class AudioScreen extends React.Component {
             delayedPlay = null;
         }
     };
-    finishedStories = () => {
-        this.setState(initialState);
-        story_idx = -1;
-        overrideTheNextLine = false;
-        this.props.setListIdx(0);
-        this.props.setStoryIdx(-1);
-
-        if (this.props.current_profile.favorites.length < 1 && this.props.current_profile.playList.length < 1)
-            this.goToStoriesScreen();
+    finishedStory = () => {
+        // this.setState(initialState);
+        // story_idx = -1;
+        // overrideTheNextLine = false;
+        // this.props.setListIdx(0);
+        // this.props.setStoryIdx(-1);
+        //
+        // if (this.props.current_profile.favorites.length < 1 && this.props.current_profile.playList.length < 1)
+        //     this.goToStoriesScreen();
+        nextStoryTimeout = setTimeout(() => {this.playNext()}, 3000);
     };
 
     // resetAndGoToStoriesScreen = () => {
@@ -428,9 +430,9 @@ class AudioScreen extends React.Component {
                                         <Ionicons style={styles.playIcon} name={"ios-heart"} size={25} color={'red'}/>
                                     </View>
                                     <Button style={styles.bottomButtons}
-                                            onPress={this.playPrevious}>Previous Story from Favorites</Button>
+                                            onPress={this.playPrevious}>Previous Favorite Story</Button>
                                     <Button style={styles.bottomButtons}
-                                            onPress={this.playNext}>Next Story from Favorites</Button>
+                                            onPress={this.playNext}>Next Favorite Story</Button>
                                 </View>
                                 }
                                 { (this.state.current_profile.currListType === 2  &&
@@ -441,9 +443,9 @@ class AudioScreen extends React.Component {
                                         <Ionicons style={styles.playIcon} name={"ios-list-box"} size={25} color={'goldenrod'}/>
                                     </View>
                                     <Button style={styles.bottomButtons}
-                                            onPress={this.playPrevious}>Previous Story from PlayList</Button>
+                                            onPress={this.playPrevious}>Previous PlayList Story</Button>
                                     <Button style={styles.bottomButtons}
-                                            onPress={this.playNext}>Next Story from PlayList</Button>
+                                            onPress={this.playNext}>Next PlayList Story</Button>
                                 </View>
                                 }
                             </View>

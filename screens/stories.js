@@ -150,7 +150,8 @@ const styles = StyleSheet.create({
     topRow: {
         // flex: 1,
         flexDirection: 'row',
-        // justifyContent: 'center',
+        // justifyContent: 'space-around',
+        // alignItems: 'stretch'
     },
     faves: {
         flexDirection: 'row',
@@ -165,17 +166,17 @@ const styles = StyleSheet.create({
     },
     title: {
         // height: 50,
-        backgroundColor: "lightgrey",
         padding: 5,
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: 15,
+        // backgroundColor: "lightgrey",
+        // borderRadius: 15,
 
     },
     titleText: {
         fontSize: 20,
         fontWeight: "bold",
-        // color: "goldenrod",
+        color: "goldenrod",
         // backgroundColor: "purple",
 
     },

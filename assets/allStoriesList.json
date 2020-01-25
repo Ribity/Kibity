@@ -5,7 +5,7 @@
         "story_num": 1,
         "title": "Uncle Ned's Fireworks",
         "gender": 1,
-        "num_lines": 48,
+        "num_lines": 51,
         "filename": "uncleNedsFireworks.json",
         "date_published": "Jan 13, 2020",
         "written_by": "Mark King",
@@ -15,7 +15,7 @@
         "story_num": 2,
         "title": "Summer Vacation at Grandmother's",
         "gender": 2,
-        "num_lines": 80,
+        "num_lines": 84,
         "filename": "summerVacationAtGrandmas.json",
         "date_published": "Jan 13, 2020",
         "snippet": "A week-long stay at Grandma's takes a turn at the local store.",
@@ -26,23 +26,24 @@
             "story_num": 3,
             "title": "The Pecan Tree",
             "gender": 0,
-            "num_lines": 59,
+            "num_lines": 63,
             "filename": "pecanTree.json",
             "date_published": "Jan 23, 2020",
             "written_by": "Beth Allen",
             "keywords": "bird, summer, fort, tree house",
         },
-
-
         {
             "story_num": 4,
-            "title": "Story #4",
+            "title": "Hotel Sedonia",
             "gender": 0,
-            "num_lines": 3,
-            "filename": "uncleNedsFireworks.json",
-
-            "date_published": "Jan 30, 2019",
+            "num_lines": 97,
+            "filename": "hotelSedonia.json",
+            "date_published": "Jan 24, 2020",
+            "written_by": "Mark King",
+            "keywords": "Haunted castle mansion volkswagen eagles",
         },
+
+
         {
             "story_num": 5,
             "title": "Story #5",
