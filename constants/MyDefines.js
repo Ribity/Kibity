@@ -7,7 +7,7 @@ export default {
     myStatusBarHeight: Constants.statusBarHeight,
     myBottomTabBarHeight: 45,
 
-    stories_url_bucket: 'https://ribity.com/stories/',
+    stories_url_bucket: 'https://kibity.com/stories/',
     default_test: {
         test: false,
     },

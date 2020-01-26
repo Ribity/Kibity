@@ -12,6 +12,7 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {setStoryIdx, setListType, setListIdx} from "../actions/currentProfileActions";
 import {updateStoryList} from "../actions/storyListActions";
+import TasksComponent from '../components/TasksComponent';
 
 import AUDIO_PLAYING_FAVORITES from '../constants/MyDefines';
 import AUDIO_PLAYING_PLAYLIST from '../constants/MyDefines';
@@ -39,7 +40,6 @@ const initialState = {
     current_profile: MyDefines.default_current_profile,
 };
 
-
 class AudioScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -48,8 +48,6 @@ class AudioScreen extends React.Component {
         this.componentWillUnmount = this.componentWillUnmount.bind(this);
     };
     componentDidMount() {
-        this.buildStoryList();  // mk1 be sure to clear the timeout on unmount
-
         this.subs = [
             this.props.navigation.addListener('willFocus', this.componentWillFocus),
         ];
@@ -113,12 +111,6 @@ class AudioScreen extends React.Component {
         }
         this.subs.forEach(sub => sub.remove());  // removes the componentWillFocus listener
     };
-    buildStoryList = () => {
-        let my_story_list = require('../assets/allStoriesList.json');
-        this.props.updateStoryList(my_story_list);
-        // console.log("StoryList:", this.props.story_list);
-    };
-
     getItAndPlay = () => {
         if (MyDefines.log_details)
             console.log("getItAndPlay:", story_idx);
@@ -377,6 +369,7 @@ class AudioScreen extends React.Component {
         return (
             <SafeAreaView style={styles.container}>
                 <Layout style={{flex: 1, alignItems: 'center'}}>
+                    <TasksComponent/>
                     <ThemeButton/>
                     {this.state.playing &&
                     <Text style={styles.audioTitle}>{this.state.story_title}</Text>

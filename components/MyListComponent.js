@@ -31,6 +31,7 @@ class MyListComponent extends React.Component {
     };
     componentDidMount() {
         try {
+            console.log("MyListComponent DidMount");
             this.setState({data: this.props.myList});
             this.arrayholder = this.props.myList;
         } catch (error) {
@@ -67,7 +68,6 @@ class MyListComponent extends React.Component {
 
     searchFilterFunction = text => {
         try {
-            console.log("SearchFilter");
             this.query = text;
             const searchString = this.query.toLowerCase();
             const wordArray = searchString.split(" ");
@@ -76,8 +76,6 @@ class MyListComponent extends React.Component {
                 let itemData = "";
                     if (item.title !== null && item.title !== undefined)
                         itemData = item.title.toLowerCase();
-                    // console.log("Here", itemData);
-                    // console.log("Her2", wordArray);
 
                     if (item.date_published !== null && item.date_published !== undefined)
                         itemData += item.date_published.toLowerCase();
@@ -93,14 +91,12 @@ class MyListComponent extends React.Component {
 
                     for (let j=0; j<wordArray.length; j++) {    // Loop thru all
                         if (itemData.indexOf(wordArray[j]) < 0) {
-                            console.log("return false");
                             return false;
                         }
                     }
-                    console.log("Return true");
                     return true;
             });
-            console.log("newData: ", newData);
+            console.log("newData");
             this.setState({data: newData});
         } catch (error) {
             console.log(error);

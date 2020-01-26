@@ -29,7 +29,7 @@ class StoriesScreen extends React.Component {
         // setTimeout(this.buildStoryList, 1000);  // mk1 be sure to clear the timeout on unmount
         this.populateStateStoryList();  // mk1 be sure to clear the timeout on unmount
 
-        // console.log("StoriesScreen DidMount:", this.props.story_list);
+        console.log("StoriesScreen DidMount:", this.props.story_list);
     }
 
     // static getDerivedStateFromProps(nextProps, prevState){
@@ -39,37 +39,39 @@ class StoriesScreen extends React.Component {
     //         return{data: nextProps.story_list};
     //     } else return null;
     // };
-    // static getDerivedStateFromProps(nextProps, prevState){
-    //     let update = {};
-    //
-    //     console.log("stories getDerivedStateFromProps");
-    //     // if (prevState.stories_list !== nextProps.stories_list) {
-    //     //     update.stories_list = nextProps.stories_list;
-    //     // }
-    //     if (prevState.current_profile !== nextProps.current_profile) {
-    //         update.current_profile = nextProps.current_profile;
-    //     }
-    //     console.log("stories derivedState:", update);
-    //     return Object.keys(update).length ? update: null;
-    // };
-    // // componentDidUpdate(prevProps, prevState) {
-    // //     console.log("StoriesScreenDidUpdate");
-    // // }
+    static getDerivedStateFromProps(nextProps, prevState){
+        let update = {};
+
+        console.log("stories getDerivedStateFromProps");
+        if (prevState.stories_list !== nextProps.stories_list) {
+            update.stories_list = nextProps.stories_list;
+        }
+        if (prevState.current_profile !== nextProps.current_profile) {
+            update.current_profile = nextProps.current_profile;
+        }
+        console.log("stories derivedState:", update);
+        return Object.keys(update).length ? update: null;
+    };
+    // componentDidUpdate(prevProps, prevState) {
+    //     this.setState({story_list: this.props.story_list});
+    //     console.log("StoriesScreenDidUpdate");
+    // }
     populateStateStoryList = () => {
+        console.log("populateStoryList in StoriesScreen");
         this.setState({story_list: this.props.story_list});
     };
     updateStoriesCurrentProfile = () => {
-        console.log("updateStoriesCurrentProfile");
+        // console.log("updateStoriesCurrentProfile");
         this.setState({current_profile: this.props.current_profile});
     };
     onPressStorySelection = (story, idx) => {
-        console.log("onPressStorySelection:", idx );
+        // console.log("onPressStorySelection:", idx );
         this.props.setListType(0);
         this.props.setStoryIdx(idx);
         this.props.navigation.navigate("Audio");
     };
     playFavorites = () => {
-        console.log("Play faves");
+        // console.log("Play faves");
         if (this.state.current_profile.favorites.length) {
             this.props.setListType(1);
             this.props.setListIdx(0);
@@ -78,7 +80,7 @@ class StoriesScreen extends React.Component {
         }
     };
     playPlayList = () => {
-        console.log("Play PlayList");
+        // console.log("Play PlayList");
         if (this.state.current_profile.playList.length) {
             this.props.setListType(2);
             this.props.setListIdx(0);
