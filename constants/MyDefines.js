@@ -6,7 +6,7 @@ export default {
     sentry_logging: true,
     console_log_breadcrumbs: true,
     playEndOfStoryRibbit: true,
-    ribbit_wav_num: 2,
+    ribbit_wav_num: 3,
     keep_awake: true,
 
     myStatusBarHeight: Constants.statusBarHeight,
