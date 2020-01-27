@@ -13,6 +13,7 @@ import {bindActionCreators} from "redux";
 import {setStoryIdx, setListType, setListIdx} from "../actions/currentProfileActions";
 import {updateStoryList} from "../actions/storyListActions";
 import TasksComponent from '../components/TasksComponent';
+import myfuncs from "../services/myFuncs";
 
 import AUDIO_PLAYING_FAVORITES from '../constants/MyDefines';
 import AUDIO_PLAYING_PLAYLIST from '../constants/MyDefines';
@@ -181,22 +182,27 @@ class AudioScreen extends React.Component {
         this.playLine();
     };
     playLine = () => {
-        this.setState({curr_text: myStory.line[myIdx]})
+        this.setState({curr_text: myStory.line[myIdx]});
         this.setState({paused: false});
         this.setState({playing: true});
         if (myIdx < myStory.line.length) {
             this.setState({line_idx: myIdx});
             if (MyDefines.log_details)
                 console.log("speak: ", myStory.line[myIdx]);
-            Speech.speak(myStory.line[myIdx], {
-                // voice: "com.apple.ttsbundle.Samantha-compact",
-                // language: 'en',
-                pitch: 1.0,
-                rate: 1.0,
-                onDone: this.playNextLine,
-                // onStopped: speechStopped,
-                // onStart: scheduleTheCheckSpeech,
-            });
+            // if (myStory.line[myIdx] !== "The End") {
+                Speech.speak(myStory.line[myIdx], {
+                    // voice: "com.apple.ttsbundle.Samantha-compact",
+                    // language: 'en',
+                    pitch: 1.0,
+                    rate: 1.0,
+                    onDone: this.playNextLine,
+                    // onStopped: speechStopped,
+                    // onStart: scheduleTheCheckSpeech,
+                });
+            // } else {
+            //     myfuncs.playRibbit(this.props.navigation.state.routeName);
+            //     this.playNextLine();
+            // }
         } else {
             this.setState({playing: false});
             if (MyDefines.log_details)
@@ -370,9 +376,11 @@ class AudioScreen extends React.Component {
             <SafeAreaView style={styles.container}>
                 <Layout style={{flex: 1, alignItems: 'center'}}>
                     <TasksComponent/>
-                    <ThemeButton/>
-                    {this.state.playing &&
-                    <Text style={styles.audioTitle}>{this.state.story_title}</Text>
+                    {/*<ThemeButton/>*/}
+                    {this.state.playing ?
+                        <Text style={styles.audioTitle}>{this.state.story_title}</Text>
+                        :
+                        <Text style={styles.audioTitle}>  </Text>
                     }
                     {this.state.num_lines > 0 ?
                         <View style={{justifyContent: 'space-between'}}>

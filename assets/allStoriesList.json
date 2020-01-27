@@ -41,6 +41,17 @@
         "date_published": "Jan 24, 2020",
         "written_by": "Mark King",
         "keywords": "Haunted castle mansion volkswagen eagles"
-    }
+    },
+
+
+        {
+            "story_num": 5,
+            "title": "Short Test",
+            "gender": 0,
+            "num_lines": 3,
+            "filename": "shortTest.json",
+            "date_published": "Jan 24, 2020",
+            "written_by": "Mark King",
+        }
     ]
 }

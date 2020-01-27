@@ -3,6 +3,11 @@ import Constants from 'expo-constants';
 export default {
 
     log_details: false,
+    sentry_logging: true,
+    console_log_breadcrumbs: true,
+    playEndOfStoryRibbit: true,
+    ribbit_wav_num: 2,
+    keep_awake: true,
 
     myStatusBarHeight: Constants.statusBarHeight,
     myBottomTabBarHeight: 45,
@@ -11,28 +16,6 @@ export default {
     default_test: {
         test: false,
     },
-    default_asyncStorage: {
-        local_story_list: {
-            story_num: 1,
-            name: 'I shortened Beths test story',
-            gender:   1,
-            length_time:  200,
-            filename:   'testTwoStory2.json',
-            web_uri: false,
-            date_published: "Jan 23, 2019",
-        }
-    },
-    // profiled: {
-    //     mainChar: 'Michael',
-    //     mainCharGender: 'male',
-    //     charTwo: 'Brandon',
-    //     charTwoGender: 'male',
-    //     charThree: 'Elizabeth',
-    //     charThreeGender: 'female',
-    //     team: 'Washington Redskins',
-    //     sport: 'football',
-    //     pet: 'monkey',
-    // },
 
     default_current_profile:
         {
@@ -47,9 +30,9 @@ export default {
             pet: 'dog',
             petName: "Fluffy",
             city: "Roanoke Rapids, North Carolina",
+
             favorites: [],   // list of story indexes (integers) 0-based, must match allStoriesList.json indexes
             playList: [],       // list to story indexes (integers) 1-based, must match allStoriesList.json indexes
-
             active_profile: 0,  // zero-based
             currStoryIdx: -1,
             currListIdx: 0,

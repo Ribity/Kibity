@@ -1,11 +1,15 @@
-
 import React from 'react';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { mapping, light, dark } from '@eva-design/eva';
 import { AppNavigator } from './navigation';
 import { ThemeContext } from './theme-context';
+import ApiKeys from './constants/ApiKeys';
+// import * as Constants from 'expo-constants';
+
 // import { default as customMapping } from './custom-mapping.json'; // <-- import custom mapping
+
+import myfuncs from './services/myFuncs';
 
 import { Provider } from 'react-redux';
 import { rootReducer } from './reducers/RootReducer'
@@ -24,22 +28,24 @@ const App = () => {
         setTheme(nextTheme);
     };
 
-        return (
-            <React.Fragment>
-                <IconRegistry icons={EvaIconsPack}/>
-                <ThemeContext.Provider value={{theme, toggleTheme}}>
-                    <Provider store={store}>
-                        <ApplicationProvider
-                            mapping={mapping}
-                            theme={currentTheme}
-                            // customMapping={customMapping}
-                        >
-                            <AppNavigator/>
-                        </ApplicationProvider>
-                    </Provider>
-                </ThemeContext.Provider>
-            </React.Fragment>
-        );
+    myfuncs.init();
+
+    return (
+        <React.Fragment>
+            <IconRegistry icons={EvaIconsPack}/>
+            <ThemeContext.Provider value={{theme, toggleTheme}}>
+                <Provider store={store}>
+                    <ApplicationProvider
+                        mapping={mapping}
+                        theme={currentTheme}
+                        // customMapping={customMapping}
+                    >
+                        <AppNavigator/>
+                    </ApplicationProvider>
+                </Provider>
+            </ThemeContext.Provider>
+        </React.Fragment>
+    );
 
 };
 

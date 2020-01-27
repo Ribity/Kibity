@@ -29,7 +29,7 @@ class StoriesScreen extends React.Component {
         // setTimeout(this.buildStoryList, 1000);  // mk1 be sure to clear the timeout on unmount
         this.populateStateStoryList();  // mk1 be sure to clear the timeout on unmount
 
-        console.log("StoriesScreen DidMount:", this.props.story_list);
+        // console.log("StoriesScreen DidMount:", this.props.story_list);
     }
 
     // static getDerivedStateFromProps(nextProps, prevState){
