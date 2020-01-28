@@ -14,7 +14,9 @@ class ProfilesScreen extends React.Component {
 
     logTest = () => {
         // this.props.setTest(!this.props.test);
-        console.log(this.props);
+        // console.log(this.props);
+        this.props.navigation.navigate("ProfileSettings");
+
     };
 
     render () {
@@ -22,7 +24,7 @@ class ProfilesScreen extends React.Component {
             <SafeAreaView style={{flex: 1}}>
                 <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                     <Text category='h5'>Configure Profiles Here</Text>
-                    <Button style={{marginVertical: 4, backgroundColor: 'purple'}} onPress={this.logTest}>Test</Button>
+                    <Button style={{marginVertical: 4, backgroundColor: 'purple'}} onPress={this.logTest}>Profile0</Button>
                 </Layout>
             </SafeAreaView>
         );

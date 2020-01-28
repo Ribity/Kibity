@@ -9,6 +9,7 @@ import MyDefines from './constants/MyDefines';
 import AudioScreen  from './screens/audio';
 import StoriesScreen from './screens/stories';
 import ProfilesScreen  from './screens/profiles';
+import ProfileSettingsScreen  from './screens/profileSettingsScreen';
 import SettingsScreen from './screens/settings';
 
 const AudioStack = createStackNavigator({
@@ -19,6 +20,7 @@ const StoriesStack = createStackNavigator({
 });
 const ProfilesStack = createStackNavigator({
     Profiles: ProfilesScreen,
+    ProfileSettings: ProfileSettingsScreen,
 });
 const SettingsStack = createStackNavigator({
     Settings: SettingsScreen,

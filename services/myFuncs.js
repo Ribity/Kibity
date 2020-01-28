@@ -24,7 +24,9 @@ class myFuncs  {
         try {
             this.initSentry();
 
-            // await this.prepareSound();
+            this.check_new_user();
+            this.getUserSettingsFromLocalStorage();
+
             this.prepareSound();
 
             this.loadSounds({
@@ -43,7 +45,6 @@ class myFuncs  {
             this.mySentry(error);
         }
     };
-
     initSentry = () => {
         try {
             Sentry.init({
@@ -99,6 +100,30 @@ class myFuncs  {
             });
         } catch (error) {
             console.log("Send Sentry");
+            this.mySentry(error);
+        }
+    };
+    check_new_user = async () => {
+        try {
+            let registered_user = await hardStorage.getKey("kibity_user");
+            if (registered_user === null) {
+                hardStorage.setKey("kibity_user", true);
+                console.log("new user");
+                Sentry.captureMessage("New Kibity user", 'info');
+            }
+        } catch (error) {
+            this.mySentry(error);
+        }
+    };
+    getUserSettingsFromLocalStorage = async () => {
+        try {
+            let registered_user = await hardStorage.getKey("user_settings");
+            if (registered_user !== null) {
+                console.log("Got User Settings from localDeviceStorage");
+            } else {
+                console.log("Error reading User Settings from localDeviceStorage");
+            }
+        } catch (error) {
             this.mySentry(error);
         }
     };

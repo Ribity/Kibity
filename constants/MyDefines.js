@@ -3,10 +3,11 @@ import Constants from 'expo-constants';
 export default {
 
     log_details: false,
+    log_audio: false,
     sentry_logging: true,
     console_log_breadcrumbs: true,
     playEndOfStoryRibbit: true,
-    ribbit_wav_num: 5,
+    ribbit_wav_num: 2,
     keep_awake: true,
 
     myStatusBarHeight: Constants.statusBarHeight,
@@ -17,30 +18,28 @@ export default {
         test: false,
     },
 
-    default_current_profile:
-        {
-            mainChar: 'Michael',
-            mainCharGender: 'male',
-            charTwo: 'Brandon',
-            charTwoGender: 'male',
-            charThree: 'Elizabeth',
-            charThreeGender: 'female',
-            team: 'Washington Redskins',
-            sport: 'football',
-            pet: 'dog',
-            petName: "Fluffy",
-            city: "Roanoke Rapids, North Carolina",
+    default_current_profile: {
+        mainChar: 'Michael',
+        mainCharGender: 'male',
+        charTwo: 'Brandon',
+        charTwoGender: 'male',
+        charThree: 'Elizabeth',
+        charThreeGender: 'female',
+        team: 'Washington Redskins',
+        sport: 'football',
+        pet: 'dog',
+        petName: "Fluffy",
+        city: "Roanoke Rapids, North Carolina",
 
-            favorites: [],   // list of story indexes (integers) 0-based, must match allStoriesList.json indexes
-            playList: [],       // list to story indexes (integers) 1-based, must match allStoriesList.json indexes
-            active_profile: 0,  // zero-based
-            currStoryIdx: -1,
-            currListIdx: 0,
-            currListType: 0,
+        favorites: [],   // list of story indexes (integers) 0-based, must match allStoriesList.json indexes
+        playList: [],       // list to story indexes (integers) 1-based, must match allStoriesList.json indexes
+        active_profile: 0,  // zero-based idx of the three profiles
+        currStoryIdx: -1,
+        currListIdx: 0,
+        currListType: 0,
         },
 
-    default_profiles:
-        {
+    default_profiles: {
         profile: [
             {
                 mainChar: 'Michael',
@@ -52,19 +51,23 @@ export default {
                 team: 'Washington Redskins',
                 sport: 'football',
                 pet: 'dog',
+                petName: "Fluffy",
+                city: "Raleigh, North Carolina",
                 favorites: [],      // list of story indexes (integers) 0-based, must match allStoriesList.json indexes
                 playList: [],       // list to story indexes (integers) 1-based, must match allStoriesList.json indexes
             },
             {
                 mainChar: 'Beth Ann',
                 mainCharGender: 'female',
-                charTwo: 'Lisa Lou',
+                charTwo: 'Lisa',
                 charTwoGender: 'female',
-                charThree: 'Steve',
+                charThree: 'Stephen Andrew Johnson',
                 charThreeGender: 'male',
                 team: 'Sanderson High School',
                 sport: 'ice skating',
                 pet: 'llama',
+                petName: "Skippy",
+                city: "Raleigh",
                 favorites: [],
                 playList: [],
             },
@@ -78,26 +81,26 @@ export default {
                 team: 'Atlanta Braves',
                 sport: 'baseball',
                 pet: 'monkey',
+                petName: "Cricket",
+                city: "Toronto, Canada",
                 favorites: [],
                 playList: [],
             },
         ],
         },
-    default_story_list:
-        {
-            stories: [
-                {
-                    "story_num": 1,
-                    "title": "",
-                    "gender": 1,
-                    "num_lines": 0,
-                    "filename": "uncleNedsFireworks.json",
-                    "date_published": "",
-                    "snippet": "",
-                    "written_by": "",
-                    "keywords": "",
-
-                },
+    default_story_list: {
+        stories: [
+            {
+                "story_num": 1,
+                "title": "",
+                "gender": 1,
+                "num_lines": 0,
+                "filename": "uncleNedsFireworks.json",
+                "date_published": "",
+                "snippet": "",
+                "written_by": "",
+                "keywords": "",
+            }
             ]
         },
 }
