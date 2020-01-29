@@ -1,11 +1,8 @@
 import React from 'react';
-import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
-import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import { ApplicationProvider } from '@ui-kitten/components';
 import { mapping, light, dark } from '@eva-design/eva';
 import { AppNavigator } from './navigation';
 import { ThemeContext } from './theme-context';
-import ApiKeys from './constants/ApiKeys';
-// import * as Constants from 'expo-constants';
 
 // import { default as customMapping } from './custom-mapping.json'; // <-- import custom mapping
 
@@ -28,11 +25,11 @@ const App = () => {
         setTheme(nextTheme);
     };
 
-    myfuncs.init();
+    // console.log("Calling init");
+    // myfuncs.init();
 
     return (
         <React.Fragment>
-            <IconRegistry icons={EvaIconsPack}/>
             <ThemeContext.Provider value={{theme, toggleTheme}}>
                 <Provider store={store}>
                     <ApplicationProvider

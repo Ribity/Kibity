@@ -1,14 +1,12 @@
 import React from 'react';
 import {View, Text, StyleSheet, FlatList, TouchableOpacity, Dimensions,} from 'react-native';
-import { ListItem, SearchBar, Button} from 'react-native-elements';
+import { ListItem, SearchBar} from 'react-native-elements';
 import {Ionicons} from '@expo/vector-icons';
 import Toast from 'react-native-easy-toast';
 
 import { connect } from 'react-redux';
 
 import myStyles from "../myStyles";
-// import {Button} from "@ui-kitten/components";
-import MyDefines from "../constants/MyDefines";
 import {bindActionCreators} from "redux";
 import {addFavorite, addPlayList, removeFavorite, removePlayList} from "../actions/currentProfileActions";
 
@@ -88,6 +86,9 @@ class MyListComponent extends React.Component {
 
                     if (item.keywords !== null && item.keywords !== undefined)
                         itemData += item.keywords.toLowerCase();
+
+                    if (item.color !== null && item.color !== undefined)
+                        itemData += item.color.toLowerCase();
 
                     for (let j=0; j<wordArray.length; j++) {    // Loop thru all
                         if (itemData.indexOf(wordArray[j]) < 0) {
@@ -195,13 +196,17 @@ class MyListComponent extends React.Component {
                     subtitle += " #Lines: " + item.num_lines.toString();
                 if (item.snippet !== null && item.snippet !== "" && item.snippet !== undefined)
                     subtitle += "\r\n" + item.snippet;
-                if (item.keywords !== null && item.keywords !== "" && item.keywords !== undefined)
-                    subtitle += "\r\n" + item.keywords;
+                // if (item.keywords !== null && item.keywords !== "" && item.keywords !== undefined)
+                //     subtitle += "\r\n" + item.keywords;
+                if (item.ages !== null && item.ages !== "" && item.ages !== undefined)
+                    subtitle += "\r\nAges: " + item.ages;
 
-                if (item.gender === 1)
-                    color = 'powderblue';
-                else if (item.gender === 2)
-                    color = 'mistyrose';
+                if (item.color !== null && item.color !== "" && item.color !== undefined)
+                    color = item.color;
+                // else if (item.gender === 1)
+                //     color = 'powderblue';
+                // else if (item.gender === 2)
+                //     color = 'mistyrose';
 
                 if (image === "") {
                     return (

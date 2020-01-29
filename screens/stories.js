@@ -13,6 +13,10 @@ import { setStoryIdx, setListType, setListIdx} from '../actions/currentProfileAc
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {Ionicons} from '@expo/vector-icons';
+import MyHelpIcon from "../components/MyHelpIcon";
+import MyHelpModal from "../components/MyHelpModal";
+import {SafeAreaView} from "react-navigation";
+import myfuncs from "../services/myFuncs";
 
 
 // let my_story_list =
@@ -137,9 +141,29 @@ class StoriesScreen extends React.Component {
                                  updateParentStoriesCurrentProfile={this.updateStoriesCurrentProfile}
                                  onPressItem={this.onPressStorySelection}/>
                 }
+                <MyHelpIcon onPress={this.onHelpPress}/>
+                <MyHelpModal screen={"Stories"}
+                             onExitPress={this.onHelpExitPress}
+                             isVisible={this.state.isModalVisible}/>
             </View>
         );
     }
+    onHelpPress = () => {
+        try {
+            myfuncs.myBreadCrumbs('onHelpPress', this.props.navigation.state.routeName);
+            this.setState({isModalVisible: true});
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
+    };
+    onHelpExitPress = () => {
+        try {
+            myfuncs.myBreadCrumbs('onHelpExitPress', this.props.navigation.state.routeName);
+            this.setState({isModalVisible: false});
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
+    };
 }
 const styles = StyleSheet.create({
     container: {

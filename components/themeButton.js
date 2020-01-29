@@ -7,6 +7,7 @@ export const ThemeButton = () => {
 
     const onThemePress = () => {
         themeContext.toggleTheme();
+        console.log(themeContext.theme);
     };
     return (
             <Button style={{marginVertical: 5, backgroundColor: 'grey'}}

@@ -6,16 +6,16 @@ export default {
     log_audio: false,
     sentry_logging: true,
     console_log_breadcrumbs: true,
-    playEndOfStoryRibbit: true,
-    ribbit_wav_num: 2,
-    keep_awake: true,
+
 
     myStatusBarHeight: Constants.statusBarHeight,
     myBottomTabBarHeight: 45,
 
     stories_url_bucket: 'https://kibity.com/stories/',
-    default_test: {
-        test: false,
+    default_settings: {
+        playEndOfStoryRibbit: false,
+        ribbit_wav_num: 2,
+        keep_awake: true,
     },
 
     default_current_profile: {

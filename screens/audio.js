@@ -13,6 +13,10 @@ import {bindActionCreators} from "redux";
 import {setStoryIdx, setListType, setListIdx} from "../actions/currentProfileActions";
 import {updateStoryList} from "../actions/storyListActions";
 import TasksComponent from '../components/TasksComponent';
+import myfuncs from "../services/myFuncs";
+import MyHelpIcon from "../components/MyHelpIcon";
+import MyHelpModal from "../components/MyHelpModal";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 // import myfuncs from "../services/myFuncs";
 //
 // import AUDIO_PLAYING_FAVORITES from '../constants/MyDefines';
@@ -48,6 +52,9 @@ class AudioScreen extends React.Component {
         this.componentWillUnmount = this.componentWillUnmount.bind(this);
     };
     componentDidMount() {
+        console.log("Calling init");
+        myfuncs.init();
+
         this.subs = [
             this.props.navigation.addListener('willFocus', this.componentWillFocus),
         ];
@@ -505,9 +512,29 @@ class AudioScreen extends React.Component {
                             </View>
                     }
                     </Layout>
+                <MyHelpIcon onPress={this.onHelpPress}/>
+                <MyHelpModal screen={"Audio"}
+                             onExitPress={this.onHelpExitPress}
+                             isVisible={this.state.isModalVisible}/>
             </SafeAreaView>
         );
     }
+    onHelpPress = () => {
+        try {
+            myfuncs.myBreadCrumbs('onHelpPress', this.props.navigation.state.routeName);
+            this.setState({isModalVisible: true});
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
+    };
+    onHelpExitPress = () => {
+        try {
+            myfuncs.myBreadCrumbs('onHelpExitPress', this.props.navigation.state.routeName);
+            this.setState({isModalVisible: false});
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
+    };
 };
 const styles = StyleSheet.create({
     container: {
@@ -537,7 +564,9 @@ const styles = StyleSheet.create({
         // position: 'absolute',
         // flexDirection: 'row',
         alignItems: 'center',
-        bottom: (MyDefines.myBottomTabBarHeight) + 80,
+        bottom: (MyDefines.myBottomTabBarHeight),
+        marginBottom: 10,
+
     },
     selectButton: {
         marginVertical: 30,
@@ -568,8 +597,7 @@ const styles = StyleSheet.create({
         lineHeight: 25,
         color: 'goldenrod',
         marginHorizontal: 10,
-        marginVertical: 10,
-        paddingTop:10
+        marginVertical: 5,
     },
     currentText: {
         fontSize: 25,

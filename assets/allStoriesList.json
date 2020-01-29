@@ -5,42 +5,49 @@
         "story_num": 1,
         "title": "Uncle Ned's Fireworks",
         "gender": 1,
+        "color": "powderblue",
+        "ages": "8-13",
         "num_lines": 51,
         "filename": "uncleNedsFireworks.json",
         "date_published": "Jan 13, 2020",
         "written_by": "Mark King",
-        "keywords": "River, smell, straw, bridge, gamma"
+        "keywords": "River smell straw bridge gamma boy blue"
     },
     {
         "story_num": 2,
         "title": "Summer Vacation at Grandmother's",
         "gender": 2,
+        "color": "mistyrose",
+        "ages": "3-12",
         "num_lines": 84,
         "filename": "summerVacationAtGrandmas.json",
         "date_published": "Jan 13, 2020",
         "snippet": "A week-long stay at Grandma's takes a turn at the local store.",
         "written_by": "Beth Allen",
-        "keywords": "Gems, garden, dog, Lucky"
+        "keywords": "Gems garden dog Lucky girl pink"
     },
     {
         "story_num": 3,
         "title": "The Pecan Tree",
         "gender": 0,
+        "ages": "7-12",
         "num_lines": 63,
         "filename": "pecanTree.json",
         "date_published": "Jan 23, 2020",
         "written_by": "Beth Allen",
-        "keywords": "bird, summer, fort, tree house"
+        "keywords": "bird summer fort tree house"
     },
     {
         "story_num": 4,
         "title": "Hotel Caledonia",
         "gender": 0,
+        "ages": "7-12",
+        "color": "lightgreen",
         "num_lines": 97,
         "filename": "hotelCaledonia.json",
         "date_published": "Jan 24, 2020",
         "written_by": "Mark King",
-        "keywords": "Haunted castle mansion volkswagen eagles"
+        "keywords": "Haunted castle mansion volkswagen eagles song"
     },
 
 
@@ -48,10 +55,13 @@
             "story_num": 5,
             "title": "Short Test",
             "gender": 0,
+            "ages": "2-7",
+            "color": "palegreen",
             "num_lines": 3,
             "filename": "shortTest.json",
             "date_published": "Jan 24, 2020",
             "written_by": "Mark King",
+            "keywords": "toddler green"
         }
     ]
 }
