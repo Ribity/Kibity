@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Layout} from '@ui-kitten/components';
+import MyButton from './MyButton';
 import { ThemeContext } from '../theme-context';
 
 export const ThemeButton = () => {
@@ -7,10 +7,11 @@ export const ThemeButton = () => {
 
     const onThemePress = () => {
         themeContext.toggleTheme();
-        console.log(themeContext.theme);
     };
     return (
-            <Button style={{marginVertical: 5, backgroundColor: 'grey'}}
-                    onPress={onThemePress}>Toggle Light/Dark Theme</Button>
+            <MyButton style={{marginVertical: 5, backgroundColor: 'grey'}}
+                      onPress={onThemePress}
+                      title={"Light/Dark"}>
+            </MyButton>
     );
 };

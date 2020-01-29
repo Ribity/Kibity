@@ -122,7 +122,7 @@ const myStyles = StyleSheet.create({
         borderRadius: 10,
     },
     regularButton: {
-        backgroundColor: '#AFC0AB',
+        backgroundColor: 'purple',
         opacity: .7,
         alignItems: 'center',
         alignSelf: 'center',
@@ -133,7 +133,7 @@ const myStyles = StyleSheet.create({
     regularButtonText: {
         fontSize: 17,
         opacity: 1.0,
-        color: 'darkblue',
+        color: 'goldenrod',
         alignItems: 'center',
         padding: 2,
     },

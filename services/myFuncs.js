@@ -10,6 +10,9 @@ import * as Localization from 'expo-localization';
 import ApiKeys from '../constants/ApiKeys';
 import * as Constants from 'expo-constants';
 import * as Device from 'expo-device';
+// import {connect} from "react-redux";
+// import {bindActionCreators} from "redux";
+// import {updateSettings} from "../actions/settingsActions";
 
 import * as Speech from "expo-speech";
 
@@ -123,6 +126,15 @@ class myFuncs  {
             } else {
                 console.log("Error reading User Settings from localDeviceStorage");
             }
+        } catch (error) {
+            this.mySentry(error);
+        }
+    };
+    writeUserSettingsToLocalStorage = async (settings) => {
+        try {
+            await hardStorage.setKey("user_settings", true);
+            if (MyDefines.log_details)
+                console.log("user_settings written to Storage");
         } catch (error) {
             this.mySentry(error);
         }
@@ -420,10 +432,13 @@ const myfuncs = new myFuncs();
 export default myfuncs;
 
 // const mapStateToProps = (state) => {
-//     const { clientParms } = state;
-//     return { clientParms }
+//     const { settings } = state;
+//     return { settings }
 // };
-//
-// const myfuncs = new myFuncs();
-// export default connect(mapStateToProps)(myfuncs);
+// const mapDispatchToProps = dispatch => (
+//     bindActionCreators({
+//         updateSettings,
+//     }, dispatch)
+// );
+// export default connect(mapStateToProps, mapDispatchToProps)(myfuncs);
 

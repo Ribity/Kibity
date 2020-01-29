@@ -3,10 +3,10 @@ import { Text, ScrollView, StyleSheet, Switch, View } from 'react-native'
 import {SafeAreaView} from "react-navigation";
 import {Layout} from "@ui-kitten/components";
 import {ThemeButton} from "../components/themeButton";
+import SettingsList from 'react-native-settings-list';
 import myfuncs from "../services/myFuncs";
 import MyHelpIcon from "../components/MyHelpIcon";
 import MyHelpModal from "../components/MyHelpModal";
-import MyDefines from "../constants/MyDefines";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {updateSettings} from "../actions/settingsActions";
@@ -23,20 +23,20 @@ class SettingsScreen extends React.Component {
     render() {
         return (
             <SafeAreaView style={styles.container}>
-                <Layout style={{flex: 1, alignItems: 'flex-start'}}>
-                    <ThemeButton/>
-                        <Switch
-                            value={this.state.settings.keep_awake}
-                            onValueChange={(bEvent) => this.updateUser({keep_awake: bEvent})}
-                        />
 
+                {/*<ThemeButton/>*/}
 
+                <SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
+                    <SettingsList.Item
+                        hasSwitch={true}
+                        switchState={this.state.settings.keep_awake}
+                        switchOnValueChange={(bEvent) => this.updateUser({keep_awake: bEvent})}
+                        hasNavArrow={false}
+                        title='Keep Screen Awake'
+                        titleStyle={{fontSize:20}}
+                    />
+                </SettingsList>
 
-
-
-
-
-                </Layout>
                 <MyHelpIcon onPress={this.onHelpPress}/>
                 <MyHelpModal screen={"Settings"}
                              onExitPress={this.onHelpExitPress}
@@ -45,14 +45,20 @@ class SettingsScreen extends React.Component {
         );
     }
     updateUser = async (new_prop) => {
-        await this.setState({settings: {...this.state.settings, ...new_prop}});
-        this.props.updateSettings(this.state.settings);
-        this.updateStorage();
+        try {
+            await this.setState({settings: {...this.state.settings, ...new_prop}});
+            this.props.updateSettings(this.state.settings);
+            await this.updateStorage();
+
+        } catch (error) {
+            console.log(error);
+            myfuncs.mySentry(error);
+        }
     };
-    updateStorage = () => {
+    updateStorage = async () => {
+        await myfuncs.writeUserSettingsToLocalStorage(this.props.settings);
         console.log("NewSettings:", this.props.settings);
     };
-
     onHelpPress = () => {
         try {
             myfuncs.myBreadCrumbs('onHelpPress', this.props.navigation.state.routeName);
@@ -74,19 +80,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    switchContainer: {
-        display: 'flex',
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 16,
-        paddingHorizontal: 15
-    },
-    switchLabel: {
-        flex: 0
-    },
-
-
 });
 
 const mapStateToProps = (state) => {
