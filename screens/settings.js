@@ -1,22 +1,33 @@
 import React from 'react';
-import { Text, ScrollView, StyleSheet, Switch, View } from 'react-native'
+import { StyleSheet, Picker, View, Text } from 'react-native'
 import {SafeAreaView} from "react-navigation";
-import {Layout} from "@ui-kitten/components";
-import {ThemeButton} from "../components/themeButton";
 import SettingsList from 'react-native-settings-list';
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import myfuncs from "../services/myFuncs";
 import MyHelpIcon from "../components/MyHelpIcon";
 import MyHelpModal from "../components/MyHelpModal";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {updateSettings} from "../actions/settingsActions";
+import {ThemeButton} from "../components/themeButton";
+import {ScreenTitle} from "../components/screenTitle";
 
 class SettingsScreen extends React.Component {
-
+    static navigationOptions = ({navigation}) => {
+        try {
+            myfuncs.myBreadCrumbs('navigationOptions', 'AudioScreen');
+            return {
+                headerTitle: () => <ScreenTitle title={"Settings"}/>,
+            };
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
+    };
     constructor(props) {
         super(props);
         this.state = {
             settings: this.props.settings,
+            test: "test",
         };
     };
 
@@ -35,6 +46,30 @@ class SettingsScreen extends React.Component {
                         title='Keep Screen Awake'
                         titleStyle={{fontSize:20}}
                     />
+                    <SettingsList.Item
+                        hasSwitch={true}
+                        switchState={this.state.settings.playEndOfStoryRibbit}
+                        switchOnValueChange={(bEvent) => this.updateUser({playEndOfStoryRibbit: bEvent})}
+                        hasNavArrow={false}
+                        title='Play Ribbit After Each Story'
+                        titleStyle={{fontSize:20}}
+                    />
+                    <SettingsList.Item
+                        title='Audio Rate and Pitch'
+                        // titleInfo='Audio'
+                        titleInfoStyle={styles.titleInfoStyle}
+                        titleStyle={{fontSize:20}}
+                        onPress={() => this.props.navigation.navigate("SettingsAudio")}
+                    />
+
+                    <SettingsList.Header headerStyle={{marginTop:15}}/>
+
+                    <SettingsList.Item
+                        title='About'
+                        titleInfoStyle={styles.titleInfoStyle}
+                        titleStyle={{fontSize:20}}
+                        onPress={() => this.props.navigation.navigate("SettingsAbout")}
+                    />
                 </SettingsList>
 
                 <MyHelpIcon onPress={this.onHelpPress}/>
@@ -44,11 +79,30 @@ class SettingsScreen extends React.Component {
             </SafeAreaView>
         );
     }
+    updateTest = async (value) => {
+        try {
+            console.log("Value:", value+1);
+            this.setState({test: value});
+
+        } catch (error) {
+            console.log(error);
+            myfuncs.mySentry(error);
+        }
+    };
     updateUser = async (new_prop) => {
         try {
             await this.setState({settings: {...this.state.settings, ...new_prop}});
             this.props.updateSettings(this.state.settings);
             await this.updateStorage();
+            if (new_prop.keep_awake !== undefined) {
+                if (new_prop.keep_awake === true) {
+                    // console.log("settings activate keepAwake")
+                    activateKeepAwake();
+                } else {
+                    // console.log("settings de-activate keepAwake")
+                    deactivateKeepAwake();
+                }
+            }
 
         } catch (error) {
             console.log(error);
@@ -57,7 +111,7 @@ class SettingsScreen extends React.Component {
     };
     updateStorage = async () => {
         await myfuncs.writeUserSettingsToLocalStorage(this.props.settings);
-        console.log("NewSettings:", this.props.settings);
+        console.log("storage updated NewSettings:", this.props.settings);
     };
     onHelpPress = () => {
         try {
@@ -79,6 +133,9 @@ class SettingsScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    titleInfoStyle: {
+        fontSize: 20,
     },
 });
 

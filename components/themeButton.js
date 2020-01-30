@@ -8,10 +8,24 @@ export const ThemeButton = () => {
     const onThemePress = () => {
         themeContext.toggleTheme();
     };
+
+    let myText = 'Dark';
+    let backColor = 'purple';
+    let textColor = 'goldenrod';
+    let borderColor = 'goldenrod';
+
+        if (themeContext.theme === 'dark') {
+        myText = "Light";
+        backColor = 'goldenrod';
+        textColor = 'purple';
+        borderColor = 'purple';
+    }
+
     return (
-            <MyButton style={{marginVertical: 5, backgroundColor: 'grey'}}
+            <MyButton buttonStyle={{backgroundColor: backColor, borderColor: borderColor}}
+                      textStyle={{color: textColor}}
                       onPress={onThemePress}
-                      title={"Light/Dark"}>
+                      title={myText}>
             </MyButton>
     );
 };

@@ -1,4 +1,5 @@
 import React from 'react';
+import { StyleSheet} from "react-native";
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator} from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
@@ -11,32 +12,47 @@ import StoriesScreen from './screens/stories';
 import ProfilesScreen  from './screens/profiles';
 import ProfileSettingsScreen  from './screens/profileSettingsScreen';
 import SettingsScreen from './screens/settings';
+import SettingsAudioScreen from './screens/SettingsAudioScreen';
+import SettingsAboutScreen from './screens/SettingsAboutScreen';
+
+let defNav = {
+    headerStyle: {backgroundColor: 'goldenrod'},
+    headerTitleStyle: {color: 'purple'},
+    headerBackTitleStyle: {color: 'purple'},
+    headerTintColor: 'purple',
+};
 
 const AudioStack = createStackNavigator({
     Audio: AudioScreen,
-});
+},
+    {defaultNavigationOptions: () => (defNav)});
+
 const StoriesStack = createStackNavigator({
     Stories: StoriesScreen,
-});
+}, {defaultNavigationOptions: () => (defNav)});
+
 const ProfilesStack = createStackNavigator({
     Profiles: ProfilesScreen,
     ProfileSettings: ProfileSettingsScreen,
-});
+}, {defaultNavigationOptions: () => (defNav)});
+
 const SettingsStack = createStackNavigator({
     Settings: SettingsScreen,
-});
+    SettingsAudio: SettingsAudioScreen,
+    SettingsAbout: SettingsAboutScreen,
+}, {defaultNavigationOptions: () => (defNav)});
 
 AudioStack.navigationOptions = {
     tabBarLabel: "Audio",
 };
 StoriesStack.navigationOptions = {
-    title: 'Stories',
-    };
+    tabBarLabel: 'Stories',
+};
 ProfilesStack.navigationOptions = {
-    title: 'Profiles',
+    tabBarLabel: 'Profiles',
 };
 SettingsStack.navigationOptions = {
-    title: 'Settings',
+    tabBarLabel: 'Settings',
 };
 
 const bottomTabNavigator = createBottomTabNavigator({
@@ -50,11 +66,9 @@ const bottomTabNavigator = createBottomTabNavigator({
                 activeTintColor: 'purple',
                 inactiveTintColor: 'gray',
                 showIcon: true,
-                labelStyle: {
-                    fontSize: 18,
-                },
+                labelStyle: {fontSize: 18},
                 style: {
-                    backgroundColor: 'white',
+                    backgroundColor: 'goldenrod',
                     height: MyDefines.myBottomTabBarHeight,
                 },
          },

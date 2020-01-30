@@ -17,11 +17,22 @@ import MyHelpIcon from "../components/MyHelpIcon";
 import MyHelpModal from "../components/MyHelpModal";
 import {SafeAreaView} from "react-navigation";
 import myfuncs from "../services/myFuncs";
+import {ScreenTitle} from "../components/screenTitle";
 
 
 // let my_story_list =
 
 class StoriesScreen extends React.Component {
+    static navigationOptions = ({navigation}) => {
+        try {
+            myfuncs.myBreadCrumbs('navigationOptions', 'AudioScreen');
+            return {
+                headerTitle: () => <ScreenTitle title={"Stories"}/>,
+            };
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
+    };
     constructor(props) {
         super(props);
         this.state = {

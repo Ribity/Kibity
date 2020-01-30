@@ -6,8 +6,20 @@ import { connect } from 'react-redux';
 import myfuncs from "../services/myFuncs";
 import MyHelpIcon from "../components/MyHelpIcon";
 import MyHelpModal from "../components/MyHelpModal";
+import {ThemeButton} from "../components/themeButton";
+import {ScreenTitle} from "../components/screenTitle";
 
 class ProfilesScreen extends React.Component {
+    static navigationOptions = ({navigation}) => {
+        try {
+            myfuncs.myBreadCrumbs('navigationOptions', 'AudioScreen');
+            return {
+                headerTitle: () => <ScreenTitle title={"Profiles"}/>,
+            };
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
+    };
 
     constructor(props) {
         super(props);

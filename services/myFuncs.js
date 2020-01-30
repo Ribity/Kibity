@@ -34,11 +34,7 @@ class myFuncs  {
 
             this.loadSounds({
                 // ribbit: {uri: "https://www.ribity.com/sounds/ribbit.wav"},
-                ribbit1: {uri: "https://ribity.com/sounds/ribbit1.wav"},
-                ribbit2: {uri: "https://ribity.com/sounds/ribbit2.wav"},
-                ribbit3: {uri: "https://ribity.com/sounds/ribbit3.wav"},
-                ribbit4: {uri: "https://ribity.com/sounds/ribbit4.wav"},
-                ribbit5: {uri: "https://ribity.com/sounds/ribbit5.wav"},
+                ribbit: {uri: "https://ribity.com/sounds/ribbit2.wav"},
             });
 
             bSoundsAreLoaded = true;
@@ -139,29 +135,15 @@ class myFuncs  {
             this.mySentry(error);
         }
     };
-    playRibbit = async (routeName, testNum) => {
+    playRibbit = async (routeName) => {
             try {
                 this.myBreadCrumbs('playRibbit', routeName);
-                let ribbit_file = "ribbit";
-
-                if (MyDefines.playEndOfStoryRibbit === false)
-                    return;
 
                 if (!bSoundsAreLoaded)
                     return;
 
-                if (testNum !== undefined) {
-                    if (testNum === 0)
-                        return;
-                    ribbit_file += testNum;
-                } else {
-                    // if (funcsUserParms.profile.ribbit_wav_num === 0)
-                    //     return;
-                    ribbit_file += MyDefines.ribbit_wav_num;
-                }
-
-                console.log("Play Ribbit: ", ribbit_file);
-                await this.playSound(ribbit_file);
+                console.log("Play Ribbit");
+                await this.playSound("ribbit");
                 // console.log("Ribbit played");
             } catch (error) {
                 console.log("Ribbit audio error:", error);

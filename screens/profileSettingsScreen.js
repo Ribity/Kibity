@@ -18,6 +18,8 @@ import MyTouchableLogo from '../components/MyTouchableLogo';
 import MyHelpIcon from '../components/MyHelpIcon';
 import MyHelpModal from "../components/MyHelpModal";
 import MyButton from "../components/MyButton";
+import {ThemeButton} from "../components/themeButton";
+import {ScreenTitle} from "../components/screenTitle";
 
 //***********************************************************************************
 // The idea here is to NOT perform the reverseGeo often because each one cost money.
@@ -26,24 +28,9 @@ import MyButton from "../components/MyButton";
 class ProfileSettingsScreen extends React.Component {
     static navigationOptions = ({navigation}) => {
         try {
-            myfuncs.myBreadCrumbs('navigationOptions', 'ProfileSettingsScreen');
+            myfuncs.myBreadCrumbs('navigationOptions', 'AudioScreen');
             return {
-                headerTitle:
-                    <View style={{alignItems: 'center'}}>
-                        <Text style = {{color: 'green', fontWeight: 'bold', fontSize: 18}}>
-                            Settings
-                        </Text>
-                        <Text style = {{color: 'green', fontWeight: 'bold', fontSize: 18}}>
-                            Map Settings
-                        </Text>
-                    </View>
-                ,
-                headerLeft:
-                    <MyTouchableLogo onPress={() => navigation.navigate("Audio")}/>,
-                headerRight:
-                    <TouchableHighlight style={myStyles.myHeaderTouch}  onPress={() => navigation.navigate("Profiles")}>
-                        <Text style={myStyles.myHeaderText}>{"<Profiles"}</Text>
-                    </TouchableHighlight>,
+                headerTitle: () => <ScreenTitle title={"Settings"} second={"Profiles"}/>,
             };
         } catch (error) {
             myfuncs.mySentry(error);

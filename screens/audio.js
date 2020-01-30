@@ -17,6 +17,8 @@ import myfuncs from "../services/myFuncs";
 import MyHelpIcon from "../components/MyHelpIcon";
 import MyHelpModal from "../components/MyHelpModal";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import {ThemeButton} from "../components/themeButton";
+import {ScreenTitle} from "../components/screenTitle";
 // import myfuncs from "../services/myFuncs";
 //
 // import AUDIO_PLAYING_FAVORITES from '../constants/MyDefines';
@@ -45,6 +47,18 @@ const initialState = {
 };
 
 class AudioScreen extends React.Component {
+    static navigationOptions = ({navigation}) => {
+        try {
+            myfuncs.myBreadCrumbs('navigationOptions', 'AudioScreen');
+            return {
+                headerLeft: () => <ThemeButton/>,
+                headerTitle: () => <ScreenTitle title={"Audio"}/>,
+            };
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
+    };
+
     constructor(props) {
         super(props);
         this.state = initialState;
@@ -214,20 +228,21 @@ class AudioScreen extends React.Component {
             this.setState({line_idx: myIdx});
             if (MyDefines.log_audio)
                 console.log("speak: ", myStory.line[myIdx]);
-            // if (myStory.line[myIdx] !== "The End") {
+            if (myStory.line[myIdx] !== "The End" || this.props.settings.playEndOfStoryRibbit === false) {
                 Speech.speak(myStory.line[myIdx], {
                     // voice: "com.apple.ttsbundle.Samantha-compact",
                     // language: 'en',
-                    pitch: 1.0,
-                    rate: 1.0,
+                    pitch: this.props.settings.speech_pitch,
+                    rate: this.props.settings.speech_rate,
                     onDone: this.playNextLine,
                     // onStopped: speechStopped,
                     // onStart: scheduleTheCheckSpeech,
                 });
-            // } else {
-            //     myfuncs.playRibbit(this.props.navigation.state.routeName);
-            //     this.playNextLine();
-            // }
+            } else {
+                console.log("play ribbit");
+                myfuncs.playRibbit(this.props.navigation.state.routeName);
+                delayedPlay = setTimeout(() => {otherTimeout = this.playNextLine();}, 1000);
+            }
         } else {
             this.setState({playing: false});
             if (MyDefines.log_audio)
@@ -283,7 +298,7 @@ class AudioScreen extends React.Component {
     };
     backward = () => {
         if (MyDefines.log_audio)
-            console.log("backward set overrideTheNextLine to true");
+            console.log("backward set overrideTheNextLine to true, lineNum:", myIdx+1);
         overrideTheNextLine = true;
         this.clearPotentialPlay();
         Speech.stop();
@@ -588,7 +603,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         lineHeight: 25,
         paddingBottom: 5,
-        color: 'purple',
+        color: 'mediumpurple',
         marginHorizontal: 20,
     },
     audioTitle: {
@@ -602,8 +617,9 @@ const styles = StyleSheet.create({
     currentText: {
         fontSize: 25,
         lineHeight: 35,
+        fontWeight: 'bold',
         // textAlign: 'justify',
-        color: 'purple',
+        color: 'mediumpurple',
         marginHorizontal: 10,
         paddingTop: 20,
     },
@@ -612,7 +628,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
     const { story_list } = state;
     const { current_profile } = state;
-    return { story_list, current_profile }
+    const { settings } = state;
+    return { story_list, current_profile, settings }
 };
 const mapDispatchToProps = dispatch => (
     bindActionCreators({

@@ -7,10 +7,10 @@ export default class MyButton extends React.Component {
         let buttonStyle = myStyles.regularButton;
         let textStyle = myStyles.regularButtonText;
         if (this.props.buttonStyle) {
-            buttonStyle = this.props.buttonStyle;
+            buttonStyle = {...buttonStyle, ...this.props.buttonStyle};
         }
         if (this.props.textStyle) {
-            textStyle = this.props.textStyle;
+            textStyle = {...textStyle, ...this.props.textStyle};
         }
         return (
             <View>

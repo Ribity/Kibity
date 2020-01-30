@@ -5,17 +5,17 @@ export default {
     log_details: false,
     log_audio: false,
     sentry_logging: true,
-    console_log_breadcrumbs: true,
-
+    console_log_breadcrumbs: false,
 
     myStatusBarHeight: Constants.statusBarHeight,
     myBottomTabBarHeight: 45,
 
     stories_url_bucket: 'https://kibity.com/stories/',
     default_settings: {
-        playEndOfStoryRibbit: false,
-        ribbit_wav_num: 2,
         keep_awake: true,
+        playEndOfStoryRibbit: true,
+        speech_pitch: 1.0,  //.5 thru
+        speech_rate: 1.0,   // .5 thru 1.9
     },
 
     default_current_profile: {

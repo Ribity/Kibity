@@ -123,12 +123,12 @@ const myStyles = StyleSheet.create({
     },
     regularButton: {
         backgroundColor: 'purple',
-        opacity: .7,
+        opacity: 1.0,
         alignItems: 'center',
         alignSelf: 'center',
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: 'green',
+        borderColor: 'goldenrod',
     },
     regularButtonText: {
         fontSize: 17,

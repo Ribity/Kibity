@@ -30,7 +30,7 @@ class TasksComponent extends React.Component {
             sixtyMinute = setInterval(this.sixtyMinuteTask, 10 * 60 * 1000);
             // sixtyMinute = setInterval(this.sixtyMinuteTask, 10 * 1000);
 
-            if (MyDefines.keep_awake) {
+            if (this.props.settings.keep_awake) {
                 activateKeepAwake();
             } else {
                 deactivateKeepAwake();
@@ -53,7 +53,7 @@ class TasksComponent extends React.Component {
         if (appState.match(/inactive|background/) && nextAppState === 'active') {
             // if (MyDefines.detail_logging)
                 console.log("App has come to foreground");
-            if (MyDefines.keep_awake) {
+            if (this.props.keep_awake) {
                 activateKeepAwake();
             }
         } else {    // Else gone to the background
@@ -136,7 +136,8 @@ class TasksComponent extends React.Component {
 
 const mapStateToProps = (state) => {
     const { story_list } = state;
-    return { story_list }
+    const { settings } = state;
+    return { story_list, settings }
 };
 
 const mapDispatchToProps = dispatch => (
