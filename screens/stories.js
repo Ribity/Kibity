@@ -7,6 +7,7 @@ import {
 } from "react-native";
 
 import MyDefines from '../constants/MyDefines';
+import myStyles from '../myStyles'
 // import MyCard from "../components/myCard";
 import MyListComponent from '../components/MyListComponent';
 import { setStoryIdx, setListType, setListIdx} from '../actions/currentProfileActions';
@@ -18,6 +19,7 @@ import MyHelpModal from "../components/MyHelpModal";
 import {SafeAreaView} from "react-navigation";
 import myfuncs from "../services/myFuncs";
 import {ScreenTitle} from "../components/screenTitle";
+import {StoriesHeaderButton} from "../components/StoriesHeaderButton";
 
 
 // let my_story_list =
@@ -26,8 +28,14 @@ class StoriesScreen extends React.Component {
     static navigationOptions = ({navigation}) => {
         try {
             myfuncs.myBreadCrumbs('navigationOptions', 'AudioScreen');
+            const { params = {} } = navigation.state;
             return {
+                headerLeft: () =>
+                    <StoriesHeaderButton myText="Faves" numItems={params.numFaves} action={params.getLeft}/>,
                 headerTitle: () => <ScreenTitle title={"Stories"}/>,
+                headerRight: () =>
+                    <StoriesHeaderButton myText="List" numItems={params.numList} action={params.getRight}/>,
+
             };
         } catch (error) {
             myfuncs.mySentry(error);
@@ -44,8 +52,27 @@ class StoriesScreen extends React.Component {
         // setTimeout(this.buildStoryList, 1000);  // mk1 be sure to clear the timeout on unmount
         this.populateStateStoryList();  // mk1 be sure to clear the timeout on unmount
 
+        this.props.navigation.setParams({getRight: this.listList});
+        this.props.navigation.setParams({getLeft: this.listFaves});
+        this.props.navigation.setParams({numFaves: this.props.current_profile.favorites.length});
         // console.log("StoriesScreen DidMount:", this.props.story_list);
     }
+    listList = () => {
+        try {
+            myfuncs.myBreadCrumbs('getRight', this.props.navigation.state.routeName);
+            console.log("PressedRight");
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
+    };
+    listFaves = () => {
+        try {
+            myfuncs.myBreadCrumbs('getLeft', this.props.navigation.state.routeName);
+            console.log("PressedLeft");
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
+    };
 
     // static getDerivedStateFromProps(nextProps, prevState){
     //     console.log("GetDerivedStateFromProps StoriesScreen");
@@ -78,6 +105,8 @@ class StoriesScreen extends React.Component {
     updateStoriesCurrentProfile = () => {
         // console.log("updateStoriesCurrentProfile");
         this.setState({current_profile: this.props.current_profile});
+        this.props.navigation.setParams({numFaves: this.props.current_profile.favorites.length});
+        this.props.navigation.setParams({numList: this.props.current_profile.playList.length});
     };
     onPressStorySelection = (story, idx) => {
         // console.log("onPressStorySelection:", idx );

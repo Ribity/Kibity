@@ -10,6 +10,9 @@ export default {
     myStatusBarHeight: Constants.statusBarHeight,
     myBottomTabBarHeight: 45,
 
+    myTabColor: 'lavender',
+    myHeaderTextColor: 'purple',
+
     stories_url_bucket: 'https://kibity.com/stories/',
     default_settings: {
         keep_awake: true,

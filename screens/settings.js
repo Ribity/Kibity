@@ -4,6 +4,7 @@ import {SafeAreaView} from "react-navigation";
 import SettingsList from 'react-native-settings-list';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import myfuncs from "../services/myFuncs";
+import MyDefines from "../constants/MyDefines";
 import MyHelpIcon from "../components/MyHelpIcon";
 import MyHelpModal from "../components/MyHelpModal";
 import {connect} from "react-redux";
@@ -37,14 +38,17 @@ class SettingsScreen extends React.Component {
 
                 {/*<ThemeButton/>*/}
 
-                <SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
+                <SettingsList style={styles.listItem} defaultItemSize={50}>
                     <SettingsList.Item
                         hasSwitch={true}
                         switchState={this.state.settings.keep_awake}
                         switchOnValueChange={(bEvent) => this.updateUser({keep_awake: bEvent})}
                         hasNavArrow={false}
                         title='Keep Screen Awake'
-                        titleStyle={{fontSize:20}}
+                        titleStyle={styles.listTitle}
+                        onTintColor='purple'
+                        // backgroundColor='purple'
+                        underlayColor='purple'
                     />
                     <SettingsList.Item
                         hasSwitch={true}
@@ -52,22 +56,22 @@ class SettingsScreen extends React.Component {
                         switchOnValueChange={(bEvent) => this.updateUser({playEndOfStoryRibbit: bEvent})}
                         hasNavArrow={false}
                         title='Play Ribbit After Each Story'
-                        titleStyle={{fontSize:20}}
+                        titleStyle={styles.listTitle}
                     />
                     <SettingsList.Item
                         title='Audio Rate and Pitch'
                         // titleInfo='Audio'
                         titleInfoStyle={styles.titleInfoStyle}
-                        titleStyle={{fontSize:20}}
+                        titleStyle={styles.listTitle}
                         onPress={() => this.props.navigation.navigate("SettingsAudio")}
                     />
 
-                    <SettingsList.Header headerStyle={{marginTop:15}}/>
+                    {/*<SettingsList.Header headerStyle={{marginTop:15}}/>*/}
 
                     <SettingsList.Item
                         title='About'
                         titleInfoStyle={styles.titleInfoStyle}
-                        titleStyle={{fontSize:20}}
+                        titleStyle={styles.listTitle}
                         onPress={() => this.props.navigation.navigate("SettingsAbout")}
                     />
                 </SettingsList>
@@ -133,9 +137,17 @@ class SettingsScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: MyDefines.myTabColor,
     },
     titleInfoStyle: {
         fontSize: 20,
+    },
+    listItem: {
+        borderColor: MyDefines.myTabColor,
+    },
+    listTitle: {
+        fontSize:20,
+        color: 'purple',
     },
 });
 

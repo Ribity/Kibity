@@ -17,12 +17,12 @@ const myStyles = StyleSheet.create({
         alignSelf: 'center',
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: 'green',
+        borderColor: 'gold',
     },
     myHeaderText: {
         fontSize: 17,
         opacity: 1.0,
-        color: 'darkblue',
+        color: 'purple',
         alignItems: 'center',
         padding: 2,
     },
@@ -33,7 +33,7 @@ const myStyles = StyleSheet.create({
         flexGrow: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'lightgrey',
+        backgroundColor: MyDefines.myTabColor,
         // paddingTop: 50,
         // paddingBottom: 50,
 

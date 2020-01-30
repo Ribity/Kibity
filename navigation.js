@@ -16,10 +16,10 @@ import SettingsAudioScreen from './screens/SettingsAudioScreen';
 import SettingsAboutScreen from './screens/SettingsAboutScreen';
 
 let defNav = {
-    headerStyle: {backgroundColor: 'goldenrod'},
-    headerTitleStyle: {color: 'purple'},
-    headerBackTitleStyle: {color: 'purple'},
-    headerTintColor: 'purple',
+    headerStyle: {backgroundColor: MyDefines.myTabColor},
+    headerTitleStyle: {color: MyDefines.myHeaderTextColor},
+    headerBackTitleStyle: {color: MyDefines.myHeaderTextColor},
+    headerTintColor: MyDefines.myHeaderTextColor,
 };
 
 const AudioStack = createStackNavigator({
@@ -68,7 +68,7 @@ const bottomTabNavigator = createBottomTabNavigator({
                 showIcon: true,
                 labelStyle: {fontSize: 18},
                 style: {
-                    backgroundColor: 'goldenrod',
+                    backgroundColor: MyDefines.myTabColor,
                     height: MyDefines.myBottomTabBarHeight,
                 },
          },

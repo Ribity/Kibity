@@ -78,7 +78,14 @@ class AudioScreen extends React.Component {
 
         if (MyDefines.log_audio)
             console.log("height:", height, " width:", width, "statusbar:", MyDefines.myStatusBarHeight);
-    };
+
+        // if ((this.props.current_profile.favorites.length === 0) &&
+        //     (this.props.current_profile.playList.length === 0) &&
+        //     (this.state.num_lines === 0) ) {
+        //     this.goToStoriesScreen();
+        // }
+    }
+
     // static getDerivedStateFromProps(nextProps, prevState){
     //     let update = {};
     //
@@ -515,7 +522,7 @@ class AudioScreen extends React.Component {
                         :
                         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                             <Button style={styles.selectButton}
-                                    onPress={this.goToStoriesScreen}>Select a Story to Play</Button>
+                                    onPress={this.goToStoriesScreen}>Select a Story, or{"\n"}Build a PlayList</Button>
                             {this.state.current_profile.favorites.length > 0 &&
                             <Button style={styles.selectButton}
                                     onPress={this.playFavorites}>Play Favorites</Button>
@@ -585,8 +592,11 @@ const styles = StyleSheet.create({
     },
     selectButton: {
         marginVertical: 30,
-        marginHorizontal: 30,
+        marginHorizontal: 70,
         backgroundColor: 'purple',
+        // justifyContent: 'center',
+        alignSelf: 'center',
+        // alignContent: 'center',
     },
     bottomButtons: {
         marginVertical: 5,
