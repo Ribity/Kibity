@@ -31,10 +31,18 @@ class StoriesScreen extends React.Component {
             const { params = {} } = navigation.state;
             return {
                 headerLeft: () =>
-                    <StoriesHeaderButton myText="Faves" numItems={params.numFaves} action={params.getLeft}/>,
+                    <StoriesHeaderButton buttonType={1}
+                                         numItems={params.numFaves}
+                                         action={params.getLeft}
+                                         filterType={params.filterType}
+                    />,
                 headerTitle: () => <ScreenTitle title={"Stories"}/>,
                 headerRight: () =>
-                    <StoriesHeaderButton myText="List" numItems={params.numList} action={params.getRight}/>,
+                    <StoriesHeaderButton buttonType={2}
+                                         numItems={params.numList}
+                                         action={params.getRight}
+                                         filterType={params.filterType}
+                    />,
 
             };
         } catch (error) {
@@ -46,6 +54,7 @@ class StoriesScreen extends React.Component {
         this.state = {
             story_list: MyDefines.default_story_list,
             current_profile: MyDefines.default_current_profile,
+            filterType: 0,
         };
     };
     componentDidMount() {
@@ -55,11 +64,19 @@ class StoriesScreen extends React.Component {
         this.props.navigation.setParams({getRight: this.listList});
         this.props.navigation.setParams({getLeft: this.listFaves});
         this.props.navigation.setParams({numFaves: this.props.current_profile.favorites.length});
+        this.props.navigation.setParams({filterType: this.state.filterType});
         // console.log("StoriesScreen DidMount:", this.props.story_list);
     }
     listList = () => {
         try {
             myfuncs.myBreadCrumbs('getRight', this.props.navigation.state.routeName);
+            if (this.state.filterType === 2) {
+                this.setState({filterType: 0});
+                this.props.navigation.setParams({filterType: 0});
+            } else {
+                this.setState({filterType: 2});
+                this.props.navigation.setParams({filterType: 2});
+            }
             console.log("PressedRight");
         } catch (error) {
             myfuncs.mySentry(error);
@@ -67,8 +84,25 @@ class StoriesScreen extends React.Component {
     };
     listFaves = () => {
         try {
-            myfuncs.myBreadCrumbs('getLeft', this.props.navigation.state.routeName);
+            myfuncs.myBreadCrumbs('listFaves', this.props.navigation.state.routeName);
+            if (this.state.filterType === 1) {
+                this.setState({filterType: 0});
+                this.props.navigation.setParams({filterType: 0});
+            } else {
+                this.setState({filterType: 1});
+                this.props.navigation.setParams({filterType: 1});
+            }
             console.log("PressedLeft");
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
+    };
+    resetFilter = () => {
+        try {
+            myfuncs.myBreadCrumbs('resetFilter', this.props.navigation.state.routeName);
+            this.setState({filterType: 0});
+            this.props.navigation.setParams({filterType: 0});
+            console.log("ResetFilter");
         } catch (error) {
             myfuncs.mySentry(error);
         }
@@ -165,7 +199,7 @@ class StoriesScreen extends React.Component {
                                 <Ionicons name={"ios-list-box"} size={30} color={'goldenrod'}/>
                                 <View>
                                     <Text style={styles.pText}>Play</Text>
-                                    <Text style={styles.pText}>List</Text>
+                                    <Text style={styles.pText}>PlayList</Text>
                                 </View>
                             </View>
                         </TouchableOpacity>
@@ -179,7 +213,10 @@ class StoriesScreen extends React.Component {
                                  myList={this.state.story_list.stories}
                                  screenType={'Stories'}
                                  updateParentStoriesCurrentProfile={this.updateStoriesCurrentProfile}
-                                 onPressItem={this.onPressStorySelection}/>
+                                 resetFilter={this.resetFilter}
+                                 onPressItem={this.onPressStorySelection}
+                                 filterType={this.state.filterType}
+                />
                 }
                 <MyHelpIcon onPress={this.onHelpPress}/>
                 <MyHelpModal screen={"Stories"}
@@ -221,11 +258,11 @@ const styles = StyleSheet.create({
     },
     faves: {
         flexDirection: 'row',
-        paddingRight: 15,
+        paddingRight: 5,
     },
     playList: {
         flexDirection: 'row',
-        paddingLeft: 15,
+        paddingLeft: 5,
     },
     pText: {
         color: 'goldenrod',

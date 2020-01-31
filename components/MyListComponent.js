@@ -3,6 +3,8 @@ import {View, Text, StyleSheet, FlatList, TouchableOpacity, Dimensions,} from 'r
 import { ListItem, SearchBar} from 'react-native-elements';
 import {Ionicons} from '@expo/vector-icons';
 import Toast from 'react-native-easy-toast';
+import MyButton from "../components/MyButton";
+
 
 import { connect } from 'react-redux';
 
@@ -162,7 +164,6 @@ class MyListComponent extends React.Component {
                 bPlayList = true;
         }
 
-
         return (
             <View>
                 {bFave ?
@@ -180,6 +181,100 @@ class MyListComponent extends React.Component {
     };
     renderItem = (({item, index}) => {
             try {
+                console.log("Insight renderItem. FilterType = ", this.props.filterType);
+
+                if (this.props.filterType === 1) {
+                    let bIsItemInFaves = false;
+                    let faves = this.props.current_profile.favorites;
+
+                    if (faves.length === 0) {
+                        if (index === 0) {
+                            return (
+                                <ListItem
+                                    title={
+                                        <Text style={styles.titleView}>You have no Favorites</Text>
+                                    }
+                                    subtitle={
+                                        <View>
+                                            <View style={{paddingTop: 5}}/>
+                                            <Text style={styles.subtitleView}>To add to your Favorites</Text>
+
+                                            <View style={{paddingTop: 5}}/>
+                                            <View style={{flexDirection: 'row'}}>
+                                                <Text style={styles.subtitleView}>Click  </Text>
+                                                <Ionicons name={"ios-heart-empty"} size={25} color={'gray'}/>
+                                                <Text style={styles.subtitleView}>  next to a story</Text>
+                                            </View>
+                                            <Text style={styles.subtitleView}>Then you can play your Favorites</Text>
+
+                                            <MyButton title={'Go back to All Stories'}
+                                                      buttonStyle={{marginVertical: 15}}
+                                                      onPress={this.props.resetFilter}/>
+                                        </View>
+                                    }
+                                    containerStyle={{borderBottomWidth: 0, backgroundColor: 'goldenrod', borderRadius: 10}}
+                                />
+                            )
+                        } else {
+                            return;
+                        }
+                    }
+
+                    for (let i = 0; i < faves.length; i++) {
+                        if (index === faves[i]) {
+                            bIsItemInFaves = true;
+                            break;
+                        }
+                    }
+                    if (bIsItemInFaves === false)
+                        return;
+                } else if (this.props.filterType === 2) {
+                    let bIsItemInList = false;
+                    let list = this.props.current_profile.playList;
+                    if (list.length === 0) {
+                        if (index === 0) {
+                            return (
+                                <ListItem
+                                    title={
+                                        <Text style={styles.titleView}>You have no PlayList</Text>
+                                    }
+                                    subtitle={
+                                        <View>
+                                            <View style={{paddingTop: 5}}/>
+                                            <Text style={styles.subtitleView}>To add to your PlayList</Text>
+
+                                            <View style={{paddingTop: 5}}/>
+
+                                            <View style={{flexDirection: 'row'}}>
+                                                <Text style={styles.subtitleView}>Click  </Text>
+                                                <Ionicons name={"ios-list"} size={25} color={'gray'}/>
+                                                <Text style={styles.subtitleView}>  next to a story</Text>
+                                            </View>
+                                            <Text style={styles.subtitleView}>Then you can play your PlayList</Text>
+
+                                            <MyButton title={'Go back to All Stories'}
+                                                      buttonStyle={{marginVertical: 15}}
+                                                      onPress={this.props.resetFilter}/>
+                                        </View>
+                                    }
+                                    containerStyle={{borderBottomWidth: 0, backgroundColor: 'goldenrod', borderRadius: 10}}
+                                />
+                            )
+                        } else {
+                            return;
+                        }
+                    }
+
+                    for (let i = 0; i < list.length; i++) {
+                        if (index === list[i]) {
+                            bIsItemInList = true;
+                            break;
+                        }
+                    }
+                    if (bIsItemInList === false)
+                        return;
+                }
+
                 let color = 'white';
                 let image = "";
                 let subtitle = "";
