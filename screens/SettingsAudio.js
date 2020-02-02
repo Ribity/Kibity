@@ -12,7 +12,7 @@ import myfuncs from "../services/myFuncs";
 import MyTouchableLogo from "../components/MyTouchableLogo";
 import {ScreenTitle} from "../components/screenTitle";
 
-export default class SettingsAudioScreen extends React.Component {
+export default class SettingsAudio extends React.Component {
     static navigationOptions = ({navigation}) => {
         try {
             myfuncs.myBreadCrumbs('navigationOptions', 'AudioScreen');

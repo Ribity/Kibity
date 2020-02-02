@@ -41,7 +41,7 @@ const myStyles = StyleSheet.create({
     ribbonHeader: {
         fontSize: 23,
         fontWeight: 'bold',
-        color: 'green',
+        color: 'purple',
     },
     flatListPadding: {
         paddingTop: MyDefines.myStatusBarHeight + 35,
@@ -69,7 +69,7 @@ const myStyles = StyleSheet.create({
     },
     flatListHeaderText: {
         fontSize: 13,
-        color: 'green',
+        color: 'purple',
     },
     // searchHeaderText: {
     //     fontSize: 15,
@@ -79,39 +79,35 @@ const myStyles = StyleSheet.create({
     // },
     infoText: {
         fontSize: 17,
-        color: 'green',
+        color: 'purple',
         alignItems: 'center',
         padding: 5,
     },
     infoLargerText: {
         fontSize: 23,
-        color: 'green',
+        color: 'purple',
         textAlign: 'center',
-        // alignItems: 'center',
-        // justifyContent: 'center',
-        // flexDirection: 'row',
-        // flexWrap: 'wrap',
     },
     iFieldLabel: {
         fontSize: 17,
         // fontWeight: 'bold',
         // opacity: .8,
-        paddingLeft: 5,
+        paddingLeft: 15,
         textAlign: 'left',
         alignSelf: 'stretch',
         paddingTop: 15,
-        color: 'darkgreen',
+        color: 'purple',
         fontWeight: 'bold',
     },
     iFieldLabelSmaller: {
         fontSize: 15,
         // fontWeight: 'bold',
         // opacity: .8,
-        paddingLeft: 5,
+        paddingLeft: 15,
         textAlign: 'left',
         alignSelf: 'stretch',
         paddingTop: 15,
-        color: 'darkgreen',
+        color: 'purple',
         fontWeight: 'bold',
     },
     iField: {
@@ -137,26 +133,11 @@ const myStyles = StyleSheet.create({
         alignItems: 'center',
         padding: 2,
     },
-    ribbonView: {
-        alignItems: 'center',
-    },
-    ribbonImage: {
-        justifyContent:'flex-end',
-        // alignItems: 'center',
-        width: 33,
-        height: 46,
-    },
     hitSlop: {
         top: 10,
         bottom: 10,
         left: 10,
         right: 10,
-    },
-    calloutBox: {
-        padding: 7,
-        backgroundColor: 'lightgrey',
-        borderRadius: 20,
-        width: ((width/2) + (width/4)),
     },
     myCenter: {
         alignItems: 'center',
@@ -170,12 +151,12 @@ const myStyles = StyleSheet.create({
         fontSize: 20,
     },
     myBigToastStyle: {
-        backgroundColor:'lightgreen',
+        backgroundColor:'goldenrod',
         borderRadius: 20,
         padding: 10
     },
     myBigToast: {
-        color:'black',
+        color:'purple',
         fontSize:20,
         fontWeight: 'bold'
     },

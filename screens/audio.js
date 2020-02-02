@@ -1,10 +1,9 @@
 import React from 'react';
-import {Alert,StyleSheet, View, Dimensions} from 'react-native';
+import {Alert,StyleSheet, View, Dimensions, Image} from 'react-native';
 import {SafeAreaView} from "react-navigation";
 import {Button, Layout, Text} from "@ui-kitten/components";
 import {Ionicons} from '@expo/vector-icons';
 import * as Speech from "expo-speech";
-// import {ThemeButton} from "../components/themeButton";
 import MyDefines from '../constants/MyDefines';
 import mystories from '../services/myStories';
 import storyconversion from '../services/storyConversion';
@@ -12,31 +11,28 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {setStoryIdx, setListType, setListIdx} from "../actions/currentProfileActions";
 import {updateStoryList} from "../actions/storyListActions";
+import {updateSettings} from "../actions/settingsActions";
 import TasksComponent from '../components/TasksComponent';
 import myfuncs from "../services/myFuncs";
 import MyHelpIcon from "../components/MyHelpIcon";
 import MyHelpModal from "../components/MyHelpModal";
-import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {ThemeButton} from "../components/themeButton";
 import {ScreenTitle} from "../components/screenTitle";
-// import myfuncs from "../services/myFuncs";
-//
-// import AUDIO_PLAYING_FAVORITES from '../constants/MyDefines';
-// import AUDIO_PLAYING_PLAYLIST from '../constants/MyDefines';
 
 let willUnmount = false;
 let myStory = null;
 let myIdx = 0;
 let delayedPlay = null;
-let otherTimeout = null;
 let nextStoryTimeout = null;
 let playingStory = null;
 let overrideTheNextLine = false;
 let story_idx = -1;
+let kibityLogo = require('../assets/images/PurpleFaceIcon512.png');
 
 const {height, width} = Dimensions.get('window');
 
 const initialState = {
+    intro_screen: true,
     playing: false,
     curr_text: "",
     story_title: "",
@@ -66,8 +62,7 @@ class AudioScreen extends React.Component {
         this.componentWillUnmount = this.componentWillUnmount.bind(this);
     };
     componentDidMount() {
-        console.log("Calling init");
-        myfuncs.init();
+        setTimeout(() => {this.getUserStoredData();}, 1);
 
         this.subs = [
             this.props.navigation.addListener('willFocus', this.componentWillFocus),
@@ -85,6 +80,10 @@ class AudioScreen extends React.Component {
         //     this.goToStoriesScreen();
         // }
     }
+    getUserStoredData = async () => {
+        let {settings} = await myfuncs.init();
+        this.props.updateSettings(settings);
+    };
 
     // static getDerivedStateFromProps(nextProps, prevState){
     //     let update = {};
@@ -128,9 +127,6 @@ class AudioScreen extends React.Component {
         Speech.stop();
         if (delayedPlay !== null) {
             clearTimeout(delayedPlay);
-        }
-        if (otherTimeout !== null) {
-            clearTimeout(otherTimeout);
         }
         if (nextStoryTimeout !== null) {
             clearTimeout(nextStoryTimeout);
@@ -248,7 +244,7 @@ class AudioScreen extends React.Component {
             } else {
                 console.log("play ribbit");
                 myfuncs.playRibbit(this.props.navigation.state.routeName);
-                delayedPlay = setTimeout(() => {otherTimeout = this.playNextLine();}, 1000);
+                delayedPlay = setTimeout(() => {this.playNextLine();}, 1000);
             }
         } else {
             this.setState({playing: false});
@@ -343,7 +339,8 @@ class AudioScreen extends React.Component {
         //
         // if (this.props.current_profile.favorites.length < 1 && this.props.current_profile.playList.length < 1)
         //     this.goToStoriesScreen();
-        nextStoryTimeout = setTimeout(() => {this.playNext()}, 3000);
+
+        nextStoryTimeout = setTimeout(() => {this.playNext()}, this.props.settings.pauseBetweenStories*1000);
     };
 
     // resetAndGoToStoriesScreen = () => {
@@ -520,18 +517,39 @@ class AudioScreen extends React.Component {
                             </View>
                         </View>
                         :
-                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                            <Button style={styles.selectButton}
-                                    onPress={this.goToStoriesScreen}>Select a Story, or{"\n"}Build a PlayList</Button>
-                            {this.state.current_profile.favorites.length > 0 &&
-                            <Button style={styles.selectButton}
-                                    onPress={this.playFavorites}>Play Favorites</Button>
-                            }
-                            {this.state.current_profile.playList.length > 0 &&
-                            <Button style={styles.selectButton}
-                                    onPress={this.playPlayList}>Play Playlist</Button>
-                            }
+                        <View>
+                            {this.state.intro_screen ?
+                            <View>
+                                <View style={{padding: 5}}/>
+                                <Text style={styles.welcomeUser}>Welcome to Kibity</Text>
+                                <View style={{padding: 5}}/>
+                                <Image style={styles.kibityLogo} source={kibityLogo}/>
+                                <View style={{padding: 15}}/>
+
+                                {/*<Text style={styles.welcomeUser}>Where your dream becomes reality</Text>*/}
                             </View>
+                                :
+                                <View>
+                                    <View style={{padding: 35}}/>
+
+                                </View>
+
+                            }
+                            {/*<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>*/}
+                            {/*<View style={{paddingTop: 20}}/>*/}
+
+                            <Button style={styles.selectButton}
+                                        onPress={this.goToStoriesScreen}>Select a Story, or{"\n"}Build a PlayList</Button>
+                                {this.state.current_profile.favorites.length > 0 &&
+                                <Button style={styles.selectButton}
+                                        onPress={this.playFavorites}>Play Favorites</Button>
+                                }
+                                {this.state.current_profile.playList.length > 0 &&
+                                <Button style={styles.selectButton}
+                                        onPress={this.playPlayList}>Play Playlist</Button>
+                                }
+                                {/*</View>*/}
+                        </View>
                     }
                     </Layout>
                 <MyHelpIcon onPress={this.onHelpPress}/>
@@ -564,9 +582,24 @@ const styles = StyleSheet.create({
         // backgroundColor: '#ecf0f1',
         // justifyContent: 'space-between',
     },
+    kibityLogo: {
+        justifyContent:'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        width: 60,
+        height: 60,
+    },
     playRow: {
         flexDirection: 'row',
         justifyContent: 'center',
+    },
+    welcomeUser: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        lineHeight: 25,
+        color: 'mediumpurple',
+        marginHorizontal: 20,
+        textAlign: 'center'
     },
     playIcon: {
         lineHeight: 25,
@@ -591,12 +624,11 @@ const styles = StyleSheet.create({
 
     },
     selectButton: {
-        marginVertical: 30,
+        marginVertical: 15,
         marginHorizontal: 70,
         backgroundColor: 'purple',
-        // justifyContent: 'center',
         alignSelf: 'center',
-        // alignContent: 'center',
+        color: 'goldenrod',
     },
     bottomButtons: {
         marginVertical: 5,
@@ -644,6 +676,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => (
     bindActionCreators({
         updateStoryList,
+        updateSettings,
         setStoryIdx,
         setListType,
         setListIdx,

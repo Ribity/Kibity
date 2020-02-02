@@ -25,7 +25,7 @@ import {ScreenTitle} from "../components/screenTitle";
 // The idea here is to NOT perform the reverseGeo often because each one cost money.
 //***********************************************************************************
 
-class ProfileSettingsScreen extends React.Component {
+class ProfileSettings extends React.Component {
     static navigationOptions = ({navigation}) => {
         try {
             myfuncs.myBreadCrumbs('navigationOptions', 'AudioScreen');
@@ -164,4 +164,4 @@ const mapStateToProps = (state) => {
     return { profiles }
 };
 
-export default connect(mapStateToProps, )(ProfileSettingsScreen);
+export default connect(mapStateToProps, )(ProfileSettings);

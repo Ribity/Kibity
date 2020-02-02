@@ -23,12 +23,16 @@ let bSoundIsPlaying = false;
 
 class myFuncs  {
 
-    init = () => {
+    init = async () => {
+        let settings = MyDefines.default_settings;
+        let new_user = false;
         try {
             this.initSentry();
 
-            this.check_new_user();
-            this.getUserSettingsFromLocalStorage();
+            new_user = await this.check_new_user();
+            let new_settings = await this.getUserSettingsFromLocalStorage();
+            if (new_settings !== null)
+                settings = {...settings, ...new_settings};
 
             this.prepareSound();
 
@@ -41,6 +45,49 @@ class myFuncs  {
             // this.audioPlayer = new Audio.Sound();
         } catch (error) {
             console.log("Send Sentry");
+            this.mySentry(error);
+        }
+        return {settings: settings, new_user: new_user};
+    };
+    check_new_user = async () => {
+        let new_user = false;
+        try {
+            let registered_user = await hardStorage.getKey("kibity_user");
+            if (registered_user === null) {
+                new_user = true;
+                hardStorage.setKey("kibity_user", true);
+                console.log("new user");
+                Sentry.captureMessage("New Kibity user", 'info');
+            }
+        } catch (error) {
+            this.mySentry(error);
+        }
+        return new_user;
+    };
+    getUserSettingsFromLocalStorage = async () => {
+        let settings = MyDefines.default_settings;
+        try {
+            settings = await hardStorage.getKey("user_settings");
+            // if (settings !== null) {
+            //     console.log("Got User Settings from localDeviceStorage: ", settings);
+            // } else {
+            //     console.log("Error reading User Settings from localDeviceStorage");
+            // }
+        } catch (error) {
+            this.mySentry(error);
+        }
+        // console.log("newsto:", settings);
+        settings.retrieved_user_data = true;
+        return settings;
+    };
+    writeUserSettingsToLocalStorage = async (settings) => {
+        try {
+            await hardStorage.setKey("user_settings", settings);
+            // console.log("storage updated NewSettings:", settings);
+
+            if (MyDefines.log_details)
+                console.log("user_settings written to Storage");
+        } catch (error) {
             this.mySentry(error);
         }
     };
@@ -99,39 +146,6 @@ class myFuncs  {
             });
         } catch (error) {
             console.log("Send Sentry");
-            this.mySentry(error);
-        }
-    };
-    check_new_user = async () => {
-        try {
-            let registered_user = await hardStorage.getKey("kibity_user");
-            if (registered_user === null) {
-                hardStorage.setKey("kibity_user", true);
-                console.log("new user");
-                Sentry.captureMessage("New Kibity user", 'info');
-            }
-        } catch (error) {
-            this.mySentry(error);
-        }
-    };
-    getUserSettingsFromLocalStorage = async () => {
-        try {
-            let registered_user = await hardStorage.getKey("user_settings");
-            if (registered_user !== null) {
-                console.log("Got User Settings from localDeviceStorage");
-            } else {
-                console.log("Error reading User Settings from localDeviceStorage");
-            }
-        } catch (error) {
-            this.mySentry(error);
-        }
-    };
-    writeUserSettingsToLocalStorage = async (settings) => {
-        try {
-            await hardStorage.setKey("user_settings", true);
-            if (MyDefines.log_details)
-                console.log("user_settings written to Storage");
-        } catch (error) {
             this.mySentry(error);
         }
     };

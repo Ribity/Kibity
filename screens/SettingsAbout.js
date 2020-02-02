@@ -12,7 +12,7 @@ import myfuncs from "../services/myFuncs";
 
 import {ScreenTitle} from "../components/screenTitle";
 
-export default class SettingsAboutScreen extends React.Component {
+export default class SettingsAbout extends React.Component {
     static navigationOptions = ({navigation}) => {
         try {
             myfuncs.myBreadCrumbs('navigationOptions', 'AudioScreen');

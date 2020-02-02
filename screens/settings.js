@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, Picker, View, Text } from 'react-native'
+import {StyleSheet, View, Dimensions} from 'react-native'
+
 import {SafeAreaView} from "react-navigation";
-import SettingsList from 'react-native-settings-list';
+import {Text, Layout, Select, Toggle} from "@ui-kitten/components";
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import myfuncs from "../services/myFuncs";
 import MyDefines from "../constants/MyDefines";
@@ -10,14 +11,32 @@ import MyHelpModal from "../components/MyHelpModal";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {updateSettings} from "../actions/settingsActions";
-import {ThemeButton} from "../components/themeButton";
 import {ScreenTitle} from "../components/screenTitle";
+import {ThemeButton} from "../components/themeButton";
+
+const {height, width} = Dimensions.get('window');
+
+let pause_data = [
+    {idx: 0, text: '1 second', value: 1},
+    {idx: 1,  text: '2 seconds', value: 2},
+    {idx: 2,  text: '3 seconds', value: 3},
+    {idx: 3,  text: '5 seconds', value: 5},
+    {idx: 4,  text: '8 seconds', value: 8},
+    {idx: 5,  text: '10 seconds', value: 10},
+];
+
+let speed_pitch = [
+    {idx: 0, text: '1.0', value: 1.0, cnt: 0 },
+];
+
 
 class SettingsScreen extends React.Component {
+
     static navigationOptions = ({navigation}) => {
         try {
             myfuncs.myBreadCrumbs('navigationOptions', 'AudioScreen');
             return {
+                headerLeft: () => <ThemeButton/>,
                 headerTitle: () => <ScreenTitle title={"Settings"}/>,
             };
         } catch (error) {
@@ -28,53 +47,66 @@ class SettingsScreen extends React.Component {
         super(props);
         this.state = {
             settings: this.props.settings,
-            test: "test",
         };
+    };
+    static getDerivedStateFromProps(nextProps, prevState){
+        let update = {};
+
+        // console.log("settings getDerivedStateFromPropsnext:", nextProps);
+        // console.log("settings getDerivedStateFromPropsprev:", prevState);
+        if (prevState.settings !== nextProps.settings) {
+            update.settings = nextProps.settings;
+        }
+        return Object.keys(update).length ? update: null;
     };
 
     render() {
         return (
             <SafeAreaView style={styles.container}>
+                <Layout style={{flex: 1, paddingLeft: 10, alignItems: 'flex-start'}}>
 
-                {/*<ThemeButton/>*/}
+                    <Toggle
+                        style={styles.toggle}
+                        status='warning'
 
-                <SettingsList style={styles.listItem} defaultItemSize={50}>
-                    <SettingsList.Item
-                        hasSwitch={true}
-                        switchState={this.state.settings.keep_awake}
-                        switchOnValueChange={(bEvent) => this.updateUser({keep_awake: bEvent})}
-                        hasNavArrow={false}
-                        title='Keep Screen Awake'
-                        titleStyle={styles.listTitle}
-                        onTintColor='purple'
-                        // backgroundColor='purple'
-                        underlayColor='purple'
-                    />
-                    <SettingsList.Item
-                        hasSwitch={true}
-                        switchState={this.state.settings.playEndOfStoryRibbit}
-                        switchOnValueChange={(bEvent) => this.updateUser({playEndOfStoryRibbit: bEvent})}
-                        hasNavArrow={false}
-                        title='Play Ribbit After Each Story'
-                        titleStyle={styles.listTitle}
-                    />
-                    <SettingsList.Item
-                        title='Audio Rate and Pitch'
-                        // titleInfo='Audio'
-                        titleInfoStyle={styles.titleInfoStyle}
-                        titleStyle={styles.listTitle}
-                        onPress={() => this.props.navigation.navigate("SettingsAudio")}
+                        text='Keep Screen Awake'
+                        textStyle={styles.text}
+                        checked={this.state.settings.keep_awake}
+                        onChange={(bEvent) => this.updateSettings({keep_awake: bEvent})}
                     />
 
-                    {/*<SettingsList.Header headerStyle={{marginTop:15}}/>*/}
+                    <Toggle
+                        style={styles.toggle}
+                        status='warning'
 
-                    <SettingsList.Item
-                        title='About'
-                        titleInfoStyle={styles.titleInfoStyle}
-                        titleStyle={styles.listTitle}
-                        onPress={() => this.props.navigation.navigate("SettingsAbout")}
+                        text='Play Ribbit After Each Story'
+                        textStyle={styles.text}
+                        checked={this.state.settings.playEndOfStoryRibbit}
+                        onChange={(bEvent) => this.updateSettings({playEndOfStoryRibbit: bEvent})}
                     />
-                </SettingsList>
+
+                    <View style={{paddingTop: 5}}/>
+
+                    { (this.state.settings.retrieved_user_data === true) &&
+                        <View>
+                            <Select
+                            style={styles.select}
+                            data={pause_data}
+                            status='warning'
+                            label='Pause Seconds between Stories'
+                            onSelect={(event) =>
+                                this.updateSettings(
+                                    {pauseBetweenStories: event.value,
+                                        pauseIdx: event.idx})}
+                            selectedOption={pause_data[this.state.settings.pauseIdx]}
+                            textStyle={styles.textStyle}
+                            labelStyle={styles.labelStyle}
+                            controlStyle={styles.controlStyle}
+                            />
+                        </View>
+                    }
+
+                </Layout>
 
                 <MyHelpIcon onPress={this.onHelpPress}/>
                 <MyHelpModal screen={"Settings"}
@@ -83,21 +115,18 @@ class SettingsScreen extends React.Component {
             </SafeAreaView>
         );
     }
-    updateTest = async (value) => {
+    updateSettings = async (new_prop, bEvent) => {
         try {
-            console.log("Value:", value+1);
-            this.setState({test: value});
+            // console.log("new_prop:", new_prop);
+            // console.log("bEvent:", bEvent);
 
-        } catch (error) {
-            console.log(error);
-            myfuncs.mySentry(error);
-        }
-    };
-    updateUser = async (new_prop) => {
-        try {
-            await this.setState({settings: {...this.state.settings, ...new_prop}});
-            this.props.updateSettings(this.state.settings);
+            let new_settings = {...this.state.settings, ...new_prop};
+
+            // Note, no need to update state, because state auto-updates in getDerivedState
+            // await this.setState({settings: new_settings});
+            await this.props.updateSettings(new_settings);
             await this.updateStorage();
+
             if (new_prop.keep_awake !== undefined) {
                 if (new_prop.keep_awake === true) {
                     // console.log("settings activate keepAwake")
@@ -107,7 +136,6 @@ class SettingsScreen extends React.Component {
                     deactivateKeepAwake();
                 }
             }
-
         } catch (error) {
             console.log(error);
             myfuncs.mySentry(error);
@@ -139,16 +167,40 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: MyDefines.myTabColor,
     },
-    titleInfoStyle: {
+    title: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginTop: 10,
+        marginBottom: 10,
+        alignSelf: 'center',
+        color: 'mediumpurple',
+
+    },
+    toggle: {
+        margin: 8,
+    },
+
+    select: {
+        margin: 8,
+    },
+    text: {
+        color: 'mediumpurple',
         fontSize: 20,
     },
-    listItem: {
-        borderColor: MyDefines.myTabColor,
+    textStyle: {
+        color: 'mediumpurple',
+        // fontSize: 10,
     },
-    listTitle: {
-        fontSize:20,
-        color: 'purple',
+    labelStyle: {
+        color: 'mediumpurple',
+        fontSize: 15,
     },
+    controlStyle: {
+        borderRadius: 8,
+        width: width-30,
+        color: 'mediumpurple',
+    },
+
 });
 
 const mapStateToProps = (state) => {

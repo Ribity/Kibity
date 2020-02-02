@@ -10,10 +10,11 @@ import MyDefines from './constants/MyDefines';
 import AudioScreen  from './screens/audio';
 import StoriesScreen from './screens/stories';
 import ProfilesScreen  from './screens/profiles';
-import ProfileSettingsScreen  from './screens/profileSettingsScreen';
+import ProfileSettings  from './screens/profileSettings';
 import SettingsScreen from './screens/settings';
-import SettingsAudioScreen from './screens/SettingsAudioScreen';
-import SettingsAboutScreen from './screens/SettingsAboutScreen';
+import SettingsEndOfStory from './screens/SettingsEndOfStory';
+import SettingsAudio from './screens/SettingsAudio';
+import SettingsAbout from './screens/SettingsAbout';
 
 let defNav = {
     headerStyle: {backgroundColor: MyDefines.myTabColor},
@@ -33,13 +34,14 @@ const StoriesStack = createStackNavigator({
 
 const ProfilesStack = createStackNavigator({
     Profiles: ProfilesScreen,
-    ProfileSettings: ProfileSettingsScreen,
+    ProfileSettings: ProfileSettings,
 }, {defaultNavigationOptions: () => (defNav)});
 
 const SettingsStack = createStackNavigator({
     Settings: SettingsScreen,
-    SettingsAudio: SettingsAudioScreen,
-    SettingsAbout: SettingsAboutScreen,
+    SettingsEndOfStory: SettingsEndOfStory,
+    SettingsAudio: SettingsAudio,
+    SettingsAbout: SettingsAbout,
 }, {defaultNavigationOptions: () => (defNav)});
 
 AudioStack.navigationOptions = {

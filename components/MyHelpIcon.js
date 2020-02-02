@@ -8,7 +8,7 @@ export default class MyHelpIcon extends React.Component {
                 <TouchableOpacity style={[styles.floatingHelpIcon, this.props.isAdmob && {bottom: 80}]}
                                   onPress={this.props.onPress}
                                   hitSlop={styles.hitSlop}>
-                        <Ionicons name="md-help-circle" size={30} color="purple"/>
+                        <Ionicons name="md-help-circle" size={30} color="mediumpurple"/>
                 </TouchableOpacity>
         );
     }

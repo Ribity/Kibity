@@ -17,8 +17,11 @@ export default {
     default_settings: {
         keep_awake: true,
         playEndOfStoryRibbit: true,
+        pauseIdx: 2,        // This defaults setting.js to highlight 3-seconds on Select list
+        pauseBetweenStories: 3,
         speech_pitch: 1.0,  //.5 thru
         speech_rate: 1.0,   // .5 thru 1.9
+        retrieved_user_data: false,
     },
 
     default_current_profile: {
