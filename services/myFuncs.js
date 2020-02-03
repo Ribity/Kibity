@@ -25,14 +25,19 @@ class myFuncs  {
 
     init = async () => {
         let settings = MyDefines.default_settings;
+        let profiles = MyDefines.default_profiles;
         let new_user = false;
         try {
             this.initSentry();
 
+            if (MyDefines.clearAllStorage === true)
+                await hardStorage.clearAll();
+
             new_user = await this.check_new_user();
-            let new_settings = await this.getUserSettingsFromLocalStorage();
-            if (new_settings !== null)
-                settings = {...settings, ...new_settings};
+
+            let retObj = await this.getUserSettingsFromLocalStorage();
+            settings = {...settings, ...retObj.settings};
+            profiles = {...profiles, ...retObj.profiles};
 
             this.prepareSound();
 
@@ -47,7 +52,7 @@ class myFuncs  {
             console.log("Send Sentry");
             this.mySentry(error);
         }
-        return {settings: settings, new_user: new_user};
+        return {settings: settings, profiles: profiles, new_user: new_user};
     };
     check_new_user = async () => {
         let new_user = false;
@@ -66,27 +71,30 @@ class myFuncs  {
     };
     getUserSettingsFromLocalStorage = async () => {
         let settings = MyDefines.default_settings;
+        let profiles = MyDefines.default_profiles;
         try {
-            settings = await hardStorage.getKey("user_settings");
-            // if (settings !== null) {
-            //     console.log("Got User Settings from localDeviceStorage: ", settings);
-            // } else {
-            //     console.log("Error reading User Settings from localDeviceStorage");
-            // }
+            let user_settings = await hardStorage.getKey("user_settings");
+            if (user_settings !== null)
+                settings = {...settings, ...user_settings};
+            let user_profiles = await hardStorage.getKey("user_profiles");
+            if (user_profiles !== null)
+                profiles = {...profiles, ...user_profiles};
+
         } catch (error) {
             this.mySentry(error);
         }
         // console.log("newsto:", settings);
         settings.retrieved_user_data = true;
-        return settings;
+        profiles.retrieved_user_data = true;
+        return {settings: settings, profiles: profiles};
     };
-    writeUserSettingsToLocalStorage = async (settings) => {
+    writeUserDataToLocalStorage = async (key, data) => {
         try {
-            await hardStorage.setKey("user_settings", settings);
-            // console.log("storage updated NewSettings:", settings);
+            await hardStorage.setKey(key, data);
+            // console.log("storage updated", keyAndData);
 
             if (MyDefines.log_details)
-                console.log("user_settings written to Storage");
+                console.log("user_data written to Storage:", keyAndData);
         } catch (error) {
             this.mySentry(error);
         }

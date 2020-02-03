@@ -9,15 +9,19 @@ import mystories from '../services/myStories';
 import storyconversion from '../services/storyConversion';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {setStoryIdx, setListType, setListIdx} from "../actions/currentProfileActions";
+import {setStoryIdx, setListType, setListIdx} from "../actions/profilesActions";
 import {updateStoryList} from "../actions/storyListActions";
 import {updateSettings} from "../actions/settingsActions";
+import {updateProfiles} from "../actions/profilesActions";
 import TasksComponent from '../components/TasksComponent';
 import myfuncs from "../services/myFuncs";
 import MyHelpIcon from "../components/MyHelpIcon";
 import MyHelpModal from "../components/MyHelpModal";
 import {ThemeButton} from "../components/themeButton";
 import {ScreenTitle} from "../components/screenTitle";
+import {ProfileHeader} from "../components/ProfileHeader";
+import MyButton from '../components/MyButton';
+
 
 let willUnmount = false;
 let myStory = null;
@@ -39,16 +43,21 @@ const initialState = {
     paused: false,
     line_idx: 0,
     num_lines: 0,
-    current_profile: MyDefines.default_current_profile,
+    profiles: MyDefines.default_profiles,
 };
+
+const pause_data = MyDefines.pause_data;
+const pitch_data = MyDefines.pitch_data;
 
 class AudioScreen extends React.Component {
     static navigationOptions = ({navigation}) => {
         try {
             myfuncs.myBreadCrumbs('navigationOptions', 'AudioScreen');
+            const { params = {} } = navigation.state;
             return {
                 headerLeft: () => <ThemeButton/>,
                 headerTitle: () => <ScreenTitle title={"Audio"}/>,
+                headerRight: () => <ProfileHeader profile={params.profile} action={params.action}/>,
             };
         } catch (error) {
             myfuncs.mySentry(error);
@@ -64,57 +73,78 @@ class AudioScreen extends React.Component {
     componentDidMount() {
         setTimeout(() => {this.getUserStoredData();}, 1);
 
+        this.props.navigation.setParams({profile: this.props.profiles.profile[this.props.profiles.profilesIdx]});
+        this.props.navigation.setParams({action: this.goToProfiles});
+
+
         this.subs = [
             this.props.navigation.addListener('willFocus', this.componentWillFocus),
         ];
         this.props.setListIdx(0);
         this.props.setStoryIdx(-1);
-        this.setState({current_profile: this.props.current_profile});
+        this.setState({profiles: this.props.profiles});
 
         if (MyDefines.log_audio)
             console.log("height:", height, " width:", width, "statusbar:", MyDefines.myStatusBarHeight);
 
-        // if ((this.props.current_profile.favorites.length === 0) &&
-        //     (this.props.current_profile.playList.length === 0) &&
+        // if ((this.props.profiles.profile[this.props.profiles.profilesIdx].favorites.length === 0) &&
+        //     (this.props.profiles.profile[this.props.profiles.profilesIdx].playList.length === 0) &&
         //     (this.state.num_lines === 0) ) {
         //     this.goToStoriesScreen();
         // }
     }
     getUserStoredData = async () => {
-        let {settings} = await myfuncs.init();
-        this.props.updateSettings(settings);
+        let retObj = await myfuncs.init();
+
+        await this.props.updateSettings(retObj.settings);
+        await this.props.updateProfiles(retObj.profiles);
+        this.props.navigation.setParams({profile: this.props.profiles.profile[this.props.profiles.profilesIdx]});
     };
 
-    // static getDerivedStateFromProps(nextProps, prevState){
-    //     let update = {};
-    //
-    //     console.log("getDerivedStateFromProps");
-    //     if (prevState.stories_list !== nextProps.stories_list) {
-    //         update.stories_list = nextProps.stories_list;
-    //     }
-    //     if (prevState.stories_list !== nextProps.stories_list) {
-    //         update.story_idx = nextProps.story_idx;
-    //         if (playingStory !== null)
-    //             clearTimeout(playingStory);
-    //
-    //         playingStory = setTimeout(() => {this.getItAndPlay();}, 1000);
-    //     }
-    //
-    //     return Object.keys(update).length ? update: null;
-    // };
+    static getDerivedStateFromProps(nextProps, prevState){
+        let update = {};
 
+        // console.log("getDerivedStateFromProps:", nextProps);
+        if (prevState.stories_list !== nextProps.stories_list) {
+            update.stories_list = nextProps.stories_list;
+        }
+        // if (prevState.stories_list !== nextProps.stories_list) {
+        //     update.story_idx = nextProps.story_idx;
+        //     if (playingStory !== null)
+        //         clearTimeout(playingStory);
+        //
+        //     playingStory = setTimeout(() => {this.getItAndPlay();}, 1000);
+        // }
+        return Object.keys(update).length ? update: null;
+    };
+    checkStorySelectedParm = () => {
+        let playIt = this.props.navigation.getParam('storySelected', false);
+        if (playIt) {
+            this.props.navigation.setParams({storySelected: false});
+            story_idx = this.props.profiles.profile[this.props.profiles.profilesIdx].currStoryIdx;
+            if (story_idx !== -1)
+                this.getItAndPlay();
+        }
+    };
     componentWillFocus() {
         try {
-            this.setState({current_profile: this.props.current_profile});
-            if (MyDefines.log_audio)
-                console.log("Focused props.story_idx:", this.props.current_profile.currStoryIdx, "story_idx:", story_idx);
-            if (this.props.current_profile.currStoryIdx !== story_idx) {
-                if (MyDefines.log_audio)
-                    console.log("FocusingToAudio, props.story_idx:", this.props.current_profile.currStoryIdx, "story_idx:", story_idx);
-                story_idx = this.props.current_profile.currStoryIdx;
-                if (story_idx !== -1)
-                    this.getItAndPlay();
-            }
+            this.setState({profiles: this.props.profiles});
+
+            // if (MyDefines.log_audio)
+            //     console.log("Focused props.story_idx:", this.props.profiles.profile[this.props.profiles.profilesIdx].currStoryIdx,
+            //         "story_idx:", story_idx);
+            // if (this.props.profiles.profile[this.props.profiles.profilesIdx].currStoryIdx !== story_idx) {
+            //     if (MyDefines.log_audio)
+            //         console.log("FocusingToAudio, props.story_idx:", this.props.profiles.profile[this.props.profiles.profilesIdx].currStoryIdx,
+            //             "story_idx:", story_idx);
+            //     story_idx = this.props.profiles.profile[this.props.profiles.profilesIdx].currStoryIdx;
+            //     if (story_idx !== -1)
+            //         this.getItAndPlay();
+            // }
+
+            this.props.navigation.setParams({profile: this.props.profiles.profile[this.props.profiles.profilesIdx]});
+            this.checkStorySelectedParm();
+
         } catch (error) {
             // myfuncs.mySentry(error);
         }
@@ -135,6 +165,12 @@ class AudioScreen extends React.Component {
             clearTimeout(playingStory);
         }
         this.subs.forEach(sub => sub.remove());  // removes the componentWillFocus listener
+    };
+    goToProfiles = () => {
+        this.props.navigation.navigate("Profiles");
+    };
+    goToStoriesScreen = () => {
+        this.props.navigation.navigate("Stories");
     };
     getItAndPlay = () => {
         if (MyDefines.log_audio)
@@ -184,7 +220,7 @@ class AudioScreen extends React.Component {
             console.log("playIt", myStory);
         if (myStory !== null) {
 
-            myStory = storyconversion.convertIt(myStory, null);
+            myStory = storyconversion.convertIt(myStory, this.props.profiles.profile[this.props.profiles.profilesIdx]);
             if (MyDefines.log_details)
                 console.log("convertedStory:", myStory);
 
@@ -235,8 +271,8 @@ class AudioScreen extends React.Component {
                 Speech.speak(myStory.line[myIdx], {
                     // voice: "com.apple.ttsbundle.Samantha-compact",
                     // language: 'en',
-                    pitch: this.props.settings.speech_pitch,
-                    rate: this.props.settings.speech_rate,
+                    pitch: pitch_data[this.props.settings.pitchIdx].value,
+                    rate: pitch_data[this.props.settings.rateIdx].value,
                     onDone: this.playNextLine,
                     // onStopped: speechStopped,
                     // onStart: scheduleTheCheckSpeech,
@@ -251,7 +287,7 @@ class AudioScreen extends React.Component {
             if (MyDefines.log_audio)
                 console.log("Finished story");
             if (MyDefines.log_details)
-                console.log(this.props.current_profile);
+                console.log(this.props.profiles.profile[this.props.profiles.profilesIdx]);
             this.finishedStory();
         }
     };
@@ -337,10 +373,10 @@ class AudioScreen extends React.Component {
         // this.props.setListIdx(0);
         // this.props.setStoryIdx(-1);
         //
-        // if (this.props.current_profile.favorites.length < 1 && this.props.current_profile.playList.length < 1)
+        // if (this.props.profiles.profile[this.props.profiles.profilesIdx].favorites.length < 1 && this.props.profiles.profile[this.props.profiles.profilesIdx].playList.length < 1)
         //     this.goToStoriesScreen();
 
-        nextStoryTimeout = setTimeout(() => {this.playNext()}, this.props.settings.pauseBetweenStories*1000);
+        nextStoryTimeout = setTimeout(() => {this.playNext()}, pause_data[this.props.settings.pauseIdx].value*1000);
     };
 
     // resetAndGoToStoriesScreen = () => {
@@ -355,45 +391,42 @@ class AudioScreen extends React.Component {
     //
     //     this.goToStoriesScreen();
     // };
-    goToStoriesScreen = () => {
-        this.props.navigation.navigate("Stories");
-    };
     playFavorites = () => {
-        if (this.props.current_profile.favorites.length) {
+        if (this.props.profiles.profile[this.props.profiles.profilesIdx].favorites.length) {
             this.props.setListType(1);
             this.props.setListIdx(0);
-            story_idx = this.props.current_profile.favorites[0];
+            story_idx = this.props.profiles.profile[this.props.profiles.profilesIdx].favorites[0];
             this.props.setStoryIdx(story_idx);
             this.getItAndPlay();
         }
     };
     playPlayList = () => {
-        if (this.props.current_profile.playList.length) {
+        if (this.props.profiles.profile[this.props.profiles.profilesIdx].playList.length) {
             this.props.setListType(2);
             this.props.setListIdx(0);
-            story_idx = this.props.current_profile.playList[0];
+            story_idx = this.props.profiles.profile[this.props.profiles.profilesIdx].playList[0];
             this.props.setStoryIdx(story_idx);
             this.getItAndPlay();
         }
     };
     playPrevious = () => {
         let listIdx;
-        if (this.props.current_profile.currListType === 1) {  // If playing favorites
-            if (this.props.current_profile.currListIdx === 0) {
-                listIdx = this.props.current_profile.favorites.length-1;
+        if (this.props.profiles.profile[this.props.profiles.profilesIdx].currListType === 1) {  // If playing favorites
+            if (this.props.profiles.profile[this.props.profiles.profilesIdx].currListIdx === 0) {
+                listIdx = this.props.profiles.profile[this.props.profiles.profilesIdx].favorites.length-1;
             } else {
-                listIdx = this.props.current_profile.currListIdx-1;
+                listIdx = this.props.profiles.profile[this.props.profiles.profilesIdx].currListIdx-1;
             }
-            story_idx = this.props.current_profile.favorites[listIdx];
+            story_idx = this.props.profiles.profile[this.props.profiles.profilesIdx].favorites[listIdx];
             this.props.setListIdx(listIdx);
             this.props.setStoryIdx(story_idx);
-        } else if (this.props.current_profile.currListType === 2) {  // If playing playlist
-            if (this.props.current_profile.currListIdx === 0) {
-                listIdx = this.props.current_profile.playList.length-1;
+        } else if (this.props.profiles.profile[this.props.profiles.profilesIdx].currListType === 2) {  // If playing playlist
+            if (this.props.profiles.profile[this.props.profiles.profilesIdx].currListIdx === 0) {
+                listIdx = this.props.profiles.profile[this.props.profiles.profilesIdx].playList.length-1;
             } else {
-                listIdx = this.props.current_profile.currListIdx-1;
+                listIdx = this.props.profiles.profile[this.props.profiles.profilesIdx].currListIdx-1;
             }
-            story_idx = this.props.current_profile.playList[listIdx];
+            story_idx = this.props.profiles.profile[this.props.profiles.profilesIdx].playList[listIdx];
             this.props.setListIdx(listIdx);
             this.props.setStoryIdx(story_idx);
         }
@@ -401,11 +434,11 @@ class AudioScreen extends React.Component {
         this.getItAndPlay();
     };
     validateListPlay = () => {
-        if ((this.props.current_profile.currListType === 1) &&
-            (this.props.current_profile.favorites.length === 0)) {  // This covers case where use removed all from playList while it was playing
+        if ((this.props.profiles.profile[this.props.profiles.profilesIdx].currListType === 1) &&
+            (this.props.profiles.profile[this.props.profiles.profilesIdx].favorites.length === 0)) {  // This covers case where use removed all from playList while it was playing
             this.props.setListType(0);
-        } else if ((this.props.current_profile.currListType === 2) &&
-            (this.props.current_profile.playList.length === 0)) {  // This covers case where use removed all from playList while it was playing
+        } else if ((this.props.profiles.profile[this.props.profiles.profilesIdx].currListType === 2) &&
+            (this.props.profiles.profile[this.props.profiles.profilesIdx].playList.length === 0)) {  // This covers case where use removed all from playList while it was playing
             this.props.setListType(0);
         }
     };
@@ -413,22 +446,22 @@ class AudioScreen extends React.Component {
         let listIdx;
         this.validateListPlay();
 
-        if (this.props.current_profile.currListType === 1) {  // If playing favorites
-            if (this.props.current_profile.currListIdx < this.props.current_profile.favorites.length - 1) {
-                listIdx = this.props.current_profile.currListIdx + 1;
+        if (this.props.profiles.profile[this.props.profiles.profilesIdx].currListType === 1) {  // If playing favorites
+            if (this.props.profiles.profile[this.props.profiles.profilesIdx].currListIdx < this.props.profiles.profile[this.props.profiles.profilesIdx].favorites.length - 1) {
+                listIdx = this.props.profiles.profile[this.props.profiles.profilesIdx].currListIdx + 1;
             } else {
                 listIdx = 0;
             }
-            story_idx = this.props.current_profile.favorites[listIdx];
+            story_idx = this.props.profiles.profile[this.props.profiles.profilesIdx].favorites[listIdx];
             this.props.setListIdx(listIdx);
             this.props.setStoryIdx(story_idx);
-        } else if (this.props.current_profile.currListType === 2) {  // If playing playlist
-            if (this.props.current_profile.currListIdx < this.props.current_profile.playList.length - 1) {
-                listIdx = this.props.current_profile.currListIdx + 1;
+        } else if (this.props.profiles.profile[this.props.profiles.profilesIdx].currListType === 2) {  // If playing playlist
+            if (this.props.profiles.profile[this.props.profiles.profilesIdx].currListIdx < this.props.profiles.profile[this.props.profiles.profilesIdx].playList.length - 1) {
+                listIdx = this.props.profiles.profile[this.props.profiles.profilesIdx].currListIdx + 1;
             } else {
                 listIdx = 0;
             }
-            story_idx = this.props.current_profile.playList[listIdx];
+            story_idx = this.props.profiles.profile[this.props.profiles.profilesIdx].playList[listIdx];
             this.props.setListIdx(listIdx);
             this.props.setStoryIdx(story_idx);
         }
@@ -476,20 +509,20 @@ class AudioScreen extends React.Component {
                                 }
                                 </View>
                             <View style={styles.bottom}>
-                                {this.state.current_profile.currListType === 0  &&
+                                {this.state.profiles.profile[this.state.profiles.profilesIdx].currListType === 0  &&
                                 <View>
-                                    {this.state.current_profile.favorites.length > 0 &&
+                                    {this.state.profiles.profile[this.state.profiles.profilesIdx].favorites.length > 0 &&
                                     <Button style={styles.bottomButtons}
                                             onPress={this.playFavorites}>Start Favorites</Button>
                                     }
-                                    {this.state.current_profile.playList.length > 0 &&
+                                    {this.state.profiles.profile[this.state.profiles.profilesIdx].playList.length > 0 &&
                                         <Button style={styles.bottomButtons}
                                             onPress={this.playPlayList}>Start Playlist</Button>
                                     }
                                 </View>
                                 }
-                                { (this.state.current_profile.currListType === 1  &&
-                                    this.state.current_profile.favorites.length > 0) &&
+                                { (this.state.profiles.profile[this.state.profiles.profilesIdx].currListType === 1  &&
+                                    this.state.profiles.profile[this.state.profiles.profilesIdx].favorites.length > 0) &&
                                 <View>
                                     <View style={styles.playRow}>
                                         <Text style={styles.playType}>Playing Favorites</Text>
@@ -501,8 +534,8 @@ class AudioScreen extends React.Component {
                                             onPress={this.playNext}>Next Favorite Story</Button>
                                 </View>
                                 }
-                                { (this.state.current_profile.currListType === 2  &&
-                                    this.state.current_profile.playList.length > 0) &&
+                                { (this.state.profiles.profile[this.state.profiles.profilesIdx].currListType === 2  &&
+                                    this.state.profiles.profile[this.state.profiles.profilesIdx].playList.length > 0) &&
                                 <View>
                                     <View style={styles.playRow}>
                                         <Text style={styles.playType}>Playing Playlist</Text>
@@ -519,36 +552,41 @@ class AudioScreen extends React.Component {
                         :
                         <View>
                             {this.state.intro_screen ?
-                            <View>
-                                <View style={{padding: 5}}/>
-                                <Text style={styles.welcomeUser}>Welcome to Kibity</Text>
-                                <View style={{padding: 5}}/>
-                                <Image style={styles.kibityLogo} source={kibityLogo}/>
-                                <View style={{padding: 15}}/>
+                                <View>
+                                    <View style={{padding: 5}}/>
+                                    <Text style={styles.welcomeUser}>Welcome to Kibity</Text>
+                                    <View style={{padding: 5}}/>
+                                    <Image style={styles.kibityLogo} source={kibityLogo}/>
+                                    <View style={{padding: 15}}/>
 
-                                {/*<Text style={styles.welcomeUser}>Where your dream becomes reality</Text>*/}
-                            </View>
+                                    {/*<Text style={styles.welcomeUser}>Where your dream becomes reality</Text>*/}
+                                </View>
                                 :
                                 <View>
                                     <View style={{padding: 35}}/>
 
                                 </View>
-
                             }
-                            {/*<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>*/}
-                            {/*<View style={{paddingTop: 20}}/>*/}
+                                <MyButton buttonStyle={styles.selectButton}
+                                          textStyle={{color: 'gold', fontWeight: 'bold'}}
+                                          onPress={this.goToStoriesScreen}
+                                          title={"Select a Story, or\nBuild a PlayList"}>
+                                </MyButton>
+                                {this.state.profiles.profile[this.state.profiles.profilesIdx].favorites.length > 0 &&
+                                <MyButton buttonStyle={styles.selectButton}
+                                          textStyle={{color: 'gold', fontWeight: 'bold'}}
+                                          onPress={this.playFavorites}
+                                          title={"Play Favorites"}>
+                                </MyButton>
 
-                            <Button style={styles.selectButton}
-                                        onPress={this.goToStoriesScreen}>Select a Story, or{"\n"}Build a PlayList</Button>
-                                {this.state.current_profile.favorites.length > 0 &&
-                                <Button style={styles.selectButton}
-                                        onPress={this.playFavorites}>Play Favorites</Button>
                                 }
-                                {this.state.current_profile.playList.length > 0 &&
-                                <Button style={styles.selectButton}
-                                        onPress={this.playPlayList}>Play Playlist</Button>
+                                {this.state.profiles.profile[this.state.profiles.profilesIdx].playList.length > 0 &&
+                                <MyButton buttonStyle={styles.selectButton}
+                                    textStyle={{color: 'gold', fontWeight: 'bold'}}
+                                    onPress={this.playPlayList}
+                                    title={"Play Playlist"}>
+                                </MyButton>
                                 }
-                                {/*</View>*/}
                         </View>
                     }
                     </Layout>
@@ -579,8 +617,6 @@ class AudioScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: '#ecf0f1',
-        // justifyContent: 'space-between',
     },
     kibityLogo: {
         justifyContent:'center',
@@ -628,7 +664,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 70,
         backgroundColor: 'purple',
         alignSelf: 'center',
-        color: 'goldenrod',
+        borderColor: 'goldenrod',
     },
     bottomButtons: {
         marginVertical: 5,
@@ -669,14 +705,15 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     const { story_list } = state;
-    const { current_profile } = state;
+    const { profiles } = state;
     const { settings } = state;
-    return { story_list, current_profile, settings }
+    return { story_list, profiles, settings }
 };
 const mapDispatchToProps = dispatch => (
     bindActionCreators({
         updateStoryList,
         updateSettings,
+        updateProfiles,
         setStoryIdx,
         setListType,
         setListIdx,

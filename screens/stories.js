@@ -10,7 +10,7 @@ import MyDefines from '../constants/MyDefines';
 import myStyles from '../myStyles'
 // import MyCard from "../components/myCard";
 import MyListComponent from '../components/MyListComponent';
-import { setStoryIdx, setListType, setListIdx} from '../actions/currentProfileActions';
+import { setStoryIdx, setListType, setListIdx} from '../actions/profilesActions';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {Ionicons} from '@expo/vector-icons';
@@ -53,7 +53,7 @@ class StoriesScreen extends React.Component {
         super(props);
         this.state = {
             story_list: MyDefines.default_story_list,
-            current_profile: MyDefines.default_current_profile,
+            profiles: MyDefines.default_profiles,
             filterType: 0,
         };
     };
@@ -63,7 +63,7 @@ class StoriesScreen extends React.Component {
 
         this.props.navigation.setParams({getRight: this.listList});
         this.props.navigation.setParams({getLeft: this.listFaves});
-        this.props.navigation.setParams({numFaves: this.props.current_profile.favorites.length});
+        this.props.navigation.setParams({numFaves: this.props.profiles.profile[this.props.profiles.profilesIdx].favorites.length});
         this.props.navigation.setParams({filterType: this.state.filterType});
         // console.log("StoriesScreen DidMount:", this.props.story_list);
     }
@@ -77,7 +77,8 @@ class StoriesScreen extends React.Component {
                 this.setState({filterType: 2});
                 this.props.navigation.setParams({filterType: 2});
             }
-            console.log("PressedRight");
+            if (MyDefines.log_details)
+                console.log("PressedRight");
         } catch (error) {
             myfuncs.mySentry(error);
         }
@@ -92,7 +93,8 @@ class StoriesScreen extends React.Component {
                 this.setState({filterType: 1});
                 this.props.navigation.setParams({filterType: 1});
             }
-            console.log("PressedLeft");
+            if (MyDefines.log_details)
+                console.log("PressedLeft");
         } catch (error) {
             myfuncs.mySentry(error);
         }
@@ -102,7 +104,8 @@ class StoriesScreen extends React.Component {
             myfuncs.myBreadCrumbs('resetFilter', this.props.navigation.state.routeName);
             this.setState({filterType: 0});
             this.props.navigation.setParams({filterType: 0});
-            console.log("ResetFilter");
+            if (MyDefines.log_details)
+                console.log("ResetFilter");
         } catch (error) {
             myfuncs.mySentry(error);
         }
@@ -118,14 +121,16 @@ class StoriesScreen extends React.Component {
     static getDerivedStateFromProps(nextProps, prevState){
         let update = {};
 
-        console.log("stories getDerivedStateFromProps");
+        if (MyDefines.log_details)
+            console.log("stories getDerivedStateFromProps");
         if (prevState.stories_list !== nextProps.stories_list) {
             update.stories_list = nextProps.stories_list;
         }
-        if (prevState.current_profile !== nextProps.current_profile) {
-            update.current_profile = nextProps.current_profile;
+        if (prevState.profiles !== nextProps.profiles) {
+            update.profiles = nextProps.profiles;
         }
-        console.log("stories derivedState:", update);
+        if (MyDefines.log_details)
+            console.log("stories derivedState:", update);
         return Object.keys(update).length ? update: null;
     };
     // componentDidUpdate(prevProps, prevState) {
@@ -133,37 +138,38 @@ class StoriesScreen extends React.Component {
     //     console.log("StoriesScreenDidUpdate");
     // }
     populateStateStoryList = () => {
-        console.log("populateStoryList in StoriesScreen");
+        if (MyDefines.log_details)
+            console.log("populateStoryList in StoriesScreen");
         this.setState({story_list: this.props.story_list});
     };
     updateStoriesCurrentProfile = () => {
         // console.log("updateStoriesCurrentProfile");
-        this.setState({current_profile: this.props.current_profile});
-        this.props.navigation.setParams({numFaves: this.props.current_profile.favorites.length});
-        this.props.navigation.setParams({numList: this.props.current_profile.playList.length});
+        this.setState({profiles: this.props.profiles});
+        this.props.navigation.setParams({numFaves: this.props.profiles.profile[this.props.profiles.profilesIdx].favorites.length});
+        this.props.navigation.setParams({numList: this.props.profiles.profile[this.props.profiles.profilesIdx].playList.length});
     };
     onPressStorySelection = (story, idx) => {
         // console.log("onPressStorySelection:", idx );
         this.props.setListType(0);
         this.props.setStoryIdx(idx);
-        this.props.navigation.navigate("Audio");
+        this.props.navigation.navigate("Audio", {storySelected: true});
     };
     playFavorites = () => {
         // console.log("Play faves");
-        if (this.state.current_profile.favorites.length) {
+        if (this.state.profiles.profile[this.props.profiles.profilesIdx].favorites.length) {
             this.props.setListType(1);
             this.props.setListIdx(0);
-            this.props.setStoryIdx(this.state.current_profile.favorites[0]);
-            this.props.navigation.navigate("Audio");
+            this.props.setStoryIdx(this.state.profiles.profile[this.props.profiles.profilesIdx].favorites[0]);
+            this.props.navigation.navigate("Audio", {storySelected: true});
         }
     };
     playPlayList = () => {
         // console.log("Play PlayList");
-        if (this.state.current_profile.playList.length) {
+        if (this.state.profiles.profile[this.props.profiles.profilesIdx].playList.length) {
             this.props.setListType(2);
             this.props.setListIdx(0);
-            this.props.setStoryIdx(this.state.current_profile.playList[0]);
-            this.props.navigation.navigate("Audio");
+            this.props.setStoryIdx(this.state.profiles.profile[this.props.profiles.profilesIdx].playList[0]);
+            this.props.navigation.navigate("Audio", {storySelected: true});
         }
     };
     render() {
@@ -174,7 +180,7 @@ class StoriesScreen extends React.Component {
             <View style={styles.container}>
                 <View style={styles.topRow}>
 
-                    {(this.state.current_profile.favorites.length > 0) &&
+                    {(this.state.profiles.profile[this.props.profiles.profilesIdx].favorites.length > 0) &&
                     <View>
                         <TouchableOpacity onPress={this.playFavorites}>
                             <View style={styles.faves}>
@@ -192,7 +198,7 @@ class StoriesScreen extends React.Component {
                         <Text style={styles.titleText}>Select a story</Text>
                     </View>
 
-                    {(this.state.current_profile.playList.length > 0) &&
+                    {(this.state.profiles.profile[this.props.profiles.profilesIdx].playList.length > 0) &&
                         <View>
                         <TouchableOpacity onPress={this.playPlayList}>
                             <View style={styles.playList}>
@@ -305,8 +311,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     const { story_list } = state;
-    const { current_profile } = state;
-    return { story_list, current_profile }
+    const { profiles } = state;
+    return { story_list, profiles }
 };
 const mapDispatchToProps = dispatch => (
     bindActionCreators({

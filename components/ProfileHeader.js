@@ -1,19 +1,15 @@
 import React from 'react';
 import {Text, View, TouchableOpacity, StyleSheet} from "react-native";
-import myStyles from "../myStyles";
 
-export const StoriesHeaderButton = (props) => {
-
-    let text = "All";
-    if (props.buttonType === 1 && props.filterType !== 1)
-        text = "Faves";
-    else if (props.buttonType === 2 && props.filterType !== 2)
-        text = "PlayList";
-
+export const ProfileHeader = (props) => {
+    let text = "";
+    if (props.profile !== undefined && props.profile !== null) {
+        if (props.profile.mainChar !== undefined && props.profile.mainChar !== null)
+            text = props.profile.mainChar;
+    }
     return (
         <View>
             <TouchableOpacity onPress={() => props.action()} hitSlop={styles.hitSlop}>
-                <Text style={styles.myText}>Show</Text>
                 <Text style={styles.myText}>{text}</Text>
             </TouchableOpacity>
         </View>
@@ -26,7 +22,7 @@ const styles = StyleSheet.create({
         fontSize: 17,
         opacity: 1.0,
         color: 'purple',
-        paddingHorizontal: 5,
+        paddingRight: 5,
     },
     hitSlop: {
         top: 10,

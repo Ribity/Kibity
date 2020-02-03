@@ -5,12 +5,11 @@ import {Ionicons} from '@expo/vector-icons';
 import Toast from 'react-native-easy-toast';
 import MyButton from "../components/MyButton";
 
-
 import { connect } from 'react-redux';
 
 import myStyles from "../myStyles";
 import {bindActionCreators} from "redux";
-import {addFavorite, addPlayList, removeFavorite, removePlayList} from "../actions/currentProfileActions";
+import {addFavorite, addPlayList, removeFavorite, removePlayList} from "../actions/profilesActions";
 
 const {height, width} = Dimensions.get('window');
 
@@ -124,28 +123,28 @@ class MyListComponent extends React.Component {
         }
     };
     addToFaves = (index) => {
-        let msg = "Added to " + this.props.current_profile.mainChar + "'s Favorites";
+        let msg = "Added to " + this.props.profiles.profile[this.props.profiles.profilesIdx].mainChar + "'s Favorites";
         this.refs.toast.show(msg, 500);
         this.props.addFavorite(index);
         this.setState({data: this.props.myList});
         this.props.updateParentStoriesCurrentProfile();
     };
     removeFromFaves = (index) => {
-        let msg = "Removed from " + this.props.current_profile.mainChar + "'s Favorites";
+        let msg = "Removed from " + this.props.profiles.profile[this.props.profiles.profilesIdx].mainChar + "'s Favorites";
         this.refs.toast.show(msg, 500);
         this.props.removeFavorite(index);
         this.setState({data: this.props.myList});
         this.props.updateParentStoriesCurrentProfile();
     };
     addToPlayList = (index) => {
-        let msg = "Added to " + this.props.current_profile.mainChar + "'s PlayList";
+        let msg = "Added to " + this.props.profiles.profile[this.props.profiles.profilesIdx].mainChar + "'s PlayList";
         this.refs.toastPlay.show(msg, 500);
         this.props.addPlayList(index);
         this.setState({data: this.props.myList});
         this.props.updateParentStoriesCurrentProfile();
     };
     removeFromPlayList = (index) => {
-        let msg = "Removed from " + this.props.current_profile.mainChar + "'s PlayList";
+        let msg = "Removed from " + this.props.profiles.profile[this.props.profiles.profilesIdx].mainChar + "'s PlayList";
         this.refs.toastPlay.show(msg, 500);
         this.props.removePlayList(index);
         this.setState({data: this.props.myList});
@@ -154,12 +153,12 @@ class MyListComponent extends React.Component {
     rightIcons = (index) => {
         // console.log("item:", index);
         let bFave = false;
-        for (let fave of this.props.current_profile.favorites) {
+        for (let fave of this.props.profiles.profile[this.props.profiles.profilesIdx].favorites) {
             if (index === fave)
                 bFave = true;
         }
         let bPlayList = false;
-        for (let play of this.props.current_profile.playList) {
+        for (let play of this.props.profiles.profile[this.props.profiles.profilesIdx].playList) {
             if (index === play)
                 bPlayList = true;
         }
@@ -181,11 +180,11 @@ class MyListComponent extends React.Component {
     };
     renderItem = (({item, index}) => {
             try {
-                console.log("Insight renderItem. FilterType = ", this.props.filterType);
+                // console.log("Insight renderItem. FilterType = ", this.props.filterType);
 
                 if (this.props.filterType === 1) {
                     let bIsItemInFaves = false;
-                    let faves = this.props.current_profile.favorites;
+                    let faves = this.props.profiles.profile[this.props.profiles.profilesIdx].favorites;
 
                     if (faves.length === 0) {
                         if (index === 0) {
@@ -230,7 +229,7 @@ class MyListComponent extends React.Component {
                         return;
                 } else if (this.props.filterType === 2) {
                     let bIsItemInList = false;
-                    let list = this.props.current_profile.playList;
+                    let list = this.props.profiles.profile[this.props.profiles.profilesIdx].playList;
                     if (list.length === 0) {
                         if (index === 0) {
                             return (
@@ -422,8 +421,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-    const { current_profile } = state;
-    return {current_profile}
+    const { profiles } = state;
+    return {profiles}
 };
 const mapDispatchToProps = dispatch => (
     bindActionCreators({

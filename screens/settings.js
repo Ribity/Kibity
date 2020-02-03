@@ -1,6 +1,5 @@
 import React from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native'
-
 import {SafeAreaView} from "react-navigation";
 import {Text, Layout, Select, Toggle} from "@ui-kitten/components";
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
@@ -16,19 +15,9 @@ import {ThemeButton} from "../components/themeButton";
 
 const {height, width} = Dimensions.get('window');
 
-let pause_data = [
-    {idx: 0, text: '1 second', value: 1},
-    {idx: 1,  text: '2 seconds', value: 2},
-    {idx: 2,  text: '3 seconds', value: 3},
-    {idx: 3,  text: '5 seconds', value: 5},
-    {idx: 4,  text: '8 seconds', value: 8},
-    {idx: 5,  text: '10 seconds', value: 10},
-];
-
-let speed_pitch = [
-    {idx: 0, text: '1.0', value: 1.0, cnt: 0 },
-];
-
+const pause_data = MyDefines.pause_data;
+const pitch_data = MyDefines.pitch_data;
+const rate_data = MyDefines.rate_data;
 
 class SettingsScreen extends React.Component {
 
@@ -52,8 +41,6 @@ class SettingsScreen extends React.Component {
     static getDerivedStateFromProps(nextProps, prevState){
         let update = {};
 
-        // console.log("settings getDerivedStateFromPropsnext:", nextProps);
-        // console.log("settings getDerivedStateFromPropsprev:", prevState);
         if (prevState.settings !== nextProps.settings) {
             update.settings = nextProps.settings;
         }
@@ -93,15 +80,38 @@ class SettingsScreen extends React.Component {
                             style={styles.select}
                             data={pause_data}
                             status='warning'
-                            label='Pause Seconds between Stories'
+                            label='Pause seconds between stories'
                             onSelect={(event) =>
-                                this.updateSettings(
-                                    {pauseBetweenStories: event.value,
-                                        pauseIdx: event.idx})}
+                                this.updateSettings({pauseIdx: event.idx})}
                             selectedOption={pause_data[this.state.settings.pauseIdx]}
                             textStyle={styles.textStyle}
                             labelStyle={styles.labelStyle}
                             controlStyle={styles.controlStyle}
+                            />
+
+                            <Select
+                                style={styles.select}
+                                data={pitch_data}
+                                status='warning'
+                                label='Voice pitch'
+                                onSelect={(event) =>
+                                    this.updateSettings({pitchIdx: event.idx})}
+                                selectedOption={pitch_data[this.state.settings.pitchIdx]}
+                                textStyle={styles.textStyle}
+                                labelStyle={styles.labelStyle}
+                                controlStyle={styles.controlStyle}
+                            />
+                            <Select
+                                style={styles.select}
+                                data={rate_data}
+                                status='warning'
+                                label='Voice speed'
+                                onSelect={(event) =>
+                                    this.updateSettings({rateIdx: event.idx})}
+                                selectedOption={rate_data[this.state.settings.rateIdx]}
+                                textStyle={styles.textStyle}
+                                labelStyle={styles.labelStyle}
+                                controlStyle={styles.controlStyle}
                             />
                         </View>
                     }
@@ -115,10 +125,9 @@ class SettingsScreen extends React.Component {
             </SafeAreaView>
         );
     }
-    updateSettings = async (new_prop, bEvent) => {
+    updateSettings = async (new_prop) => {
         try {
             // console.log("new_prop:", new_prop);
-            // console.log("bEvent:", bEvent);
 
             let new_settings = {...this.state.settings, ...new_prop};
 
@@ -142,8 +151,8 @@ class SettingsScreen extends React.Component {
         }
     };
     updateStorage = async () => {
-        await myfuncs.writeUserSettingsToLocalStorage(this.props.settings);
-        console.log("storage updated NewSettings:", this.props.settings);
+        await myfuncs.writeUserDataToLocalStorage("user_settings", this.props.settings);
+        // console.log("storage updated NewSettings:", this.props.settings);
     };
     onHelpPress = () => {
         try {
@@ -167,19 +176,9 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: MyDefines.myTabColor,
     },
-    title: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginTop: 10,
-        marginBottom: 10,
-        alignSelf: 'center',
-        color: 'mediumpurple',
-
-    },
     toggle: {
         margin: 8,
     },
-
     select: {
         margin: 8,
     },
@@ -189,7 +188,6 @@ const styles = StyleSheet.create({
     },
     textStyle: {
         color: 'mediumpurple',
-        // fontSize: 10,
     },
     labelStyle: {
         color: 'mediumpurple',

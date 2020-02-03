@@ -33,6 +33,16 @@ class deviceStorage  {
             // myfuncs.mySentry(error);
         }
     };
+
+    clearAll = async () => {
+        try{
+            await AsyncStorage.clear();
+        } catch (error) {
+            console.log('AsyncStorage.clear Error: ' + error.message);
+            // myfuncs.mySentry(error);
+        }
+    };
+
 }
 
 const hardStorage = new deviceStorage();
