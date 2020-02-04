@@ -20,7 +20,7 @@ import MyHelpModal from "../components/MyHelpModal";
 import {ThemeButton} from "../components/themeButton";
 import {ScreenTitle} from "../components/screenTitle";
 import {ProfileHeader} from "../components/ProfileHeader";
-import MyButton from '../components/MyButton';
+import {MyButton} from '../components/MyButton';
 
 
 let willUnmount = false;
@@ -475,10 +475,8 @@ class AudioScreen extends React.Component {
                 <Layout style={{flex: 1, alignItems: 'center'}}>
                     <TasksComponent/>
                     {/*<ThemeButton/>*/}
-                    {this.state.playing ?
+                    {this.state.playing &&
                         <Text style={styles.audioTitle}>{this.state.story_title}</Text>
-                        :
-                        <Text style={styles.audioTitle}>  </Text>
                     }
                     {this.state.num_lines > 0 ?
                         <View style={{justifyContent: 'space-between'}}>
@@ -567,14 +565,15 @@ class AudioScreen extends React.Component {
 
                                 </View>
                             }
+                            <View>
                                 <MyButton buttonStyle={styles.selectButton}
-                                          textStyle={{color: 'gold', fontWeight: 'bold'}}
+                                          textStyle={styles.selectButtonText}
                                           onPress={this.goToStoriesScreen}
                                           title={"Select a Story, or\nBuild a PlayList"}>
                                 </MyButton>
                                 {this.state.profiles.profile[this.state.profiles.profilesIdx].favorites.length > 0 &&
                                 <MyButton buttonStyle={styles.selectButton}
-                                          textStyle={{color: 'gold', fontWeight: 'bold'}}
+                                          textStyle={styles.selectButtonText}
                                           onPress={this.playFavorites}
                                           title={"Play Favorites"}>
                                 </MyButton>
@@ -582,11 +581,12 @@ class AudioScreen extends React.Component {
                                 }
                                 {this.state.profiles.profile[this.state.profiles.profilesIdx].playList.length > 0 &&
                                 <MyButton buttonStyle={styles.selectButton}
-                                    textStyle={{color: 'gold', fontWeight: 'bold'}}
+                                          textStyle={styles.selectButtonText}
                                     onPress={this.playPlayList}
                                     title={"Play Playlist"}>
                                 </MyButton>
                                 }
+                            </View>
                         </View>
                     }
                     </Layout>
@@ -665,6 +665,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'purple',
         alignSelf: 'center',
         borderColor: 'goldenrod',
+        borderWidth: 2,
+    },
+    selectButtonText: {
+        color: 'goldenrod',
+        fontWeight: 'bold',
+        margin: 5,
     },
     bottomButtons: {
         marginVertical: 5,

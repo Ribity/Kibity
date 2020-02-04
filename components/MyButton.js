@@ -2,22 +2,20 @@ import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import myStyles from "../myStyles";
 
-export default class MyButton extends React.Component {
-    render() {
-        let buttonStyle = myStyles.regularButton;
-        let textStyle = myStyles.regularButtonText;
-        if (this.props.buttonStyle) {
-            buttonStyle = {...buttonStyle, ...this.props.buttonStyle};
-        }
-        if (this.props.textStyle) {
-            textStyle = {...textStyle, ...this.props.textStyle};
-        }
-        return (
-            <View>
-                <TouchableOpacity style={buttonStyle} onPress={this.props.onPress}>
-                    <Text style={textStyle}>{this.props.title}</Text>
-                </TouchableOpacity>
-            </View>
-        );
+export const MyButton = ( {buttonStyle, textStyle, onPress, title} ) => {
+    let bStyle = myStyles.regularButton;
+    let tStyle = myStyles.regularButtonText;
+    if (buttonStyle) {
+        bStyle = {...bStyle, ...buttonStyle};
     }
-}
+    if (tStyle) {
+        tStyle = {...tStyle, ...textStyle};
+    }
+    return (
+        <View>
+            <TouchableOpacity style={bStyle} onPress={onPress}>
+                <Text style={tStyle}>{title}</Text>
+            </TouchableOpacity>
+        </View>
+    );
+};

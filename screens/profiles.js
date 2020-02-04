@@ -7,6 +7,7 @@ import myfuncs from "../services/myFuncs";
 import MyHelpIcon from "../components/MyHelpIcon";
 import MyHelpModal from "../components/MyHelpModal";
 import {ThemeButton} from "../components/themeButton";
+import {MyTouchableLogo} from '../components/MyTouchableLogo';
 import {ScreenTitle} from "../components/screenTitle";
 import MyDefines from "../constants/MyDefines";
 import {bindActionCreators} from "redux";
@@ -23,6 +24,7 @@ class ProfilesScreen extends React.Component {
             return {
                 headerLeft: () => <ThemeButton/>,
                 headerTitle: () => <ScreenTitle title={"Profiles"}/>,
+                headerRight: () => <MyTouchableLogo imageStyle={{right: 5}} onPress={() => navigation.navigate("Audio")}/>,
             };
         } catch (error) {
             myfuncs.mySentry(error);
@@ -59,7 +61,7 @@ class ProfilesScreen extends React.Component {
                 <Layout style={{flex: 1, paddingLeft: 10, alignItems: 'flex-start'}}>
 
                     { ( (this.state.data_correct === true) &&
-                        (this.state.profiles.retrieved_user_data === true) ) &&
+                        (this.state.profiles.retrieved_user_data === true) ) ?
                     <View>
                         <Select
                             style={styles.select}
@@ -73,8 +75,11 @@ class ProfilesScreen extends React.Component {
                             labelStyle={styles.labelStyle}
                             controlStyle={styles.controlStyle}
                         />
-
                     </View>
+                        :
+                        <View>
+                        <View style={{padding:0}} />
+                        </View>
                     }
 
                 </Layout>
