@@ -55,9 +55,9 @@ class AudioScreen extends React.Component {
             myfuncs.myBreadCrumbs('navigationOptions', 'AudioScreen');
             const { params = {} } = navigation.state;
             return {
-                headerLeft: () => <ThemeButton/>,
+                headerLeft: () => <ProfileHeader profile={params.profile} action={params.action}/>,
                 headerTitle: () => <ScreenTitle title={"Audio"}/>,
-                headerRight: () => <ProfileHeader profile={params.profile} action={params.action}/>,
+                headerRight: () => <ThemeButton/>,
             };
         } catch (error) {
             myfuncs.mySentry(error);
@@ -74,7 +74,7 @@ class AudioScreen extends React.Component {
         setTimeout(() => {this.getUserStoredData();}, 1);
 
         this.props.navigation.setParams({profile: this.props.profiles.profile[this.props.profiles.profilesIdx]});
-        this.props.navigation.setParams({action: this.goToProfiles});
+        this.props.navigation.setParams({action: this.goToProfilesSetActive});
 
 
         this.subs = [
@@ -170,8 +170,8 @@ class AudioScreen extends React.Component {
         }
         this.subs.forEach(sub => sub.remove());  // removes the componentWillFocus listener
     };
-    goToProfiles = () => {
-        this.props.navigation.navigate("Profiles");
+    goToProfilesSetActive = () => {
+        this.props.navigation.navigate("ProfileSetActive");
     };
     goToStoriesScreen = () => {
         this.props.navigation.navigate("Stories");
@@ -277,14 +277,15 @@ class AudioScreen extends React.Component {
                     // language: 'en',
                     pitch: pitch_data[this.props.settings.pitchIdx].value,
                     rate: pitch_data[this.props.settings.rateIdx].value,
-                    onDone: this.playNextLine,
+                    onDone: this.queueNextLine,
                     // onStopped: speechStopped,
                     // onStart: scheduleTheCheckSpeech,
                 });
             } else {
                 console.log("play ribbit");
                 myfuncs.playRibbit(this.props.navigation.state.routeName);
-                delayedPlay = setTimeout(() => {this.playNextLine();}, 1000);
+                this.queueNextLine();
+                // delayedPlay = setTimeout(() => {this.playNextLine();}, 1000);
             }
         } else {
             this.setState({playing: false});
@@ -294,6 +295,9 @@ class AudioScreen extends React.Component {
                 console.log(this.props.profiles.profile[this.props.profiles.profilesIdx]);
             this.finishedStory();
         }
+    };
+    queueNextLine = () => {
+        delayedPlay = setTimeout(() => {this.playNextLine();}, pause_data[this.props.settings.pauseLineIdx].value*1000);
     };
     playNextLine = () => {
         if (!willUnmount) {             // Added this because when speech.speak finishes, it might call playNextLine inadvertently
@@ -380,7 +384,7 @@ class AudioScreen extends React.Component {
         // if (this.props.profiles.profile[this.props.profiles.profilesIdx].favorites.length < 1 && this.props.profiles.profile[this.props.profiles.profilesIdx].playList.length < 1)
         //     this.goToStoriesScreen();
 
-        nextStoryTimeout = setTimeout(() => {this.playNext()}, pause_data[this.props.settings.pauseIdx].value*1000);
+        nextStoryTimeout = setTimeout(() => {this.playNext()}, pause_data[this.props.settings.pauseStoryIdx].value*1000);
     };
 
     // resetAndGoToStoriesScreen = () => {
@@ -513,12 +517,16 @@ class AudioScreen extends React.Component {
                                {this.state.profiles.profile[this.state.profiles.profilesIdx].currListType === 0  &&
                                <View>
                                    {this.state.profiles.profile[this.state.profiles.profilesIdx].favorites.length > 0 &&
-                                   <Button style={styles.bottomButtons}
-                                           onPress={this.playFavorites}>Start Favorites</Button>
+                                   <MyButton buttonStyle={styles.selectButton}
+                                       textStyle={styles.selectButtonText}
+                                       onPress={this.playFavorites}
+                                       title={"Start Favorites"}/>
                                    }
                                    {this.state.profiles.profile[this.state.profiles.profilesIdx].playList.length > 0 &&
-                                   <Button style={styles.bottomButtons}
-                                           onPress={this.playPlayList}>Start Playlist</Button>
+                                   <MyButton buttonStyle={styles.selectButton}
+                                       textStyle={styles.selectButtonText}
+                                       onPress={this.playPlayList}
+                                       title={"Start Playlist"}/>
                                    }
                                </View>
                                }
@@ -529,10 +537,14 @@ class AudioScreen extends React.Component {
                                        <Text style={styles.playType}>Playing Favorites</Text>
                                        <Ionicons style={styles.playIcon} name={"ios-heart"} size={25} color={'red'}/>
                                    </View>
-                                   <Button style={styles.bottomButtons}
-                                           onPress={this.playPrevious}>Previous Favorite Story</Button>
-                                   <Button style={styles.bottomButtons}
-                                           onPress={this.playNext}>Next Favorite Story</Button>
+                                   <MyButton buttonStyle={styles.selectButton}
+                                             textStyle={styles.selectButtonText}
+                                             onPress={this.playPrevious}
+                                             title={"Previous Favorite Story"}/>
+                                   <MyButton buttonStyle={styles.selectButton}
+                                             textStyle={styles.selectButtonText}
+                                             onPress={this.playNext}
+                                             title={"Next Favorite Story"}/>
                                </View>
                                }
                                { (this.state.profiles.profile[this.state.profiles.profilesIdx].currListType === 2  &&
@@ -542,10 +554,15 @@ class AudioScreen extends React.Component {
                                        <Text style={styles.playType}>Playing Playlist</Text>
                                        <Ionicons style={styles.playIcon} name={"ios-list-box"} size={25} color={'goldenrod'}/>
                                    </View>
-                                   <Button style={styles.bottomButtons}
-                                           onPress={this.playPrevious}>Previous PlayList Story</Button>
-                                   <Button style={styles.bottomButtons}
-                                           onPress={this.playNext}>Next PlayList Story</Button>
+                                   <MyButton buttonStyle={styles.selectButton}
+                                             textStyle={styles.selectButtonText}
+                                             onPress={this.playPrevious}
+                                             title={"Previous PlayList Story"}/>
+
+                                   <MyButton buttonStyle={styles.selectButton}
+                                             textStyle={styles.selectButtonText}
+                                             onPress={this.playNext}
+                                             title={"Next PlayList Story"}/>
                                </View>
                                }
                                </View>
@@ -561,22 +578,18 @@ class AudioScreen extends React.Component {
                                <MyButton buttonStyle={styles.selectButton}
                                          textStyle={styles.selectButtonText}
                                          onPress={this.goToStoriesScreen}
-                                         title={"Select a Story, or\nBuild a PlayList"}>
-                               </MyButton>
+                                         title={"Select a Story, or\nBuild a PlayList"}/>
                                {this.state.profiles.profile[this.state.profiles.profilesIdx].favorites.length > 0 &&
                                <MyButton buttonStyle={styles.selectButton}
                                          textStyle={styles.selectButtonText}
                                          onPress={this.playFavorites}
-                                         title={"Play Favorites"}>
-                               </MyButton>
+                                         title={"Play Favorites"}/>
                                }
                                {this.state.profiles.profile[this.state.profiles.profilesIdx].playList.length > 0 &&
                                <MyButton buttonStyle={styles.selectButton}
                                          textStyle={styles.selectButtonText}
                                          onPress={this.playPlayList}
-                                         title={"Play Playlist"}>
-
-                               </MyButton>
+                                         title={"Play Playlist"}/>
                                }
                                </View>
                        </View>

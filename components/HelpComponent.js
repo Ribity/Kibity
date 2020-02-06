@@ -6,6 +6,7 @@ import {HelpAudio} from './helpModals/HelpAudio';
 import {HelpStories} from './helpModals/HelpStories';
 import {HelpProfiles} from './helpModals/HelpProfiles';
 import {HelpSettings} from './helpModals/HelpSettings';
+import {HelpProfileSetActive} from './helpModals/HelpProfileSetActive';
 import {HelpProfileCustomize} from './helpModals/HelpProfileCustomize';
 export const HelpComponent= ( {screen, parm1} ) => {
     try {
@@ -19,6 +20,9 @@ export const HelpComponent= ( {screen, parm1} ) => {
             }
             {screen === "Profiles" &&
             <HelpProfiles/>
+            }
+            {screen === "ProfileSetActive" &&
+            <HelpProfileSetActive/>
             }
             {screen === "ProfileCustomize" &&
             <HelpProfileCustomize/>

@@ -10,6 +10,7 @@ import MyDefines from './constants/MyDefines';
 import AudioScreen  from './screens/audio';
 import StoriesScreen from './screens/stories';
 import ProfilesScreen  from './screens/profiles';
+import ProfileSetActive from './screens/profileSetActive';
 import ProfileCustomize  from './screens/profileCustomize';
 import SettingsScreen from './screens/settings';
 // import SettingsEndOfStory from './screens/SettingsEndOfStory';
@@ -34,6 +35,7 @@ const StoriesStack = createStackNavigator({
 
 const ProfilesStack = createStackNavigator({
     Profiles: ProfilesScreen,
+    ProfileSetActive: ProfileSetActive,
     ProfileCustomize: ProfileCustomize,
 }, {defaultNavigationOptions: () => (defNav)});
 

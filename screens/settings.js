@@ -25,8 +25,8 @@ class SettingsScreen extends React.Component {
         try {
             myfuncs.myBreadCrumbs('navigationOptions', 'AudioScreen');
             return {
-                headerLeft: () => <ThemeButton/>,
                 headerTitle: () => <ScreenTitle title={"Settings"}/>,
+                headerRight: () => <ThemeButton/>,
             };
         } catch (error) {
             myfuncs.mySentry(error);
@@ -80,13 +80,25 @@ class SettingsScreen extends React.Component {
                             style={styles.select}
                             data={pause_data}
                             status='warning'
-                            label='Pause between stories'
+                            label='Pause between each line'
                             onSelect={(event) =>
-                                this.updateSettings({pauseIdx: event.idx})}
-                            selectedOption={pause_data[this.state.settings.pauseIdx]}
+                                this.updateSettings({pauseLineIdx: event.idx})}
+                            selectedOption={pause_data[this.state.settings.pauseLineIdx]}
                             textStyle={styles.textStyle}
                             labelStyle={styles.labelStyle}
                             controlStyle={styles.controlStyle}
+                            />
+                            <Select
+                                style={styles.select}
+                                data={pause_data}
+                                status='warning'
+                                label='Pause between each story'
+                                onSelect={(event) =>
+                                    this.updateSettings({pauseStoryIdx: event.idx})}
+                                selectedOption={pause_data[this.state.settings.pauseStoryIdx]}
+                                textStyle={styles.textStyle}
+                                labelStyle={styles.labelStyle}
+                                controlStyle={styles.controlStyle}
                             />
 
                             <Select

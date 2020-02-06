@@ -19,7 +19,8 @@ export default {
     default_settings: {
         keep_awake: true,
         playEndOfStoryRibbit: true,
-        pauseIdx: 2,
+        pauseLineIdx: 0,
+        pauseStoryIdx: 2,
         pitchIdx: 6,
         rateIdx: 6,
         retrieved_user_data: false,

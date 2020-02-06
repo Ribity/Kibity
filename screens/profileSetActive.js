@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Dimensions, Image} from 'react-native'
-import {Layout, Text, Select, Button} from '@ui-kitten/components';
+import {Layout, Select} from '@ui-kitten/components';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import myfuncs from "../services/myFuncs";
@@ -11,18 +11,18 @@ import {ScreenTitle} from "../components/screenTitle";
 import MyDefines from "../constants/MyDefines";
 import {bindActionCreators} from "redux";
 import {updateProfiles} from "../actions/profilesActions";
-import {MyButton} from "../components/MyButton";
 
 const {height, width} = Dimensions.get('window');
 
+let profiles_data = MyDefines.profiles_data;
 let kibityLogo = require('../assets/images/PurpleFaceIcon512.png');
 
-class ProfilesScreen extends React.Component {
+class ProfileSetActive extends React.Component {
     static navigationOptions = ({navigation}) => {
         try {
             myfuncs.myBreadCrumbs('navigationOptions', 'ProfilesScreen');
             return {
-                headerTitle: () => <ScreenTitle title={"Profiles"}/>,
+                headerTitle: () => <ScreenTitle title={"Profiles"} second={"Set Active"}/>,
                 headerRight: () => <ThemeButton/>,
             };
         } catch (error) {
@@ -36,6 +36,10 @@ class ProfilesScreen extends React.Component {
             data_correct: false,
         };
     };
+    componentDidMount() {
+        console.log("ProfilesSetActive DidMount");
+        this.updateActiveProfilesList();
+    }
     static getDerivedStateFromProps(nextProps, prevState){
         let update = {};
 
@@ -44,60 +48,65 @@ class ProfilesScreen extends React.Component {
         }
         return Object.keys(update).length ? update: null;
     };
+    updateActiveProfilesList = () => {
+        for (let i=0; i<profiles_data.length; i++) {
+            profiles_data[i].text = this.props.profiles.profile[i].mainChar;
+        }
+        this.setState({data_correct: true})
+    };
     render () {
         return (
             <SafeAreaView style={styles.container}>
-                <Layout style={{flex: 1, paddingLeft: 10}}>
-                    <View>
-                        <View style={{padding: 20}}/>
+                <Layout style={{flex: 1, paddingLeft: 10, justifyContent: 'center'}}>
 
-                        <Text style={styles.buttonText}>Active Profile</Text>
-                        <Text style={styles.textStyle}>{this.props.profiles.profile[this.props.profiles.profilesIdx].mainChar}</Text>
-                        <MyButton buttonStyle={styles.selectButton}
-                                  textStyle={styles.selectButtonText}
-                                  onPress={() => this.goToSetActiveProfile(0)}
-                                  title="Select Active Profile"/>
-                        <View style={{padding: 25}}/>
+                    { ( (this.state.data_correct === true) &&
+                        (this.state.profiles.retrieved_user_data === true) ) ?
+                    <View  style={{alignItems: 'flex-start'}}>
 
-
-                        <Image style={styles.kibityLogo} source={kibityLogo}/>
-                        <View style={{padding: 10}}/>
-                        <Text style={styles.buttonText}>Customize profile #1</Text>
-                        <MyButton buttonStyle={styles.selectButton}
-                                  textStyle={styles.selectButtonText}
-                                  onPress={() => this.goToSpecificProfile(0)}
-                                  title={this.props.profiles.profile[0].mainChar}/>
-                        <View style={{padding: 10}}/>
-
-                        <Text style={styles.buttonText}>Customize profile #2</Text>
-                        <MyButton buttonStyle={styles.selectButton}
-                                  textStyle={styles.selectButtonText}
-                                  onPress={() => this.goToSpecificProfile(1)}
-                                  title={this.props.profiles.profile[1].mainChar}/>
-                        <View style={{padding: 10}}/>
-
-                        <Text style={styles.buttonText}>Customize profile #3</Text>
-                        <MyButton buttonStyle={styles.selectButton}
-                                  textStyle={styles.selectButtonText}
-                                  onPress={() => this.goToSpecificProfile(2)}
-                                  title={this.props.profiles.profile[2].mainChar}/>
+                        <Select
+                            style={styles.select}
+                            data={profiles_data}
+                            status='warning'
+                            label='Active Profile'
+                            onSelect={(event) =>
+                                this.updateActive({profilesIdx: event.idx})}
+                            selectedOption={profiles_data[this.state.profiles.profilesIdx]}
+                            textStyle={styles.textStyle}
+                            labelStyle={styles.labelStyle}
+                            controlStyle={styles.controlStyle}
+                        />
                     </View>
+                        :
+                        <View>
+                        <View style={{padding:40}} />
+                        </View>
+                    }
 
+                    <View>
+                        <View style={{padding: 25}}/>
+                        <Image style={styles.kibityLogo} source={kibityLogo}/>
+                    </View>
+                    <View style={{padding:40}} />
                 </Layout>
                 <MyHelpIcon onPress={this.onHelpPress}/>
-                <MyHelpModal screen={"Profiles"}
+                <MyHelpModal screen={"ProfileSetActive"}
                              onExitPress={this.onHelpExitPress}
                              isVisible={this.state.isModalVisible}/>
             </SafeAreaView>
         );
     }
-    goToSetActiveProfile = () => {
-        // console.log("updateSetActiveProfile");
-        this.props.navigation.navigate("ProfileSetActive");
-    };
-    goToSpecificProfile = (profileIdx) => {
-        // console.log("updateSoecificProfile:", profileIdx);
-        this.props.navigation.navigate("ProfileCustomize", {customizeIdx: profileIdx});
+    updateActive = async (new_prop) => {
+        try {
+            let new_profiles = {...this.state.profiles, ...new_prop};
+
+            // Note, no need to update state, because state auto-updates in getDerivedState
+            // await this.setState({settings: new_settings});
+            await this.props.updateProfiles(new_profiles);
+            await myfuncs.writeUserDataToLocalStorage("user_profiles", this.props.profiles);
+        } catch (error) {
+            console.log(error);
+            myfuncs.mySentry(error);
+        }
     };
     onHelpPress = () => {
         try {
@@ -132,9 +141,6 @@ const styles = StyleSheet.create({
     textStyle: {
         color: 'purple',
         fontSize: 23,
-        lineHeight: 25,
-
-        alignSelf: 'center',
     },
     labelStyle: {
         color: 'mediumpurple',
@@ -154,21 +160,6 @@ const styles = StyleSheet.create({
         width: 60,
         height: 60,
     },
-    buttonText: {textAlign: 'center', color: 'mediumpurple', fontSize: 20, fontWeight: 'bold'},
-    selectButton: {
-        // marginVertical: 15,
-        marginHorizontal: 70,
-        backgroundColor: 'purple',
-        alignSelf: 'center',
-        borderColor: 'goldenrod',
-        borderWidth: 2,
-    },
-    selectButtonText: {
-        color: 'goldenrod',
-        fontWeight: 'bold',
-        margin: 5,
-    },
-
 });
 
 const mapStateToProps = (state) => {
@@ -180,5 +171,5 @@ const mapDispatchToProps = dispatch => (
         updateProfiles,
     }, dispatch)
 );
-export default connect(mapStateToProps, mapDispatchToProps)(ProfilesScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileSetActive);
 

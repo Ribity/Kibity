@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, FlatList, TouchableOpacity, Dimensions,} from 'r
 import { ListItem, SearchBar} from 'react-native-elements';
 import {Ionicons} from '@expo/vector-icons';
 import Toast from 'react-native-easy-toast';
-import MyButton from "../components/MyButton";
+import {MyButton} from "./MyButton";
 
 import { connect } from 'react-redux';
 
@@ -207,7 +207,8 @@ class MyListComponent extends React.Component {
                                             <Text style={styles.subtitleView}>Then you can play your Favorites</Text>
 
                                             <MyButton title={'Go back to All Stories'}
-                                                      buttonStyle={{marginVertical: 15}}
+                                                      buttonStyle={styles.selectButton}
+                                                      textStyle={styles.selectButtonText}
                                                       onPress={this.props.resetFilter}/>
                                         </View>
                                     }
@@ -250,9 +251,9 @@ class MyListComponent extends React.Component {
                                                 <Text style={styles.subtitleView}>  next to a story</Text>
                                             </View>
                                             <Text style={styles.subtitleView}>Then you can play your PlayList</Text>
-
                                             <MyButton title={'Go back to All Stories'}
-                                                      buttonStyle={{marginVertical: 15}}
+                                                      buttonStyle={styles.selectButton}
+                                                      textStyle={styles.selectButtonText}
                                                       onPress={this.props.resetFilter}/>
                                         </View>
                                     }
@@ -417,7 +418,20 @@ const styles = StyleSheet.create({
     myFlat: {
         backgroundColor: 'lightgrey',
         width: width-5,
-    }
+    },
+    selectButton: {
+        marginVertical: 15,
+        marginHorizontal: 70,
+        backgroundColor: 'purple',
+        alignSelf: 'center',
+        borderColor: 'goldenrod',
+        borderWidth: 2,
+    },
+    selectButtonText: {
+        color: 'goldenrod',
+        fontWeight: 'bold',
+        margin: 5,
+    },
 });
 
 const mapStateToProps = (state) => {

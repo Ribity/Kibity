@@ -19,10 +19,11 @@ import {MyHelpModal} from "../components/MyHelpModal";
 import {MyButton} from "../components/MyButton";
 import {ScreenTitle} from "../components/screenTitle";
 import MyDefines from "../constants/MyDefines";
+import {bindActionCreators} from "redux";
+import {updateProfiles} from "../actions/profilesActions";
+import {ThemeButton} from "../components/themeButton";
 
-//***********************************************************************************
-// The idea here is to NOT perform the reverseGeo often because each one cost money.
-//***********************************************************************************
+let customizeIdx = 0;
 
 class ProfileCustomize extends React.Component {
     static navigationOptions = ({navigation}) => {
@@ -30,6 +31,7 @@ class ProfileCustomize extends React.Component {
             myfuncs.myBreadCrumbs('navigationOptions', 'AudioScreen');
             return {
                 headerTitle: () => <ScreenTitle title={"Profiles"} second={"Customize"}/>,
+                headerRight: () => <ThemeButton/>,
             };
         } catch (error) {
             myfuncs.mySentry(error);
@@ -39,31 +41,24 @@ class ProfileCustomize extends React.Component {
         super(props);
         this.state = {
             profiles: this.props.profiles,
-            profileIdx: 0,
             submitPressed: false,
             textIsFocused: false,
         };
     }
     componentDidMount() {
         console.log("ProfileCustomize DidMount");
-        this.checkProfileIdxdParm();
+        this.checkCustomizeIdxParm();
     }
-    checkProfileIdxdParm = () => {
-        let profileIdx = this.props.navigation.getParam('profileIdx', false);
-        if (profileIdx) {
-            this.setState({profileIdx: profileIdx});
-        }
+    checkCustomizeIdxParm = () => {
+        customizeIdx = this.props.navigation.getParam('customizeIdx', 0);
     };
 
-    onSubmitPress = () => {
+    onSubmitPress = async () => {
         try {
             myfuncs.myBreadCrumbs('onSubmitPress', this.props.navigation.state.routeName);
             Keyboard.dismiss();
-
-
-            // this.setState( {submitPressed: true});
-
-            this.postTheUpdate(this.state.profile);
+            this.props.updateProfiles(this.state.profiles);
+            await myfuncs.writeUserDataToLocalStorage("user_profiles", this.state.profiles);
         } catch (error) {
             myfuncs.mySentry(error);
         }
@@ -99,9 +94,9 @@ class ProfileCustomize extends React.Component {
                     {/*<View style={{paddingTop: androidPad}}/>*/}
 
 
-                        <Text style={myStyles.iFieldLabel}>Name of Main Character</Text>
+                    <Text style={myStyles.iFieldLabel}>Name of Main Character</Text>
                     <TextInput style={myStyles.iField}
-                               value={this.state.profiles.profile[this.state.profileIdx].mainChar}
+                               value={this.state.profiles.profile[customizeIdx].mainChar}
                                onChangeText={(text) => this.updateState({mainChar: text})}
                                clearButtonMode='always'
                                placeholder={"Main Character"}
@@ -114,18 +109,12 @@ class ProfileCustomize extends React.Component {
 
                     <View style={{padding: 5}}/>
 
-                    { (this.state.submitPressed === false) &&
-                        <View>
-                        <View style={{paddingTop: 5}}/>
-                            <MyButton buttonStyle={styles.selectButton}
-                                      textStyle={styles.selectButtonText}
-                                      onPress={this.onSubmitPress}
-                                      title={"Submit"}>
-                            </MyButton>
-
-
-                        </View>
-                    }
+                    <View style={{paddingTop: 5}}/>
+                    <MyButton buttonStyle={styles.selectButton}
+                              textStyle={styles.selectButtonText}
+                              onPress={this.onSubmitPress}
+                              title={"Submit"}>
+                    </MyButton>
 
                     <Toast
                         ref="toast"
@@ -134,7 +123,7 @@ class ProfileCustomize extends React.Component {
                         positionValue={0}
                         fadeOutDuration={2000}
                         opacity={.8}
-                        textStyle={{color:'black',fontSize:21}}
+                        textStyle={{color:'mediumpurple',fontSize:21}}
                     />
 
                     <MyHelpIcon onPress={this.onHelpPress}/>
@@ -168,7 +157,9 @@ class ProfileCustomize extends React.Component {
         }
     };
     updateState = (new_prop) => {
-        // this.setState({profiles: {...this.state.profiles.profile[0], ...new_prop}});
+        let newProfiles = {...this.state.profiles};
+        newProfiles.profile[customizeIdx] = {...newProfiles.profile[customizeIdx], ...new_prop};
+        this.setState({profiles: newProfiles});
     };
 };
 const styles = StyleSheet.create({
@@ -198,5 +189,10 @@ const mapStateToProps = (state) => {
     const { profiles } = state;
     return { profiles }
 };
+const mapDispatchToProps = dispatch => (
+    bindActionCreators({
+        updateProfiles,
+    }, dispatch)
+);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileCustomize);
 
-export default connect(mapStateToProps, )(ProfileCustomize);
