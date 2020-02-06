@@ -6,11 +6,13 @@ import { ThemeContext } from './theme-context';
 
 // import { default as customMapping } from './custom-mapping.json'; // <-- import custom mapping
 
-import myfuncs from './services/myFuncs';
-
 import { Provider } from 'react-redux';
 import { rootReducer } from './reducers/RootReducer'
 import { createStore } from 'redux';
+
+// The yellowBox thing hides warning on Android
+import { YellowBox } from 'react-native';
+YellowBox.ignoreWarnings(['Setting a timer']);
 
 const store = createStore(rootReducer);
 

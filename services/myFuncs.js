@@ -74,16 +74,21 @@ class myFuncs  {
         let profiles = MyDefines.default_profiles;
         try {
             let user_settings = await hardStorage.getKey("user_settings");
-            if (user_settings !== null)
+            if (user_settings !== null) {
                 settings = {...settings, ...user_settings};
+                // console.log("Successfully retrieved settings from Storage")
+            }
             let user_profiles = await hardStorage.getKey("user_profiles");
-            if (user_profiles !== null)
+            if (user_profiles !== null) {
                 profiles = {...profiles, ...user_profiles};
+                // console.log("Successfully retrieved profiles from Storage")
+            }
 
         } catch (error) {
             this.mySentry(error);
         }
-        // console.log("newsto:", settings);
+        // console.log("settingsFromStorage:", settings);
+        // console.log("profilesFromStorage:", profiles);
         settings.retrieved_user_data = true;
         profiles.retrieved_user_data = true;
         return {settings: settings, profiles: profiles};
@@ -91,10 +96,10 @@ class myFuncs  {
     writeUserDataToLocalStorage = async (key, data) => {
         try {
             await hardStorage.setKey(key, data);
-            // console.log("storage updated", keyAndData);
+            // console.log("storage updated ", key, ":", data );
 
             if (MyDefines.log_details)
-                console.log("user_data written to Storage:", keyAndData);
+                console.log("user_data written to Storage:", key, ":", data );
         } catch (error) {
             this.mySentry(error);
         }

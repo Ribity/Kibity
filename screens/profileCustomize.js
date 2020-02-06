@@ -1,36 +1,35 @@
 import React from 'react';
 import {
-    Text,
     View,
-    Alert,
     TextInput,
-    Keyboard,
-    TouchableHighlight,
+    Keyboard, StyleSheet,
 } from 'react-native';
+import {Layout, Text, Select} from '@ui-kitten/components';
+
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Toast from 'react-native-easy-toast';
 
 import { connect } from 'react-redux';
 
 import myStyles from "../myStyles";
+
 import myfuncs from "../services/myFuncs";
-import MyTouchableLogo from '../components/MyTouchableLogo';
-import MyHelpIcon from '../components/MyHelpIcon';
-import MyHelpModal from "../components/MyHelpModal";
-import MyButton from "../components/MyButton";
-import {ThemeButton} from "../components/themeButton";
+import {MyHelpIcon} from '../components/MyHelpIcon';
+import {MyHelpModal} from "../components/MyHelpModal";
+import {MyButton} from "../components/MyButton";
 import {ScreenTitle} from "../components/screenTitle";
+import MyDefines from "../constants/MyDefines";
 
 //***********************************************************************************
 // The idea here is to NOT perform the reverseGeo often because each one cost money.
 //***********************************************************************************
 
-class ProfileSettings extends React.Component {
+class ProfileCustomize extends React.Component {
     static navigationOptions = ({navigation}) => {
         try {
             myfuncs.myBreadCrumbs('navigationOptions', 'AudioScreen');
             return {
-                headerTitle: () => <ScreenTitle title={"Settings"} second={"Profiles"}/>,
+                headerTitle: () => <ScreenTitle title={"Profiles"} second={"Customize"}/>,
             };
         } catch (error) {
             myfuncs.mySentry(error);
@@ -40,17 +39,29 @@ class ProfileSettings extends React.Component {
         super(props);
         this.state = {
             profiles: this.props.profiles,
+            profileIdx: 0,
             submitPressed: false,
             textIsFocused: false,
         };
     }
+    componentDidMount() {
+        console.log("ProfileCustomize DidMount");
+        this.checkProfileIdxdParm();
+    }
+    checkProfileIdxdParm = () => {
+        let profileIdx = this.props.navigation.getParam('profileIdx', false);
+        if (profileIdx) {
+            this.setState({profileIdx: profileIdx});
+        }
+    };
+
     onSubmitPress = () => {
         try {
             myfuncs.myBreadCrumbs('onSubmitPress', this.props.navigation.state.routeName);
             Keyboard.dismiss();
 
 
-            this.setState( {submitPressed: true});
+            // this.setState( {submitPressed: true});
 
             this.postTheUpdate(this.state.profile);
         } catch (error) {
@@ -72,31 +83,25 @@ class ProfileSettings extends React.Component {
     render() {
         try {
             myfuncs.myBreadCrumbs('render', this.props.navigation.state.routeName);
-            // let topContentSpace = 140;
-            // if (myfuncs.isAndroid())
-            //     topContentSpace += 100;
 
-            let androidPad = myfuncs.androidPadding(this.state.textIsFocused, 200);
+            // let androidPad = myfuncs.androidPadding(this.state.textIsFocused, 200);
 
-            return (<KeyboardAwareScrollView
+            return (
+                <KeyboardAwareScrollView
                     style={myStyles.firstContainer}
                     resetScrollToCoords={{x:0, y:0}}
-                    onSubmitEditing={this.onSubmitPress}
-                    blurOnSubmit={false}
                     keyboardShouldPersistTaps={'handled'}
+                    blurOnSubmit={false}
+                    onSubmitEditing={this.onSubmitPress}
                     contentContainerStyle={myStyles.container}
                 >
-                    <View style={{paddingTop: androidPad}}/>
+                    <Layout style={myStyles.container}>
+                    {/*<View style={{paddingTop: androidPad}}/>*/}
 
-                    <Text style={myStyles.iFieldLabel}>
-                    <Text>Map Snap-Back Seconds</Text>
-                </Text>
 
-                    <Text style={myStyles.iFieldLabel}>
-                        <Text>Default Title for Ribbon Creates</Text>
-                    </Text>
+                        <Text style={myStyles.iFieldLabel}>Name of Main Character</Text>
                     <TextInput style={myStyles.iField}
-                               value={this.state.profiles.profile[0].mainChar}
+                               value={this.state.profiles.profile[this.state.profileIdx].mainChar}
                                onChangeText={(text) => this.updateState({mainChar: text})}
                                clearButtonMode='always'
                                placeholder={"Main Character"}
@@ -112,7 +117,13 @@ class ProfileSettings extends React.Component {
                     { (this.state.submitPressed === false) &&
                         <View>
                         <View style={{paddingTop: 5}}/>
-                        <MyButton title={'Submit'} onPress={this.onSubmitPress}/>
+                            <MyButton buttonStyle={styles.selectButton}
+                                      textStyle={styles.selectButtonText}
+                                      onPress={this.onSubmitPress}
+                                      title={"Submit"}>
+                            </MyButton>
+
+
                         </View>
                     }
 
@@ -127,10 +138,12 @@ class ProfileSettings extends React.Component {
                     />
 
                     <MyHelpIcon onPress={this.onHelpPress}/>
-                    <MyHelpModal screen={"ProfileSettings"}
+                    <MyHelpModal screen={"ProfileCustomize"}
                                  onExitPress={this.onHelpExitPress}
                                  isVisible={this.state.isModalVisible}/>
-                    </KeyboardAwareScrollView>
+
+                    </Layout>
+                </KeyboardAwareScrollView>
             );
         } catch (error) {
             myfuncs.mySentry(error);
@@ -158,10 +171,32 @@ class ProfileSettings extends React.Component {
         // this.setState({profiles: {...this.state.profiles.profile[0], ...new_prop}});
     };
 };
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: MyDefines.myTabColor,
+    },
+
+    buttonText: {textAlign: 'center', color: 'mediumpurple', fontSize: 20, fontWeight: 'bold'},
+    selectButton: {
+        // marginVertical: 15,
+        marginHorizontal: 70,
+        backgroundColor: 'purple',
+        alignSelf: 'center',
+        borderColor: 'goldenrod',
+        borderWidth: 2,
+    },
+    selectButtonText: {
+        color: 'goldenrod',
+        fontWeight: 'bold',
+        margin: 5,
+    },
+
+});
 
 const mapStateToProps = (state) => {
     const { profiles } = state;
     return { profiles }
 };
 
-export default connect(mapStateToProps, )(ProfileSettings);
+export default connect(mapStateToProps, )(ProfileCustomize);

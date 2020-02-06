@@ -5,10 +5,10 @@ import myStyles from "../myStyles";
 export const MyButton = ( {buttonStyle, textStyle, onPress, title} ) => {
     let bStyle = myStyles.regularButton;
     let tStyle = myStyles.regularButtonText;
-    if (buttonStyle) {
+    if (buttonStyle !== undefined && buttonStyle !== null) {
         bStyle = {...bStyle, ...buttonStyle};
     }
-    if (tStyle) {
+    if (tStyle !== undefined && buttonStyle !== null) {
         tStyle = {...tStyle, ...textStyle};
     }
     return (

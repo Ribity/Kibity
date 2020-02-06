@@ -3,8 +3,8 @@ import {Text} from 'react-native';
 import helpStyles from './helpStyles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-export default class HelpProfiles extends React.Component {
-    render() {
+export const HelpProfiles = ( {} ) => {
+
 	return (<KeyboardAwareScrollView
 	    // style={helpStyles.container}
 	    resetScrollToCoords={{x:0, y:0}}
@@ -45,6 +45,5 @@ export default class HelpProfiles extends React.Component {
 	       </Text>
 	    </KeyboardAwareScrollView>
 	);
-    }
 }
 

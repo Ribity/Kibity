@@ -7,19 +7,18 @@ import {
 } from "react-native";
 
 import MyDefines from '../constants/MyDefines';
-import myStyles from '../myStyles'
-// import MyCard from "../components/myCard";
 import MyListComponent from '../components/MyListComponent';
 import { setStoryIdx, setListType, setListIdx} from '../actions/profilesActions';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {Ionicons} from '@expo/vector-icons';
-import MyHelpIcon from "../components/MyHelpIcon";
-import MyHelpModal from "../components/MyHelpModal";
+import {MyHelpIcon} from "../components/MyHelpIcon";
+import {MyHelpModal} from "../components/MyHelpModal";
 import {SafeAreaView} from "react-navigation";
 import myfuncs from "../services/myFuncs";
 import {ScreenTitle} from "../components/screenTitle";
 import {StoriesHeaderButton} from "../components/StoriesHeaderButton";
+import * as Speech from "expo-speech";
 
 
 // let my_story_list =
@@ -36,7 +35,7 @@ class StoriesScreen extends React.Component {
                                          action={params.getLeft}
                                          filterType={params.filterType}
                     />,
-                headerTitle: () => <ScreenTitle title={"Stories"}/>,
+                headerTitle: () => <ScreenTitle title={"Stories"} second={params.activeProfile} />,
                 headerRight: () =>
                     <StoriesHeaderButton buttonType={2}
                                          numItems={params.numList}
@@ -56,17 +55,33 @@ class StoriesScreen extends React.Component {
             profiles: MyDefines.default_profiles,
             filterType: 0,
         };
+        this.componentWillFocus = this.componentWillFocus.bind(this);
     };
     componentDidMount() {
         // setTimeout(this.buildStoryList, 1000);  // mk1 be sure to clear the timeout on unmount
         this.populateStateStoryList();  // mk1 be sure to clear the timeout on unmount
 
+        this.subs = [
+            this.props.navigation.addListener('willFocus', this.componentWillFocus),
+        ];
+
         this.props.navigation.setParams({getRight: this.listList});
         this.props.navigation.setParams({getLeft: this.listFaves});
         this.props.navigation.setParams({numFaves: this.props.profiles.profile[this.props.profiles.profilesIdx].favorites.length});
+        this.props.navigation.setParams({activeProfile: this.props.profiles.profile[this.props.profiles.profilesIdx].mainChar});
         this.props.navigation.setParams({filterType: this.state.filterType});
         // console.log("StoriesScreen DidMount:", this.props.story_list);
     }
+    componentWillFocus() {
+        try {
+            this.props.navigation.setParams({activeProfile: this.props.profiles.profile[this.props.profiles.profilesIdx].mainChar});
+        } catch (error) {
+            // myfuncs.mySentry(error);
+        }
+    }
+    componentWillUnmount() {
+        this.subs.forEach(sub => sub.remove());  // removes the componentWillFocus listener
+    };
     listList = () => {
         try {
             myfuncs.myBreadCrumbs('getRight', this.props.navigation.state.routeName);
@@ -133,20 +148,25 @@ class StoriesScreen extends React.Component {
             console.log("stories derivedState:", update);
         return Object.keys(update).length ? update: null;
     };
-    // componentDidUpdate(prevProps, prevState) {
-    //     this.setState({story_list: this.props.story_list});
-    //     console.log("StoriesScreenDidUpdate");
-    // }
+    componentDidUpdate(prevProps, prevState) {
+        // this.props.navigation.setParams({activeProfile: this.props.profiles.profile[this.props.profiles.profilesIdx].mainChar});
+        console.log("StoriesScreenDidUpdate");
+    }
     populateStateStoryList = () => {
         if (MyDefines.log_details)
             console.log("populateStoryList in StoriesScreen");
         this.setState({story_list: this.props.story_list});
     };
-    updateStoriesCurrentProfile = () => {
-        // console.log("updateStoriesCurrentProfile");
+    updateStoriesProfiles = () => {
+        console.log("updateStoriesCurrentProfile");
         this.setState({profiles: this.props.profiles});
         this.props.navigation.setParams({numFaves: this.props.profiles.profile[this.props.profiles.profilesIdx].favorites.length});
         this.props.navigation.setParams({numList: this.props.profiles.profile[this.props.profiles.profilesIdx].playList.length});
+        this.updateStorage();
+    };
+    updateStorage = () => {
+        myfuncs.writeUserDataToLocalStorage("user_profiles", this.props.profiles);
+        // console.log("storage updated NewProfiles:", this.props.profiles);
     };
     onPressStorySelection = (story, idx) => {
         // console.log("onPressStorySelection:", idx );
@@ -218,7 +238,7 @@ class StoriesScreen extends React.Component {
                 <MyListComponent navigation={this.props.navigation}
                                  myList={this.state.story_list.stories}
                                  screenType={'Stories'}
-                                 updateParentStoriesCurrentProfile={this.updateStoriesCurrentProfile}
+                                 updateParentStoriesCurrentProfile={this.updateStoriesProfiles}
                                  resetFilter={this.resetFilter}
                                  onPressItem={this.onPressStorySelection}
                                  filterType={this.state.filterType}
@@ -292,13 +312,6 @@ const styles = StyleSheet.create({
     list: {
         alignItems: "center",
         paddingTop: 20,
-    },
-    card: {
-        height: 200,
-        width: 400,
-        borderRadius: 15,
-        // backgroundColor: "goldenrod",
-        marginBottom: 20,
     },
     favoritesButton: {
         // alignItems: 'left',

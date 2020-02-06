@@ -15,8 +15,8 @@ import {updateSettings} from "../actions/settingsActions";
 import {updateProfiles} from "../actions/profilesActions";
 import TasksComponent from '../components/TasksComponent';
 import myfuncs from "../services/myFuncs";
-import MyHelpIcon from "../components/MyHelpIcon";
-import MyHelpModal from "../components/MyHelpModal";
+import {MyHelpIcon} from "../components/MyHelpIcon";
+import {MyHelpModal} from "../components/MyHelpModal";
 import {ThemeButton} from "../components/themeButton";
 import {ScreenTitle} from "../components/screenTitle";
 import {ProfileHeader} from "../components/ProfileHeader";
@@ -108,6 +108,10 @@ class AudioScreen extends React.Component {
         if (prevState.stories_list !== nextProps.stories_list) {
             update.stories_list = nextProps.stories_list;
         }
+        if (prevState.profiles !== nextProps.profiles) {
+            update.profiles = nextProps.profiles;
+        }
+
         // if (prevState.stories_list !== nextProps.stories_list) {
         //     update.story_idx = nextProps.story_idx;
         //     if (playingStory !== null)
@@ -471,130 +475,118 @@ class AudioScreen extends React.Component {
 
     render() {
         return (
-            <SafeAreaView style={styles.container}>
-                <Layout style={{flex: 1, alignItems: 'center'}}>
-                    <TasksComponent/>
-                    {/*<ThemeButton/>*/}
-                    {this.state.playing &&
-                        <Text style={styles.audioTitle}>{this.state.story_title}</Text>
-                    }
-                    {this.state.num_lines > 0 ?
-                        <View style={{justifyContent: 'space-between'}}>
-                            <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center'}}>
-                                <Text style={styles.audioCountdown}>Part {this.state.line_idx + 1} of {this.state.num_lines}</Text>
-                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                    {!this.state.paused ?
-                                        <Button style={styles.audioButton}
-                                                size='tiny'
-                                                onPress={this.pauseIt}> Pause </Button>
-                                        :
-                                        <Button style={styles.audioButton}
-                                                size='tiny'
-                                                onPress={this.resumeIt}>Resume</Button>
-                                    }
-                                    <Button style={styles.audioButton}
-                                            size='tiny'
-                                            onPress={this.backward}>Back</Button>
-                                    <Button style={styles.audioButton}
-                                            size='tiny'
-                                            onPress={this.forward}>Forward</Button>
-                                    <Button style={styles.audioButton}
-                                            size='tiny'
-                                            onPress={this.restartIt}>Start Over</Button>
-                                </View>
-                                {this.state.playing &&
-                                <Text style={styles.currentText}>{this.state.curr_text}</Text>
-                                }
-                                </View>
-                            <View style={styles.bottom}>
-                                {this.state.profiles.profile[this.state.profiles.profilesIdx].currListType === 0  &&
-                                <View>
-                                    {this.state.profiles.profile[this.state.profiles.profilesIdx].favorites.length > 0 &&
-                                    <Button style={styles.bottomButtons}
-                                            onPress={this.playFavorites}>Start Favorites</Button>
-                                    }
-                                    {this.state.profiles.profile[this.state.profiles.profilesIdx].playList.length > 0 &&
-                                        <Button style={styles.bottomButtons}
-                                            onPress={this.playPlayList}>Start Playlist</Button>
-                                    }
-                                </View>
-                                }
-                                { (this.state.profiles.profile[this.state.profiles.profilesIdx].currListType === 1  &&
-                                    this.state.profiles.profile[this.state.profiles.profilesIdx].favorites.length > 0) &&
-                                <View>
-                                    <View style={styles.playRow}>
-                                        <Text style={styles.playType}>Playing Favorites</Text>
-                                        <Ionicons style={styles.playIcon} name={"ios-heart"} size={25} color={'red'}/>
-                                    </View>
-                                    <Button style={styles.bottomButtons}
-                                            onPress={this.playPrevious}>Previous Favorite Story</Button>
-                                    <Button style={styles.bottomButtons}
-                                            onPress={this.playNext}>Next Favorite Story</Button>
-                                </View>
-                                }
-                                { (this.state.profiles.profile[this.state.profiles.profilesIdx].currListType === 2  &&
+           <SafeAreaView style={styles.container}>
+               <Layout style={{flex: 1, alignItems: 'center'}}>
+                   <TasksComponent/>
+                   {this.state.playing &&
+                   <Text style={styles.audioTitle}>{this.state.story_title}</Text>
+                   }
+                   {this.state.num_lines > 0 ?
+                       <View style={{justifyContent: 'space-between'}}>
+                           <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center'}}>
+                               <Text style={styles.audioCountdown}>Part {this.state.line_idx + 1} of {this.state.num_lines}</Text>
+                               <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                   {!this.state.paused ?
+                                       <Button style={styles.audioButton}
+                                               size='tiny'
+                                               onPress={this.pauseIt}> Pause </Button>
+                                       :
+                                       <Button style={styles.audioButton}
+                                               size='tiny'
+                                               onPress={this.resumeIt}>Resume</Button>
+                                   }
+                                   <Button style={styles.audioButton}
+                                           size='tiny'
+                                           onPress={this.backward}>Back</Button>
+                                   <Button style={styles.audioButton}
+                                           size='tiny'
+                                           onPress={this.forward}>Forward</Button>
+                                   <Button style={styles.audioButton}
+                                           size='tiny'
+                                           onPress={this.restartIt}>Start Over</Button>
+                               </View>
+                               {this.state.playing &&
+                               <Text style={styles.currentText}>{this.state.curr_text}</Text>
+                               }
+                               </View>
+                           <View style={styles.bottom}>
+                               {this.state.profiles.profile[this.state.profiles.profilesIdx].currListType === 0  &&
+                               <View>
+                                   {this.state.profiles.profile[this.state.profiles.profilesIdx].favorites.length > 0 &&
+                                   <Button style={styles.bottomButtons}
+                                           onPress={this.playFavorites}>Start Favorites</Button>
+                                   }
+                                   {this.state.profiles.profile[this.state.profiles.profilesIdx].playList.length > 0 &&
+                                   <Button style={styles.bottomButtons}
+                                           onPress={this.playPlayList}>Start Playlist</Button>
+                                   }
+                               </View>
+                               }
+                               {(this.state.profiles.profile[this.state.profiles.profilesIdx].currListType === 1  &&
+                                   this.state.profiles.profile[this.state.profiles.profilesIdx].favorites.length > 0) &&
+                               <View>
+                                   <View style={styles.playRow}>
+                                       <Text style={styles.playType}>Playing Favorites</Text>
+                                       <Ionicons style={styles.playIcon} name={"ios-heart"} size={25} color={'red'}/>
+                                   </View>
+                                   <Button style={styles.bottomButtons}
+                                           onPress={this.playPrevious}>Previous Favorite Story</Button>
+                                   <Button style={styles.bottomButtons}
+                                           onPress={this.playNext}>Next Favorite Story</Button>
+                               </View>
+                               }
+                               { (this.state.profiles.profile[this.state.profiles.profilesIdx].currListType === 2  &&
                                     this.state.profiles.profile[this.state.profiles.profilesIdx].playList.length > 0) &&
-                                <View>
-                                    <View style={styles.playRow}>
-                                        <Text style={styles.playType}>Playing Playlist</Text>
-                                        <Ionicons style={styles.playIcon} name={"ios-list-box"} size={25} color={'goldenrod'}/>
-                                    </View>
-                                    <Button style={styles.bottomButtons}
-                                            onPress={this.playPrevious}>Previous PlayList Story</Button>
-                                    <Button style={styles.bottomButtons}
-                                            onPress={this.playNext}>Next PlayList Story</Button>
-                                </View>
-                                }
-                            </View>
-                        </View>
-                        :
-                        <View>
-                            {this.state.intro_screen ?
-                                <View>
-                                    <View style={{padding: 5}}/>
-                                    <Text style={styles.welcomeUser}>Welcome to Kibity</Text>
-                                    <View style={{padding: 5}}/>
-                                    <Image style={styles.kibityLogo} source={kibityLogo}/>
-                                    <View style={{padding: 15}}/>
+                               <View>
+                                   <View style={styles.playRow}>
+                                       <Text style={styles.playType}>Playing Playlist</Text>
+                                       <Ionicons style={styles.playIcon} name={"ios-list-box"} size={25} color={'goldenrod'}/>
+                                   </View>
+                                   <Button style={styles.bottomButtons}
+                                           onPress={this.playPrevious}>Previous PlayList Story</Button>
+                                   <Button style={styles.bottomButtons}
+                                           onPress={this.playNext}>Next PlayList Story</Button>
+                               </View>
+                               }
+                               </View>
+                       </View>
+                       :
+                       <View>
+                           <View style={{padding: 25}}/>
+                           <Text style={styles.welcomeUser}>Welcome to Kibity</Text>
+                           <View style={{padding: 5}}/>
+                           <Image style={styles.kibityLogo} source={kibityLogo}/>
+                           <View style={{padding: 15}}/>
+                           <View>
+                               <MyButton buttonStyle={styles.selectButton}
+                                         textStyle={styles.selectButtonText}
+                                         onPress={this.goToStoriesScreen}
+                                         title={"Select a Story, or\nBuild a PlayList"}>
+                               </MyButton>
+                               {this.state.profiles.profile[this.state.profiles.profilesIdx].favorites.length > 0 &&
+                               <MyButton buttonStyle={styles.selectButton}
+                                         textStyle={styles.selectButtonText}
+                                         onPress={this.playFavorites}
+                                         title={"Play Favorites"}>
+                               </MyButton>
+                               }
+                               {this.state.profiles.profile[this.state.profiles.profilesIdx].playList.length > 0 &&
+                               <MyButton buttonStyle={styles.selectButton}
+                                         textStyle={styles.selectButtonText}
+                                         onPress={this.playPlayList}
+                                         title={"Play Playlist"}>
 
-                                    {/*<Text style={styles.welcomeUser}>Where your dream becomes reality</Text>*/}
-                                </View>
-                                :
-                                <View>
-                                    <View style={{padding: 35}}/>
-
-                                </View>
-                            }
-                            <View>
-                                <MyButton buttonStyle={styles.selectButton}
-                                          textStyle={styles.selectButtonText}
-                                          onPress={this.goToStoriesScreen}
-                                          title={"Select a Story, or\nBuild a PlayList"}>
-                                </MyButton>
-                                {this.state.profiles.profile[this.state.profiles.profilesIdx].favorites.length > 0 &&
-                                <MyButton buttonStyle={styles.selectButton}
-                                          textStyle={styles.selectButtonText}
-                                          onPress={this.playFavorites}
-                                          title={"Play Favorites"}>
-                                </MyButton>
-
-                                }
-                                {this.state.profiles.profile[this.state.profiles.profilesIdx].playList.length > 0 &&
-                                <MyButton buttonStyle={styles.selectButton}
-                                          textStyle={styles.selectButtonText}
-                                    onPress={this.playPlayList}
-                                    title={"Play Playlist"}>
-                                </MyButton>
-                                }
-                            </View>
-                        </View>
-                    }
-                    </Layout>
-                <MyHelpIcon onPress={this.onHelpPress}/>
-                <MyHelpModal screen={"Audio"}
-                             onExitPress={this.onHelpExitPress}
-                             isVisible={this.state.isModalVisible}/>
-            </SafeAreaView>
+                               </MyButton>
+                               }
+                               </View>
+                       </View>
+                   }
+                   <MyHelpIcon onPress={this.onHelpPress}/>
+                   <MyHelpModal screen={"Audio"}
+                                onExitPress={this.onHelpExitPress}
+                                isVisible={this.state.isModalVisible}/>
+               </Layout>
+           </SafeAreaView>
         );
     }
     onHelpPress = () => {
@@ -617,6 +609,7 @@ class AudioScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        // backgroundColor: 'white',
     },
     kibityLogo: {
         justifyContent:'center',

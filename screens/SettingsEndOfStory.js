@@ -6,8 +6,8 @@ import {
 } from 'react-native';
 
 // import {SafeAreaView} from "react-navigation";
-import MyHelpIcon from "../components/MyHelpIcon";
-import MyHelpModal from "../components/MyHelpModal";
+import {MyHelpIcon} from "../components/MyHelpIcon";
+import {MyHelpModal} from "../components/MyHelpModal";
 import MyButton from '../components/MyButton';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
@@ -18,7 +18,7 @@ import Toast from 'react-native-easy-toast';
 import myStyles from "../myStyles";
 import myfuncs from "../services/myFuncs";
 
-class SettingsEndOfStory extends React.Component {
+class ProfilesCu extends React.Component {
     static navigationOptions = ({navigation}) => {
         try {
             myfuncs.myBreadCrumbs('navigationOptions', 'EndOfStory');

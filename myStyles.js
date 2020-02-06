@@ -28,6 +28,7 @@ const myStyles = StyleSheet.create({
     },
     firstContainer: {
         flex: 1,
+        backgroundColor: MyDefines.myTabColor,
     },
     container: {
         flexGrow: 1,
@@ -92,7 +93,7 @@ const myStyles = StyleSheet.create({
         fontSize: 17,
         // fontWeight: 'bold',
         // opacity: .8,
-        paddingLeft: 15,
+        paddingLeft: 8,
         textAlign: 'left',
         alignSelf: 'stretch',
         paddingTop: 15,
@@ -116,6 +117,8 @@ const myStyles = StyleSheet.create({
         borderWidth: 1,
         paddingLeft: 5,
         borderRadius: 10,
+        // color: 'purple',
+
     },
     regularButton: {
         backgroundColor: 'purple',

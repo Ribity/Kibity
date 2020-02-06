@@ -5,8 +5,8 @@ import {Text, Layout, Select, Toggle} from "@ui-kitten/components";
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import myfuncs from "../services/myFuncs";
 import MyDefines from "../constants/MyDefines";
-import MyHelpIcon from "../components/MyHelpIcon";
-import MyHelpModal from "../components/MyHelpModal";
+import {MyHelpIcon} from "../components/MyHelpIcon";
+import {MyHelpModal} from "../components/MyHelpModal";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {updateSettings} from "../actions/settingsActions";
@@ -80,7 +80,7 @@ class SettingsScreen extends React.Component {
                             style={styles.select}
                             data={pause_data}
                             status='warning'
-                            label='Pause seconds between stories'
+                            label='Pause between stories'
                             onSelect={(event) =>
                                 this.updateSettings({pauseIdx: event.idx})}
                             selectedOption={pause_data[this.state.settings.pauseIdx]}

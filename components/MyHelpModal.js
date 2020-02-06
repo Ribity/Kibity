@@ -1,24 +1,22 @@
 import React from 'react';
 import Modal from "react-native-modal";
-import MyHelpExit from "./MyHelpExit";
-import HelpComponent from './HelpComponent';
+import {MyHelpExit} from "./MyHelpExit";
+import {HelpComponent} from './HelpComponent';
 
-export default class MyHelpModal extends React.Component {
-    render() {
-        return (
-            <Modal style={{ margin: 5 }}
-                   isVisible={this.props.isVisible}
-                // backdropColor={'#AFC0AB'}
-                   backdropColor={'purple'}
-                   backdropOpacity={.5}
-                   onBackdropPress={this.props.onExitPress}
-                   supportedOrientations={['portrait', 'landscape']}
-            >
-                <HelpComponent screen={this.props.screen} parm1={this.props.parm1}/>
+export const MyHelpModal = ( {isVisible, onExitPress, screen, parm1} ) => {
+    return (
+        <Modal style={{ margin: 5 }}
+               isVisible={isVisible}
+            // backdropColor={'#AFC0AB'}
+               backdropColor={'purple'}
+               backdropOpacity={.5}
+               onBackdropPress={onExitPress}
+               supportedOrientations={['portrait', 'landscape']}
+        >
+            <HelpComponent screen={screen} parm1={parm1}/>
 
-                <MyHelpExit onPress={this.props.onExitPress}/>
+            <MyHelpExit onPress={onExitPress}/>
 
-            </Modal>
-        );
-    }
-}
+        </Modal>
+    );
+};

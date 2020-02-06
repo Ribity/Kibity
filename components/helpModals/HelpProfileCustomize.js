@@ -3,16 +3,14 @@ import {Text} from 'react-native';
 import helpStyles from './helpStyles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-export default class HelpProfileSettings extends React.Component {
-    render() {
+export const HelpProfileCustomize = ( {} ) => {
+
 	return (<KeyboardAwareScrollView
-	    // style={helpStyles.container}
 	    resetScrollToCoords={{x:0, y:0}}
-	    // contentContainerStyle={helpStyles.container}
 	>
 
 		<Text  style={helpStyles.helpText}>
-			<Text style={helpStyles.helpBold}>Profile Settings: </Text>
+			<Text style={helpStyles.helpBold}>Profile Customize: </Text>
 			Your point total is updated periodically. Not real time.
 		    {"\n"}
 		    {"\n"}
@@ -45,6 +43,5 @@ export default class HelpProfileSettings extends React.Component {
 	       </Text>
 	    </KeyboardAwareScrollView>
 	);
-    }
-}
+};
 

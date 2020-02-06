@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet} from "react-native";
+// import { StyleSheet} from "react-native";
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator} from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
@@ -10,11 +10,11 @@ import MyDefines from './constants/MyDefines';
 import AudioScreen  from './screens/audio';
 import StoriesScreen from './screens/stories';
 import ProfilesScreen  from './screens/profiles';
-import ProfileSettings  from './screens/profileSettings';
+import ProfileCustomize  from './screens/profileCustomize';
 import SettingsScreen from './screens/settings';
-import SettingsEndOfStory from './screens/SettingsEndOfStory';
-import SettingsAudio from './screens/SettingsAudio';
-import SettingsAbout from './screens/SettingsAbout';
+// import SettingsEndOfStory from './screens/SettingsEndOfStory';
+// import SettingsAudio from './screens/SettingsAudio';
+// import SettingsAbout from './screens/SettingsAbout';
 
 let defNav = {
     headerStyle: {backgroundColor: MyDefines.myTabColor},
@@ -34,14 +34,14 @@ const StoriesStack = createStackNavigator({
 
 const ProfilesStack = createStackNavigator({
     Profiles: ProfilesScreen,
-    ProfileSettings: ProfileSettings,
+    ProfileCustomize: ProfileCustomize,
 }, {defaultNavigationOptions: () => (defNav)});
 
 const SettingsStack = createStackNavigator({
     Settings: SettingsScreen,
-    SettingsEndOfStory: SettingsEndOfStory,
-    SettingsAudio: SettingsAudio,
-    SettingsAbout: SettingsAbout,
+    // SettingsEndOfStory: SettingsEndOfStory,
+    // SettingsAudio: SettingsAudio,
+    // SettingsAbout: SettingsAbout,
 }, {defaultNavigationOptions: () => (defNav)});
 
 AudioStack.navigationOptions = {
