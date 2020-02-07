@@ -94,7 +94,6 @@ class AudioScreen extends React.Component {
 
         await this.props.updateSettings(retObj.settings);
         await this.props.updateProfiles(retObj.profiles);
-        this.props.navigation.setParams({profile: this.props.profiles.profile[this.props.profiles.profilesIdx]});
         this.props.navigation.setParams({myProfile: this.props.profiles.profile[this.props.profiles.profilesIdx]});
         this.props.navigation.setParams({onPress: this.goToProfilesSetActive});
     };
@@ -144,7 +143,8 @@ class AudioScreen extends React.Component {
             //         this.getItAndPlay();
             // }
 
-            this.props.navigation.setParams({profile: this.props.profiles.profile[this.props.profiles.profilesIdx]});
+            this.props.navigation.setParams({myProfile: this.props.profiles.profile[this.props.profiles.profilesIdx]});
+
             this.checkStorySelectedParm();
 
         } catch (error) {
