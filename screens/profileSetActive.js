@@ -11,6 +11,7 @@ import {ScreenTitle} from "../components/screenTitle";
 import MyDefines from "../constants/MyDefines";
 import {bindActionCreators} from "redux";
 import {updateProfiles} from "../actions/profilesActions";
+import myStyles from "../myStyles";
 
 const {height, width} = Dimensions.get('window');
 
@@ -56,7 +57,7 @@ class ProfileSetActive extends React.Component {
     };
     render () {
         return (
-            <SafeAreaView style={styles.container}>
+            <SafeAreaView style={myStyles.container}>
                 <Layout style={{flex: 1, paddingLeft: 10, justifyContent: 'center'}}>
 
                     { ( (this.state.data_correct === true) &&

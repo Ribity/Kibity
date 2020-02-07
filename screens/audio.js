@@ -55,7 +55,7 @@ class AudioScreen extends React.Component {
             myfuncs.myBreadCrumbs('navigationOptions', 'AudioScreen');
             const { params = {} } = navigation.state;
             return {
-                headerLeft: () => <ProfileHeader profile={params.profile} action={params.action}/>,
+                headerLeft: () => <ProfileHeader profile={params.myProfile} onPress={params.onPress}/>,
                 headerTitle: () => <ScreenTitle title={"Audio"}/>,
                 headerRight: () => <ThemeButton/>,
             };
@@ -72,10 +72,6 @@ class AudioScreen extends React.Component {
     };
     componentDidMount() {
         setTimeout(() => {this.getUserStoredData();}, 1);
-
-        this.props.navigation.setParams({profile: this.props.profiles.profile[this.props.profiles.profilesIdx]});
-        this.props.navigation.setParams({action: this.goToProfilesSetActive});
-
 
         this.subs = [
             this.props.navigation.addListener('willFocus', this.componentWillFocus),
@@ -99,6 +95,8 @@ class AudioScreen extends React.Component {
         await this.props.updateSettings(retObj.settings);
         await this.props.updateProfiles(retObj.profiles);
         this.props.navigation.setParams({profile: this.props.profiles.profile[this.props.profiles.profilesIdx]});
+        this.props.navigation.setParams({myProfile: this.props.profiles.profile[this.props.profiles.profilesIdx]});
+        this.props.navigation.setParams({onPress: this.goToProfilesSetActive});
     };
 
     static getDerivedStateFromProps(nextProps, prevState){
@@ -594,34 +592,18 @@ class AudioScreen extends React.Component {
                                </View>
                        </View>
                    }
-                   <MyHelpIcon onPress={this.onHelpPress}/>
-                   <MyHelpModal screen={"Audio"}
-                                onExitPress={this.onHelpExitPress}
-                                isVisible={this.state.isModalVisible}/>
+
                </Layout>
            </SafeAreaView>
         );
     }
-    onHelpPress = () => {
-        try {
-            myfuncs.myBreadCrumbs('onHelpPress', this.props.navigation.state.routeName);
-            this.setState({isModalVisible: true});
-        } catch (error) {
-            myfuncs.mySentry(error);
-        }
-    };
-    onHelpExitPress = () => {
-        try {
-            myfuncs.myBreadCrumbs('onHelpExitPress', this.props.navigation.state.routeName);
-            this.setState({isModalVisible: false});
-        } catch (error) {
-            myfuncs.mySentry(error);
-        }
-    };
+
 };
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: MyDefines.myTabColor,
+
         // backgroundColor: 'white',
     },
     kibityLogo: {

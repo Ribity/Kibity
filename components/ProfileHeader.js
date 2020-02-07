@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, View, TouchableOpacity, StyleSheet} from "react-native";
 
-export const ProfileHeader = ( {profile, action} ) => {
+export const ProfileHeader = ( {profile, onPress} ) => {
     let text = "";
     if (profile !== undefined && profile !== null) {
         if (profile.mainChar !== undefined && profile.mainChar !== null)
@@ -9,7 +9,8 @@ export const ProfileHeader = ( {profile, action} ) => {
     }
     return (
         <View>
-            <TouchableOpacity onPress={() => action()} hitSlop={styles.hitSlop}>
+            <TouchableOpacity onPress={() => onPress()} hitSlop={styles.hitSlop}>
+                <Text style={styles.myText}>Active Profile</Text>
                 <Text style={styles.myText}>{text}</Text>
             </TouchableOpacity>
         </View>
