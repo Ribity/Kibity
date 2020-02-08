@@ -34,7 +34,6 @@ class ProfileSetActive extends React.Component {
         super(props);
         this.state = {
             profiles: this.props.profiles,
-            data_correct: false,
         };
     };
     componentDidMount() {
@@ -140,7 +139,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
     textStyle: {
-        color: 'purple',
+        color: 'mediumpurple',
         fontSize: 23,
     },
     labelStyle: {

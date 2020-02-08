@@ -306,20 +306,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold",
         color: "goldenrod",
-        // backgroundColor: "purple",
-
     },
     list: {
         alignItems: "center",
         paddingTop: 20,
     },
-    favoritesButton: {
-        // alignItems: 'left',
-        marginVertical: 4,
-        marginHorizontal: 4,
-        backgroundColor: 'purple',
-    },
-
 });
 
 const mapStateToProps = (state) => {

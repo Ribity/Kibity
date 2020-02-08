@@ -224,7 +224,7 @@ class AudioScreen extends React.Component {
         if (myStory !== null) {
 
             myStory = storyconversion.convertIt(myStory, this.props.profiles.profile[this.props.profiles.profilesIdx]);
-            // if (MyDefines.log_details)
+            if (MyDefines.log_details)
                 console.log("convertedStory:", myStory);
 
             if (MyDefines.log_audio)

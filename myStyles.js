@@ -168,16 +168,7 @@ const myStyles = StyleSheet.create({
         fontWeight:"bold",
         fontSize: 20,
     },
-    myBigToastStyle: {
-        backgroundColor:'goldenrod',
-        borderRadius: 20,
-        padding: 10
-    },
-    myBigToast: {
-        color:'purple',
-        fontSize:20,
-        fontWeight: 'bold'
-    },
+
 });
 
 

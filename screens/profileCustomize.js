@@ -37,7 +37,8 @@ class ProfileCustomize extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            profiles: this.props.profiles,
+            // profiles: this.props.profiles,
+            profiles: JSON.parse(JSON.stringify(this.props.profiles)),
             customizeIdx: 0,
             submitPressed: false,
             textIsFocused: false,
@@ -80,7 +81,15 @@ class ProfileCustomize extends React.Component {
                     contentContainerStyle={myStyles.container}
                 >
                     <Layout style={myStyles.container}>
-                    {/*<View style={{paddingTop: androidPad}}/>*/}
+
+                    <View style={{marginTop: 20}}/>
+
+                        <MyButton buttonStyle={myStyles.selectButton}
+                                  textStyle={myStyles.selectButtonText}
+                                  onPress={this.onSubmitPress}
+                                  title={"Save"}>
+
+                        </MyButton>
 
                         <Text style={myStyles.iFieldLabel}>Name of Main Character</Text>
                         <TextInput style={myStyles.iField}
@@ -94,7 +103,7 @@ class ProfileCustomize extends React.Component {
                                    onFocus={this.handleInputFocus}
                                    onBlur={this.handleInputBlur}
                         />
-                        <View style={{flexDirection: 'row', color: 'purple'}}>
+                        <View style={{flexDirection: 'row'}}>
                             <Radio style={styles.radioHe}
                                    text='He' status='warning'
                                    onChange={(isChecked) => this.updateStateGender(isChecked,0, 0 )}
@@ -121,7 +130,7 @@ class ProfileCustomize extends React.Component {
                                    onFocus={this.handleInputFocus}
                                    onBlur={this.handleInputBlur}
                         />
-                        <View style={{flexDirection: 'row', color: 'purple'}}>
+                        <View style={{flexDirection: 'row'}}>
                             <Radio style={styles.radioHe}
                                    text='He' status='warning'
                                    onChange={(isChecked) => this.updateStateGender(isChecked,1, 0 )}
@@ -148,7 +157,7 @@ class ProfileCustomize extends React.Component {
                                    onFocus={this.handleInputFocus}
                                    onBlur={this.handleInputBlur}
                         />
-                        <View style={{flexDirection: 'row', color: 'purple'}}>
+                        <View style={{flexDirection: 'row'}}>
                             <Radio style={styles.radioHe}
                                    text='He' status='warning'
                                    onChange={(isChecked) => this.updateStateGender(isChecked,2, 0 )}
@@ -163,15 +172,60 @@ class ProfileCustomize extends React.Component {
                                    checked={this.state.profiles.profile[this.state.customizeIdx].character[2].pronoun === 2}/>
                         </View>
 
+                        {/*<View style={{paddingTop: 15}}/>*/}
+                        {/*<MyButton buttonStyle={myStyles.selectButton}*/}
+                                  {/*textStyle={myStyles.selectButtonText}*/}
+                                  {/*onPress={this.onSubmitPress}*/}
+                                  {/*title={"Save"}>*/}
+                        {/*</MyButton>*/}
+                        {/*<View style={{paddingTop: 5}}/>*/}
 
-                        <View style={{paddingTop: 5}}/>
-                    <MyButton buttonStyle={myStyles.selectButton}
-                              textStyle={myStyles.selectButtonText}
-                              onPress={this.onSubmitPress}
-                              title={"Submit"}>
-                    </MyButton>
+                        <Text style={myStyles.iFieldLabel}>Name of a town/city</Text>
+                        <TextInput style={myStyles.iField}
+                                   value={this.state.profiles.profile[this.state.customizeIdx].city}
+                                   onChangeText={(text) => this.updateState({city: text})}
+                                   clearButtonMode='always'
+                                   placeholder={"City"}
+                                   returnKeyType='done'
+                                   placeholderTextColor={"grey"}
+                                   maxLength={500}
+                                   onFocus={this.handleInputFocus}
+                                   onBlur={this.handleInputBlur}
+                        />
+                        <Text style={myStyles.iFieldLabel}>Type of animal/pet</Text>
+                        <TextInput style={myStyles.iField}
+                                   value={this.state.profiles.profile[this.state.customizeIdx].pet}
+                                   onChangeText={(text) => this.updateState({pet: text})}
+                                   clearButtonMode='always'
+                                   placeholder={"Pet"}
+                                   returnKeyType='done'
+                                   placeholderTextColor={"grey"}
+                                   maxLength={500}
+                                   onFocus={this.handleInputFocus}
+                                   onBlur={this.handleInputBlur}
+                        />
+                        <Text style={myStyles.iFieldLabel}>Pet's name</Text>
+                        <TextInput style={myStyles.iField}
+                                   value={this.state.profiles.profile[this.state.customizeIdx].petName}
+                                   onChangeText={(text) => this.updateState({petName: text})}
+                                   clearButtonMode='always'
+                                   placeholder={"Pet Name"}
+                                   returnKeyType='done'
+                                   placeholderTextColor={"grey"}
+                                   maxLength={500}
+                                   onFocus={this.handleInputFocus}
+                                   onBlur={this.handleInputBlur}
+                        />
 
-                    <Toast
+                        <View style={{paddingTop: 15}}/>
+                        <MyButton buttonStyle={myStyles.selectButton}
+                                  textStyle={myStyles.selectButtonText}
+                                  onPress={this.onSubmitPress}
+                                  title={"Save"}>
+
+                        </MyButton>
+
+                        <Toast
                         ref="toast"
                         style={{backgroundColor:'mediumpurple',borderRadius: 20,padding: 10}}
                         position='top'
@@ -179,12 +233,15 @@ class ProfileCustomize extends React.Component {
                         fadeOutDuration={1000}
                         opacity={.8}
                         textStyle={{color:'gold',fontSize:21}}
-                    />
+                        />
 
                     <MyHelpIcon onPress={this.onHelpPress}/>
                     <MyHelpModal screen={"ProfileCustomize"}
                                  onExitPress={this.onHelpExitPress}
                                  isVisible={this.state.isModalVisible}/>
+
+                        <View style={{marginBottom: 50}}/>
+
 
                     </Layout>
                 </KeyboardAwareScrollView>
@@ -225,7 +282,14 @@ class ProfileCustomize extends React.Component {
     };
     updateStateChar = (new_prop, charIdx) => {
         let newProfiles = {...this.state.profiles};
-        newProfiles.profile[this.state.customizeIdx].character[charIdx] = {...newProfiles.profile[this.state.customizeIdx].character[charIdx], ...new_prop};
+        newProfiles.profile[this.state.customizeIdx].character[charIdx] =
+            {...newProfiles.profile[this.state.customizeIdx].character[charIdx], ...new_prop};
+        this.setState({profiles: newProfiles});
+    };
+    updateState = (new_prop) => {
+        let newProfiles = {...this.state.profiles};
+        newProfiles.profile[this.state.customizeIdx] =
+            {...newProfiles.profile[this.state.customizeIdx], ...new_prop};
         this.setState({profiles: newProfiles});
     };
 };
