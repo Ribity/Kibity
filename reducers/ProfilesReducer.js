@@ -14,8 +14,10 @@ export default profilesReducer = (state = INITIAL_STATE, action) => {
 
     switch (action.type) {
         case UPDATE_PROFILES:
+            console.log("reducer new redux profiles:", action.payload);
             return action.payload;
         case SET_STORY_IDX:
+            // console.log("reducer currIdx:", currIdx, " currStoryIdx:", action.payload);
             temp_prof.profile[currIdx].currStoryIdx = action.payload;
             return temp_prof;
         case SET_LIST_TYPE:

@@ -68,13 +68,13 @@ class StoriesScreen extends React.Component {
         this.props.navigation.setParams({getRight: this.listList});
         this.props.navigation.setParams({getLeft: this.listFaves});
         this.props.navigation.setParams({numFaves: this.props.profiles.profile[this.props.profiles.profilesIdx].favorites.length});
-        this.props.navigation.setParams({activeProfile: this.props.profiles.profile[this.props.profiles.profilesIdx].mainChar});
+        this.props.navigation.setParams({activeProfile: this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name});
         this.props.navigation.setParams({filterType: this.state.filterType});
         // console.log("StoriesScreen DidMount:", this.props.story_list);
     }
     componentWillFocus() {
         try {
-            this.props.navigation.setParams({activeProfile: this.props.profiles.profile[this.props.profiles.profilesIdx].mainChar});
+            this.props.navigation.setParams({activeProfile: this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name});
         } catch (error) {
             // myfuncs.mySentry(error);
         }
@@ -149,7 +149,7 @@ class StoriesScreen extends React.Component {
         return Object.keys(update).length ? update: null;
     };
     componentDidUpdate(prevProps, prevState) {
-        // this.props.navigation.setParams({activeProfile: this.props.profiles.profile[this.props.profiles.profilesIdx].mainChar});
+        // this.props.navigation.setParams({activeProfile: this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name});
         console.log("StoriesScreenDidUpdate");
     }
     populateStateStoryList = () => {
@@ -158,7 +158,7 @@ class StoriesScreen extends React.Component {
         this.setState({story_list: this.props.story_list});
     };
     updateStoriesProfiles = () => {
-        console.log("updateStoriesCurrentProfile");
+        console.log("updateStoriesProfile");
         this.setState({profiles: this.props.profiles});
         this.props.navigation.setParams({numFaves: this.props.profiles.profile[this.props.profiles.profilesIdx].favorites.length});
         this.props.navigation.setParams({numList: this.props.profiles.profile[this.props.profiles.profilesIdx].playList.length});
@@ -223,7 +223,7 @@ class StoriesScreen extends React.Component {
                         <TouchableOpacity onPress={this.playPlayList}>
                             <View style={styles.playList}>
                                 <Ionicons name={"ios-list-box"} size={30} color={'goldenrod'}/>
-                                <View>
+                                <View style={{marginLeft: 2}}>
                                     <Text style={styles.pText}>Play</Text>
                                     <Text style={styles.pText}>PlayList</Text>
                                 </View>
@@ -271,7 +271,7 @@ class StoriesScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "purple",
+        backgroundColor: "mediumpurple",
         justifyContent:'center',
         alignItems: 'center',
         paddingTop: 25,
@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
     },
     pText: {
-        color: 'goldenrod',
+        color: 'gold',
     },
     title: {
         // height: 50,

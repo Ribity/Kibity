@@ -5,6 +5,7 @@ import {Button, Layout, Text} from "@ui-kitten/components";
 import {Ionicons} from '@expo/vector-icons';
 import * as Speech from "expo-speech";
 import MyDefines from '../constants/MyDefines';
+import myStyles from "../myStyles";
 import mystories from '../services/myStories';
 import storyconversion from '../services/storyConversion';
 import {connect} from "react-redux";
@@ -223,7 +224,7 @@ class AudioScreen extends React.Component {
         if (myStory !== null) {
 
             myStory = storyconversion.convertIt(myStory, this.props.profiles.profile[this.props.profiles.profilesIdx]);
-            if (MyDefines.log_details)
+            // if (MyDefines.log_details)
                 console.log("convertedStory:", myStory);
 
             if (MyDefines.log_audio)
@@ -515,16 +516,22 @@ class AudioScreen extends React.Component {
                                {this.state.profiles.profile[this.state.profiles.profilesIdx].currListType === 0  &&
                                <View>
                                    {this.state.profiles.profile[this.state.profiles.profilesIdx].favorites.length > 0 &&
-                                   <MyButton buttonStyle={styles.selectButton}
-                                       textStyle={styles.selectButtonText}
-                                       onPress={this.playFavorites}
-                                       title={"Start Favorites"}/>
+                                       <View>
+                                           <View style={{padding: 15}}/>
+                                           <MyButton buttonStyle={myStyles.selectButton}
+                                               textStyle={myStyles.selectButtonText}
+                                               onPress={this.playFavorites}
+                                               title={"Start Favorites"}/>
+                                       </View>
                                    }
                                    {this.state.profiles.profile[this.state.profiles.profilesIdx].playList.length > 0 &&
-                                   <MyButton buttonStyle={styles.selectButton}
-                                       textStyle={styles.selectButtonText}
-                                       onPress={this.playPlayList}
-                                       title={"Start Playlist"}/>
+                                       <View>
+                                           <View style={{padding: 15}}/>
+                                           <MyButton buttonStyle={myStyles.selectButton}
+                                           textStyle={myStyles.selectButtonText}
+                                           onPress={this.playPlayList}
+                                           title={"Start Playlist"}/>
+                                       </View>
                                    }
                                </View>
                                }
@@ -535,12 +542,13 @@ class AudioScreen extends React.Component {
                                        <Text style={styles.playType}>Playing Favorites</Text>
                                        <Ionicons style={styles.playIcon} name={"ios-heart"} size={25} color={'red'}/>
                                    </View>
-                                   <MyButton buttonStyle={styles.selectButton}
-                                             textStyle={styles.selectButtonText}
+                                   <MyButton buttonStyle={myStyles.selectButton}
+                                             textStyle={myStyles.selectButtonText}
                                              onPress={this.playPrevious}
                                              title={"Previous Favorite Story"}/>
-                                   <MyButton buttonStyle={styles.selectButton}
-                                             textStyle={styles.selectButtonText}
+                                   <View style={{padding: 5}}/>
+                                   <MyButton buttonStyle={myStyles.selectButton}
+                                             textStyle={myStyles.selectButtonText}
                                              onPress={this.playNext}
                                              title={"Next Favorite Story"}/>
                                </View>
@@ -552,13 +560,14 @@ class AudioScreen extends React.Component {
                                        <Text style={styles.playType}>Playing Playlist</Text>
                                        <Ionicons style={styles.playIcon} name={"ios-list-box"} size={25} color={'goldenrod'}/>
                                    </View>
-                                   <MyButton buttonStyle={styles.selectButton}
-                                             textStyle={styles.selectButtonText}
+                                   <MyButton buttonStyle={myStyles.selectButton}
+                                             textStyle={myStyles.selectButtonText}
                                              onPress={this.playPrevious}
                                              title={"Previous PlayList Story"}/>
 
-                                   <MyButton buttonStyle={styles.selectButton}
-                                             textStyle={styles.selectButtonText}
+                                   <View style={{padding: 5}}/>
+                                   <MyButton buttonStyle={myStyles.selectButton}
+                                             textStyle={myStyles.selectButtonText}
                                              onPress={this.playNext}
                                              title={"Next PlayList Story"}/>
                                </View>
@@ -573,31 +582,59 @@ class AudioScreen extends React.Component {
                            <Image style={styles.kibityLogo} source={kibityLogo}/>
                            <View style={{padding: 15}}/>
                            <View>
-                               <MyButton buttonStyle={styles.selectButton}
-                                         textStyle={styles.selectButtonText}
+                               <View style={{padding: 15}}/>
+                               <MyButton buttonStyle={myStyles.selectButton}
+                                         textStyle={myStyles.selectButtonText}
                                          onPress={this.goToStoriesScreen}
                                          title={"Select a Story, or\nBuild a PlayList"}/>
                                {this.state.profiles.profile[this.state.profiles.profilesIdx].favorites.length > 0 &&
-                               <MyButton buttonStyle={styles.selectButton}
-                                         textStyle={styles.selectButtonText}
-                                         onPress={this.playFavorites}
-                                         title={"Play Favorites"}/>
+                                   <View>
+                                   <View style={{padding: 15}}/>
+                                   <MyButton buttonStyle={myStyles.selectButton}
+                                             textStyle={myStyles.selectButtonText}
+                                             onPress={this.playFavorites}
+                                             title={"Play Favorites"}/>
+                                   </View>
                                }
                                {this.state.profiles.profile[this.state.profiles.profilesIdx].playList.length > 0 &&
-                               <MyButton buttonStyle={styles.selectButton}
-                                         textStyle={styles.selectButtonText}
-                                         onPress={this.playPlayList}
-                                         title={"Play Playlist"}/>
+                                   <View>
+                                       <View style={{padding: 15}}/>
+                                       <MyButton buttonStyle={myStyles.selectButton}
+                                             textStyle={myStyles.selectButtonText}
+                                             onPress={this.playPlayList}
+                                             title={"Play Playlist"}/>
+                                   </View>
                                }
                                </View>
                        </View>
                    }
 
+                   <MyHelpIcon onPress={this.onHelpPress}/>
+                   <MyHelpModal screen={"Audio"}
+                                onExitPress={this.onHelpExitPress}
+                                isVisible={this.state.isModalVisible}/>
+
+
                </Layout>
            </SafeAreaView>
         );
     }
-
+    onHelpPress = () => {
+        try {
+            myfuncs.myBreadCrumbs('onHelpPress', this.props.navigation.state.routeName);
+            this.setState({isModalVisible: true});
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
+    };
+    onHelpExitPress = () => {
+        try {
+            myfuncs.myBreadCrumbs('onHelpExitPress', this.props.navigation.state.routeName);
+            this.setState({isModalVisible: false});
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
+    };
 };
 const styles = StyleSheet.create({
     container: {
@@ -646,23 +683,6 @@ const styles = StyleSheet.create({
         bottom: (MyDefines.myBottomTabBarHeight),
         marginBottom: 10,
 
-    },
-    selectButton: {
-        marginVertical: 15,
-        marginHorizontal: 70,
-        backgroundColor: 'purple',
-        alignSelf: 'center',
-        borderColor: 'goldenrod',
-        borderWidth: 2,
-    },
-    selectButtonText: {
-        color: 'goldenrod',
-        fontWeight: 'bold',
-        margin: 5,
-    },
-    bottomButtons: {
-        marginVertical: 5,
-        backgroundColor: 'purple',
     },
     audioButton: {
         marginVertical: 2,

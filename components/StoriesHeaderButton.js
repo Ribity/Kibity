@@ -1,6 +1,5 @@
 import React from 'react';
 import {Text, View, TouchableOpacity, StyleSheet} from "react-native";
-import myStyles from "../myStyles";
 
 export const StoriesHeaderButton = ( {buttonType, filterType, action} ) => {
 

@@ -4,8 +4,8 @@ import {Text, View, TouchableOpacity, StyleSheet} from "react-native";
 export const ProfileHeader = ( {profile, onPress} ) => {
     let text = "";
     if (profile !== undefined && profile !== null) {
-        if (profile.mainChar !== undefined && profile.mainChar !== null)
-            text = profile.mainChar;
+        if (profile.character[0].name !== undefined && profile.character[0].name !== null)
+            text = profile.character[0].name;
     }
     return (
         <View>

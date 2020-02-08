@@ -51,7 +51,7 @@ class ProfileSetActive extends React.Component {
     };
     updateActiveProfilesList = () => {
         for (let i=0; i<profiles_data.length; i++) {
-            profiles_data[i].text = this.props.profiles.profile[i].mainChar;
+            profiles_data[i].text = this.props.profiles.profile[i].character[0].name;
         }
         this.setState({data_correct: true})
     };

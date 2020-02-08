@@ -3,7 +3,7 @@ class myStories {
     getStory = (storyName) => {
         try {
             let storyToUse = -1;
-            console.log("mystories.getStory");
+            console.log("mystories.getStory storyName:", storyName);
 
             if (storyName < 'c')
                 storyToUse = this.getStory_a_to_b(storyName);
@@ -17,7 +17,7 @@ class myStories {
                 storyToUse = this.getStory_t_to_z(storyName);
 
             if (storyToUse !== -1) {
-                // console.log("StoryFound: ", storyToUse);
+                console.log("StoryFound: ", storyToUse);
                 return storyToUse;
             } else {
                 return null;

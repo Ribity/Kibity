@@ -123,28 +123,28 @@ class MyListComponent extends React.Component {
         }
     };
     addToFaves = (index) => {
-        let msg = "Added to " + this.props.profiles.profile[this.props.profiles.profilesIdx].mainChar + "'s Favorites";
+        let msg = "Added to " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s Favorites";
         this.refs.toast.show(msg, 500);
         this.props.addFavorite(index);
         this.setState({data: this.props.myList});
         this.props.updateParentStoriesCurrentProfile();
     };
     removeFromFaves = (index) => {
-        let msg = "Removed from " + this.props.profiles.profile[this.props.profiles.profilesIdx].mainChar + "'s Favorites";
+        let msg = "Removed from " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s Favorites";
         this.refs.toast.show(msg, 500);
         this.props.removeFavorite(index);
         this.setState({data: this.props.myList});
         this.props.updateParentStoriesCurrentProfile();
     };
     addToPlayList = (index) => {
-        let msg = "Added to " + this.props.profiles.profile[this.props.profiles.profilesIdx].mainChar + "'s PlayList";
+        let msg = "Added to " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s PlayList";
         this.refs.toastPlay.show(msg, 500);
         this.props.addPlayList(index);
         this.setState({data: this.props.myList});
         this.props.updateParentStoriesCurrentProfile();
     };
     removeFromPlayList = (index) => {
-        let msg = "Removed from " + this.props.profiles.profile[this.props.profiles.profilesIdx].mainChar + "'s PlayList";
+        let msg = "Removed from " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s PlayList";
         this.refs.toastPlay.show(msg, 500);
         this.props.removePlayList(index);
         this.setState({data: this.props.myList});
@@ -361,7 +361,7 @@ class MyListComponent extends React.Component {
                         position='top'
                         positionValue={0}
                         fadeOutDuration={1000}
-                        opacity={.8}
+                        opacity={.7}
                         textStyle={{color:'gold',fontSize:15}}
                     />
                     {this.props.myList.length > 0 ?

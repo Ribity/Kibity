@@ -12,6 +12,7 @@ import MyDefines from "../constants/MyDefines";
 import {bindActionCreators} from "redux";
 import {updateProfiles} from "../actions/profilesActions";
 import {MyButton} from "../components/MyButton";
+import myStyles from "../myStyles";
 
 const {height, width} = Dimensions.get('window');
 
@@ -52,9 +53,9 @@ class ProfilesScreen extends React.Component {
                         <View style={{padding: 20}}/>
 
                         <Text style={styles.buttonText}>Active Profile</Text>
-                        <Text style={styles.textStyle}>{this.props.profiles.profile[this.props.profiles.profilesIdx].mainChar}</Text>
-                        <MyButton buttonStyle={styles.selectButton}
-                                  textStyle={styles.selectButtonText}
+                        <Text style={styles.textStyle}>{this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name}</Text>
+                        <MyButton buttonStyle={myStyles.selectButton}
+                                  textStyle={myStyles.selectButtonText}
                                   onPress={() => this.goToSetActiveProfile(0)}
                                   title="Select Active Profile"/>
                         <View style={{padding: 25}}/>
@@ -63,24 +64,24 @@ class ProfilesScreen extends React.Component {
                         <Image style={styles.kibityLogo} source={kibityLogo}/>
                         <View style={{padding: 10}}/>
                         <Text style={styles.buttonText}>Customize profile #1</Text>
-                        <MyButton buttonStyle={styles.selectButton}
-                                  textStyle={styles.selectButtonText}
+                        <MyButton buttonStyle={myStyles.selectButton}
+                                  textStyle={myStyles.selectButtonText}
                                   onPress={() => this.goToSpecificProfile(0)}
-                                  title={this.props.profiles.profile[0].mainChar}/>
+                                  title={this.props.profiles.profile[0].character[0].name}/>
                         <View style={{padding: 10}}/>
 
                         <Text style={styles.buttonText}>Customize profile #2</Text>
-                        <MyButton buttonStyle={styles.selectButton}
-                                  textStyle={styles.selectButtonText}
+                        <MyButton buttonStyle={myStyles.selectButton}
+                                  textStyle={myStyles.selectButtonText}
                                   onPress={() => this.goToSpecificProfile(1)}
-                                  title={this.props.profiles.profile[1].mainChar}/>
+                                  title={this.props.profiles.profile[1].character[0].name}/>
                         <View style={{padding: 10}}/>
 
                         <Text style={styles.buttonText}>Customize profile #3</Text>
-                        <MyButton buttonStyle={styles.selectButton}
-                                  textStyle={styles.selectButtonText}
+                        <MyButton buttonStyle={myStyles.selectButton}
+                                  textStyle={myStyles.selectButtonText}
                                   onPress={() => this.goToSpecificProfile(2)}
-                                  title={this.props.profiles.profile[2].mainChar}/>
+                                  title={this.props.profiles.profile[2].character[0].name}/>
                     </View>
 
                 </Layout>
@@ -155,19 +156,7 @@ const styles = StyleSheet.create({
         height: 60,
     },
     buttonText: {textAlign: 'center', color: 'mediumpurple', fontSize: 20, fontWeight: 'bold'},
-    selectButton: {
-        // marginVertical: 15,
-        marginHorizontal: 70,
-        backgroundColor: 'purple',
-        alignSelf: 'center',
-        borderColor: 'goldenrod',
-        borderWidth: 2,
-    },
-    selectButtonText: {
-        color: 'goldenrod',
-        fontWeight: 'bold',
-        margin: 5,
-    },
+
 
 });
 

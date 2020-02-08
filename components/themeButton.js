@@ -10,7 +10,7 @@ export const ThemeButton = () => {
     };
 
     let myText = 'Dark';
-    let backColor = 'purple';
+    let backColor = 'mediumpurple';
     let textColor = 'goldenrod';
     let borderColor = 'goldenrod';
 

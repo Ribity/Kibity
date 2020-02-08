@@ -27,8 +27,8 @@ export default {
     },
 
     // default_current_profile: {
-    //     mainChar: 'Michael',
-    //     mainCharGender: 'male',
+    //     charOne: 'Michael',
+    //     charOneGender: 'male',
     //     charTwo: 'Brandon',
     //     charTwoGender: 'male',
     //     charThree: 'Elizabeth',
@@ -50,12 +50,11 @@ export default {
         profilesIdx: 0,
         profile: [
             {
-                mainChar: 'Michael',
-                mainCharGender: 'male',
-                charTwo: 'Brandon',
-                charTwoGender: 'male',
-                charThree: 'Elizabeth',
-                charThreeGender: 'female',
+                character: [
+                    {name: 'Michael', pronoun: 0},
+                    {name: 'Brandon', pronoun: 0},
+                    {name: 'Elizabeth', pronoun: 1},
+                ],
                 team: 'Washington Redskins',
                 sport: 'football',
                 pet: 'dog',
@@ -68,12 +67,11 @@ export default {
                 currListType: 0,
             },
             {
-                mainChar: 'Beth Anne',
-                mainCharGender: 'female',
-                charTwo: 'Ramona Lynn',
-                charTwoGender: 'female',
-                charThree: 'Christopher',
-                charThreeGender: 'male',
+                character: [
+                    {name: 'Beth Anne', pronoun: 1},
+                    {name: 'Ramona Lynn', pronoun: 1},
+                    {name: 'Christopher', pronoun: 0},
+                ],
                 team: 'Sanderson High School',
                 sport: 'ice skating',
                 pet: 'horse',
@@ -86,12 +84,11 @@ export default {
                 currListType: 0,
             },
             {
-                mainChar: 'Mark Anthony',
-                mainCharGender: 'male',
-                charTwo: 'Dennis',
-                charTwoGender: 'male',
-                charThree: 'Chunky',
-                charThreeGender: 'male',
+                character: [
+                    {name: 'Mark Anthony', pronoun: 0},
+                    {name: 'Dennis', pronoun: 0},
+                    {name: 'Chunky', pronoun: 0},
+                ],
                 team: 'Atlanta Braves',
                 sport: 'baseball',
                 pet: 'monkey',

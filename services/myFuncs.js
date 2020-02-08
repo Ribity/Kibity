@@ -76,12 +76,14 @@ class myFuncs  {
             let user_settings = await hardStorage.getKey("user_settings");
             if (user_settings !== null) {
                 settings = {...settings, ...user_settings};
-                // console.log("Successfully retrieved settings from Storage")
+                if (MyDefines.log_details)
+                    console.log("Successfully retrieved settings from Storage:", settings)
             }
             let user_profiles = await hardStorage.getKey("user_profiles");
             if (user_profiles !== null) {
                 profiles = {...profiles, ...user_profiles};
-                // console.log("Successfully retrieved profiles from Storage")
+                if (MyDefines.log_details)
+                    console.log("Successfully retrieved profiles from Storage:", profiles)
             }
 
         } catch (error) {

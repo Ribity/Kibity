@@ -1,25 +1,12 @@
 import MyDefines from '../constants/MyDefines';
 
-let   OneBoyOrGirl;
-let   OneHeOrShe;
-let   OneHimOrHer;
-let   OneHisOrHer;
-let   OneHisOrHers;
-
-let   TwoBoyOrGirl;
-let   TwoHeOrShe;
-let   TwoHimOrHer;
-let   TwoHisOrHer;
-let   TwoHisOrHers;
-
-let   ThreeBoyOrGirl;
-let   ThreeHeOrShe;
-let   ThreeHimOrHer;
-let   ThreeHisOrHer;
-let   ThreeHisOrHers;
+let   BoyOrGirl = [];
+let   HeOrShe = [];
+let   HimOrHer = [];
+let   HisOrHer = [];
+let   HisOrHers = [];
 
 class storyConversion {
-
     convertIt = (story, profile) => {
         let myStory = null;
 
@@ -31,106 +18,88 @@ class storyConversion {
         }
         return myStory;
     };
-
     initText = (profile) => {
         if (profile === null)
-            profile = MyDefines.default_current_profile;
+            profile = MyDefines.default_profiles.profile[0];
 
-        if (profile.mainCharGender === 'male') {
-            OneBoyOrGirl = 'Boy';
-            OneHeOrShe   = 'he';
-            OneHimOrHer  = 'him';
-            OneHisOrHer  = 'his';
-            OneHisOrHers = 'his';
-        } else {
-            OneBoyOrGirl = 'girl';
-            OneHeOrShe   = 'she';
-            OneHimOrHer  = 'her';
-            OneHisOrHer  = 'her';
-            OneHisOrHers = 'hers';
-        }
-
-        if (profile.charTwoGender === 'male') {
-            TwoBoyOrGirl = 'Boy';
-            TwoHeOrShe   = 'he';
-            TwoHimOrHer  = 'him';
-            TwoHisOrHer  = 'his';
-            TwoHisOrHers = 'his';
-        } else {
-            TwoBoyOrGirl = 'girl';
-            TwoHeOrShe   = 'she';
-            TwoHimOrHer  = 'her';
-            TwoHisOrHer  = 'her';
-            TwoHisOrHers = 'hers';
-        }
-
-        if (profile.charThreeGender === 'male') {
-            ThreeBoyOrGirl = 'boy';
-            ThreeHeOrShe   = 'he';
-            ThreeHimOrHer  = 'him';
-            ThreeHisOrHer  = 'his';
-            ThreeHisOrHers = 'his';
-        } else {
-            ThreeBoyOrGirl = 'girl';
-            ThreeHeOrShe   = 'she';
-            ThreeHimOrHer  = 'her';
-            ThreeHisOrHer  = 'her';
-            ThreeHisOrHers = 'hers';
+        for (let i=0; i<3; i++) {
+            if (profile.character[i].pronoun === 0) {
+                BoyOrGirl[i] = 'Boy';
+                HeOrShe[i] = 'he';
+                HimOrHer[i] = 'him';
+                HisOrHer[i] = 'his';
+                HisOrHers[i] = 'his';
+            } else if (profile.character[i].pronoun === 1) {
+                BoyOrGirl[i] = 'girl';
+                HeOrShe[i] = 'she';
+                HimOrHer[i] = 'her';
+                HisOrHer[i] = 'her';
+                HisOrHers[i] = 'hers';
+            } else {
+                BoyOrGirl[i] = 'group';
+                HeOrShe[i] = 'they';
+                HimOrHer[i] = 'them';
+                HisOrHer[i] = 'their';
+                HisOrHers[i] = 'theirs';
+            }
         }
     };
-
     replacements = (inStory, profile) => {
         let rLine;
-
+        let outStory = {line: []};  // Doing this and the JSON.parse below so as not modify original story
+                                    // so we convert it with a different profile is active.profile is changed
+                                    // without changing storyIdx.
         if (profile === null)
-            profile = MyDefines.default_current_profile;
+            profile =  MyDefines.default_profiles.profile[0];
 
         let i;
         for (i = 0; i < inStory.line.length; i++) {
-            rLine = inStory.line[i].replace(/mainchar/gi, profile.mainChar);
-            rLine = rLine.replace(/char1/gi, profile.mainChar);
-            rLine = rLine.replace(/boy1/gi, OneBoyOrGirl);
-            rLine = rLine.replace(/girl1/gi, OneBoyOrGirl);
-            rLine = rLine.replace(/secondchar/gi, profile.charTwo);
-            rLine = rLine.replace(/char2/gi, profile.charTwo);
-            rLine = rLine.replace(/boy2/gi, TwoBoyOrGirl);
-            rLine = rLine.replace(/girl2/gi, TwoBoyOrGirl);
-            rLine = rLine.replace(/thirdchar/gi, profile.charThree);
-            rLine = rLine.replace(/char3/gi, profile.charThree);
-            rLine = rLine.replace(/boy3/gi, ThreeBoyOrGirl);
-            rLine = rLine.replace(/girl3/gi, ThreeBoyOrGirl);
+            let newLine = JSON.parse(JSON.stringify(inStory.line[i]));
+            rLine = newLine.replace(/mainchar/gi, profile.character[0].name);
+            rLine = rLine.replace(/char1/gi, profile.character[0].name);
+            rLine = rLine.replace(/boy1/gi, BoyOrGirl[0]);
+            rLine = rLine.replace(/girl1/gi, BoyOrGirl[0]);
+            rLine = rLine.replace(/secondchar/gi, profile.character[1].name);
+            rLine = rLine.replace(/char2/gi, profile.character[1].name);
+            rLine = rLine.replace(/boy2/gi, BoyOrGirl[1]);
+            rLine = rLine.replace(/girl2/gi, BoyOrGirl[1]);
+            rLine = rLine.replace(/thirdchar/gi, profile.character[2].name);
+            rLine = rLine.replace(/char3/gi, profile.character[2].name);
+            rLine = rLine.replace(/boy3/gi, BoyOrGirl[2]);
+            rLine = rLine.replace(/girl3/gi, BoyOrGirl[2]);
             rLine = rLine.replace(/city1/gi, profile.city);
             rLine = rLine.replace(/pet1/gi, profile.pet);
             rLine = rLine.replace(/petname1/gi, profile.petName);
             rLine = rLine.replace(/sport1/gi, profile.sport);
             rLine = rLine.replace(/team1/gi, profile.team);
-            rLine = rLine.replace(/she1/gi, OneHeOrShe);
-            rLine = rLine.replace(/he1/gi, OneHeOrShe);
-            rLine = rLine.replace(/him1/gi, OneHimOrHer);
-            rLine = rLine.replace(/herm1/gi, OneHimOrHer);
-            rLine = rLine.replace(/his1/gi, OneHisOrHer);
-            rLine = rLine.replace(/her1/gi, OneHisOrHer);
-            rLine = rLine.replace(/hiss1/gi, OneHisOrHers);
-            rLine = rLine.replace(/hers1/gi, OneHisOrHers);
-            rLine = rLine.replace(/she2/gi, TwoHeOrShe);
-            rLine = rLine.replace(/he2/gi, TwoHeOrShe);
-            rLine = rLine.replace(/him2/gi, TwoHimOrHer);
-            rLine = rLine.replace(/her2/gi, TwoHimOrHer);
-            rLine = rLine.replace(/his2/gi, TwoHisOrHer);
-            rLine = rLine.replace(/herm2/gi, TwoHisOrHer);
-            rLine = rLine.replace(/hiss2/gi, TwoHisOrHers);
-            rLine = rLine.replace(/hers2/gi, TwoHisOrHers);
-            rLine = rLine.replace(/she3/gi, ThreeHeOrShe);
-            rLine = rLine.replace(/he3/gi, ThreeHeOrShe);
-            rLine = rLine.replace(/him3/gi, ThreeHimOrHer);
-            rLine = rLine.replace(/herm3/gi, ThreeHimOrHer);
-            rLine = rLine.replace(/his3/gi, ThreeHisOrHer);
-            rLine = rLine.replace(/her3/gi, ThreeHisOrHer);
-            rLine = rLine.replace(/hiss3/gi, ThreeHisOrHers);
-            rLine = rLine.replace(/hers3/gi, ThreeHisOrHers);
-            inStory.line[i] = rLine;
+            rLine = rLine.replace(/she1/gi, HeOrShe[0]);
+            rLine = rLine.replace(/he1/gi, HeOrShe[0]);
+            rLine = rLine.replace(/him1/gi, HimOrHer[0]);
+            rLine = rLine.replace(/herm1/gi, HimOrHer[0]);
+            rLine = rLine.replace(/his1/gi, HisOrHer[0]);
+            rLine = rLine.replace(/her1/gi, HisOrHer[0]);
+            rLine = rLine.replace(/hiss1/gi, HisOrHers[0]);
+            rLine = rLine.replace(/hers1/gi, HisOrHers[0]);
+            rLine = rLine.replace(/she2/gi, HeOrShe[1]);
+            rLine = rLine.replace(/he2/gi, HeOrShe[1]);
+            rLine = rLine.replace(/him2/gi, HimOrHer[1]);
+            rLine = rLine.replace(/her2/gi, HimOrHer[1]);
+            rLine = rLine.replace(/his2/gi, HisOrHer[1]);
+            rLine = rLine.replace(/herm2/gi, HisOrHer[1]);
+            rLine = rLine.replace(/hiss2/gi, HisOrHers[1]);
+            rLine = rLine.replace(/hers2/gi, HisOrHers[1]);
+            rLine = rLine.replace(/she3/gi, HeOrShe[2]);
+            rLine = rLine.replace(/he3/gi, HeOrShe[2]);
+            rLine = rLine.replace(/him3/gi, HimOrHer[2]);
+            rLine = rLine.replace(/herm3/gi, HimOrHer[2]);
+            rLine = rLine.replace(/his3/gi, HisOrHer[2]);
+            rLine = rLine.replace(/her3/gi, HisOrHer[2]);
+            rLine = rLine.replace(/hiss3/gi, HisOrHers[2]);
+            rLine = rLine.replace(/hers3/gi, HisOrHers[2]);
+            // inStory.line[i] = rLine;
+            outStory.line[i] = rLine;
         }
-        return inStory;
+        return outStory;
     }
 }
 

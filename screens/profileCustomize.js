@@ -2,9 +2,9 @@ import React from 'react';
 import {
     View,
     TextInput,
-    Keyboard, StyleSheet,
+    StyleSheet,
 } from 'react-native';
-import {Layout, Text, Select} from '@ui-kitten/components';
+import {Layout, Text, Radio} from '@ui-kitten/components';
 
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Toast from 'react-native-easy-toast';
@@ -26,8 +26,9 @@ class ProfileCustomize extends React.Component {
     static navigationOptions = ({navigation}) => {
         try {
             myfuncs.myBreadCrumbs('navigationOptions', 'AudioScreen');
+            const { params = {} } = navigation.state;
             return {
-                headerTitle: () => <ScreenTitle title={"Profiles"} second={"Customize"}/>,
+                headerTitle: () => <ScreenTitle title={"Profiles"} second={params.profileNum}/>,
             };
         } catch (error) {
             myfuncs.mySentry(error);
@@ -49,6 +50,8 @@ class ProfileCustomize extends React.Component {
     checkCustomizeIdxParm = () => {
         let customizeIdx = this.props.navigation.getParam('customizeIdx', 0);
         this.setState({customizeIdx: customizeIdx});
+        let profileNumText = "Profile #" + (customizeIdx+1);
+        this.props.navigation.setParams({profileNum: profileNumText});
     };
 
     onSubmitPress = async () => {
@@ -79,25 +82,91 @@ class ProfileCustomize extends React.Component {
                     <Layout style={myStyles.container}>
                     {/*<View style={{paddingTop: androidPad}}/>*/}
 
+                        <Text style={myStyles.iFieldLabel}>Name of Main Character</Text>
+                        <TextInput style={myStyles.iField}
+                                   value={this.state.profiles.profile[this.state.customizeIdx].character[0].name}
+                                   onChangeText={(text) => this.updateStateChar({name: text}, 0)}
+                                   clearButtonMode='always'
+                                   placeholder={"2nd Character"}
+                                   returnKeyType='done'
+                                   placeholderTextColor={"grey"}
+                                   maxLength={500}
+                                   onFocus={this.handleInputFocus}
+                                   onBlur={this.handleInputBlur}
+                        />
+                        <View style={{flexDirection: 'row', color: 'purple'}}>
+                            <Radio style={styles.radioHe}
+                                   text='He' status='warning'
+                                   onChange={(isChecked) => this.updateStateGender(isChecked,0, 0 )}
+                                   checked={this.state.profiles.profile[this.state.customizeIdx].character[0].pronoun === 0}/>
+                            <Radio style={styles.radioShe}
+                                   text='She' status='warning'
+                                   onChange={(isChecked) => this.updateStateGender(isChecked,0, 1 )}
+                                   checked={this.state.profiles.profile[this.state.customizeIdx].character[0].pronoun === 1}/>
+                            <Radio style={styles.radioThey}
+                                   text='They' status='warning'
+                                   onChange={(isChecked) => this.updateStateGender(isChecked,0, 2 )}
+                                   checked={this.state.profiles.profile[this.state.customizeIdx].character[0].pronoun === 2}/>
+                        </View>
 
-                    <Text style={myStyles.iFieldLabel}>Name of Main Character</Text>
-                    <TextInput style={myStyles.iField}
-                               value={this.state.profiles.profile[this.state.customizeIdx].mainChar}
-                               onChangeText={(text) => this.updateState({mainChar: text})}
-                               clearButtonMode='always'
-                               placeholder={"Main Character"}
-                               returnKeyType='done'
-                               placeholderTextColor={"grey"}
-                               maxLength={500}
-                               onFocus={this.handleInputFocus}
-                               onBlur={this.handleInputBlur}
-                    />
+                        <Text style={myStyles.iFieldLabel}>Name of Second Character</Text>
+                        <TextInput style={myStyles.iField}
+                                   value={this.state.profiles.profile[this.state.customizeIdx].character[1].name}
+                                   onChangeText={(text) => this.updateStateChar({name: text}, 1)}
+                                   clearButtonMode='always'
+                                   placeholder={"2nd Character"}
+                                   returnKeyType='done'
+                                   placeholderTextColor={"grey"}
+                                   maxLength={500}
+                                   onFocus={this.handleInputFocus}
+                                   onBlur={this.handleInputBlur}
+                        />
+                        <View style={{flexDirection: 'row', color: 'purple'}}>
+                            <Radio style={styles.radioHe}
+                                   text='He' status='warning'
+                                   onChange={(isChecked) => this.updateStateGender(isChecked,1, 0 )}
+                                   checked={this.state.profiles.profile[this.state.customizeIdx].character[1].pronoun === 0}/>
+                            <Radio style={styles.radioShe}
+                                   text='She' status='warning'
+                                   onChange={(isChecked) => this.updateStateGender(isChecked,1, 1 )}
+                                   checked={this.state.profiles.profile[this.state.customizeIdx].character[1].pronoun === 1}/>
+                            <Radio style={styles.radioThey}
+                                   text='They' status='warning'
+                                   onChange={(isChecked) => this.updateStateGender(isChecked,1, 2 )}
+                                   checked={this.state.profiles.profile[this.state.customizeIdx].character[1].pronoun === 2}/>
+                        </View>
 
-                    <View style={{padding: 5}}/>
+                        <Text style={myStyles.iFieldLabel}>Name of Third Character</Text>
+                        <TextInput style={myStyles.iField}
+                                   value={this.state.profiles.profile[this.state.customizeIdx].character[2].name}
+                                   onChangeText={(text) => this.updateStateChar({name: text}, 2)}
+                                   clearButtonMode='always'
+                                   placeholder={"3rd Character"}
+                                   returnKeyType='done'
+                                   placeholderTextColor={"grey"}
+                                   maxLength={500}
+                                   onFocus={this.handleInputFocus}
+                                   onBlur={this.handleInputBlur}
+                        />
+                        <View style={{flexDirection: 'row', color: 'purple'}}>
+                            <Radio style={styles.radioHe}
+                                   text='He' status='warning'
+                                   onChange={(isChecked) => this.updateStateGender(isChecked,2, 0 )}
+                                   checked={this.state.profiles.profile[this.state.customizeIdx].character[2].pronoun === 0}/>
+                            <Radio style={styles.radioShe}
+                                   text='She' status='warning'
+                                   onChange={(isChecked) => this.updateStateGender(isChecked,2, 1 )}
+                                   checked={this.state.profiles.profile[this.state.customizeIdx].character[2].pronoun === 1}/>
+                            <Radio style={styles.radioThey}
+                                   text='They' status='warning'
+                                   onChange={(isChecked) => this.updateStateGender(isChecked,2, 2 )}
+                                   checked={this.state.profiles.profile[this.state.customizeIdx].character[2].pronoun === 2}/>
+                        </View>
 
-                    <View style={{paddingTop: 5}}/>
-                    <MyButton buttonStyle={styles.selectButton}
-                              textStyle={styles.selectButtonText}
+
+                        <View style={{paddingTop: 5}}/>
+                    <MyButton buttonStyle={myStyles.selectButton}
+                              textStyle={myStyles.selectButtonText}
                               onPress={this.onSubmitPress}
                               title={"Submit"}>
                     </MyButton>
@@ -142,9 +211,21 @@ class ProfileCustomize extends React.Component {
             myfuncs.mySentry(error);
         }
     };
-    updateState = (new_prop) => {
+    updateStateGender = (isChecked, charIdx, value) => {
+        console.log("updateStateGender: ", isChecked, charIdx, " ", value);
+
+        // We only need to update something if user is clicking a radio that is not the active radio.
+        if (isChecked === true) {
+            if (this.state.profiles.profile[this.state.customizeIdx].character[charIdx].pronoun !== value) {
+                this.state.profiles.profile[this.state.customizeIdx].character[charIdx].pronoun = value;
+
+                this.updateStateChar({pronoun: value}, charIdx);
+            }
+        }
+    };
+    updateStateChar = (new_prop, charIdx) => {
         let newProfiles = {...this.state.profiles};
-        newProfiles.profile[this.state.customizeIdx] = {...newProfiles.profile[this.state.customizeIdx], ...new_prop};
+        newProfiles.profile[this.state.customizeIdx].character[charIdx] = {...newProfiles.profile[this.state.customizeIdx].character[charIdx], ...new_prop};
         this.setState({profiles: newProfiles});
     };
 };
@@ -153,22 +234,19 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: MyDefines.myTabColor,
     },
-
-    buttonText: {textAlign: 'center', color: 'mediumpurple', fontSize: 20, fontWeight: 'bold'},
-    selectButton: {
-        // marginVertical: 15,
-        marginHorizontal: 70,
-        backgroundColor: 'purple',
-        alignSelf: 'center',
-        borderColor: 'goldenrod',
-        borderWidth: 2,
+    radioHe: {
+        backgroundColor: 'mediumpurple',
+        borderBottomLeftRadius: 5,
+        borderTopLeftRadius: 5,
     },
-    selectButtonText: {
-        color: 'goldenrod',
-        fontWeight: 'bold',
-        margin: 5,
+    radioShe: {
+        backgroundColor: 'mediumpurple',
     },
-
+    radioThey: {
+        backgroundColor: 'mediumpurple',
+        borderBottomRightRadius: 5,
+        borderTopRightRadius: 5,
+    },
 });
 
 const mapStateToProps = (state) => {
