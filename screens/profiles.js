@@ -16,7 +16,7 @@ import myStyles from "../myStyles";
 
 const {height, width} = Dimensions.get('window');
 
-let kibityLogo = require('../assets/images/PurpleFaceIcon512.png');
+let kibityLogo = require('../assets/images/PurpleFace_512x512.png');
 
 class ProfilesScreen extends React.Component {
     static navigationOptions = ({navigation}) => {
@@ -38,67 +38,85 @@ class ProfilesScreen extends React.Component {
         };
     };
     static getDerivedStateFromProps(nextProps, prevState){
-        let update = {};
+        try {
+            myfuncs.myBreadCrumbs('getDerivedStateFromProps', "ProfilesScreen");
+            let update = {};
 
-        if (prevState.profiles !== nextProps.profiles) {
-            update.profiles = nextProps.profiles;
+            if (prevState.profiles !== nextProps.profiles) {
+                update.profiles = nextProps.profiles;
+            }
+            return Object.keys(update).length ? update: null;
+        } catch (error) {
+            myfuncs.mySentry(error);
         }
-        return Object.keys(update).length ? update: null;
     };
     render () {
-        return (
-            <SafeAreaView style={styles.container}>
-                <Layout style={{flex: 1, paddingLeft: 10}}>
-                    <View>
-                        <View style={{padding: 20}}/>
+        try {
+            myfuncs.myBreadCrumbs('render', this.props.navigation.state.routeName);
+            return (
+                <SafeAreaView style={styles.container}>
+                    <Layout style={{flex: 1, paddingLeft: 10}}>
+                        <View>
+                            <View style={{padding: 20}}/>
 
-                        <Text style={styles.buttonText}>Active Profile</Text>
-                        <Text style={styles.textStyle}>{this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name}</Text>
-                        <MyButton buttonStyle={myStyles.selectButton}
-                                  textStyle={myStyles.selectButtonText}
-                                  onPress={() => this.goToSetActiveProfile(0)}
-                                  title="Select Active Profile"/>
-                        <View style={{padding: 25}}/>
+                            <Text style={styles.buttonText}>Active Profile</Text>
+                            <Text style={styles.textStyle}>{this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name}</Text>
+                            <MyButton buttonStyle={myStyles.selectButton}
+                                      textStyle={myStyles.selectButtonText}
+                                      onPress={() => this.goToSetActiveProfile(0)}
+                                      title="Select Active Profile"/>
+                            <View style={{padding: 25}}/>
 
 
-                        <Image style={styles.kibityLogo} source={kibityLogo}/>
-                        <View style={{padding: 10}}/>
-                        <Text style={styles.buttonText}>Customize profile #1</Text>
-                        <MyButton buttonStyle={myStyles.selectButton}
-                                  textStyle={myStyles.selectButtonText}
-                                  onPress={() => this.goToSpecificProfile(0)}
-                                  title={this.props.profiles.profile[0].character[0].name}/>
-                        <View style={{padding: 10}}/>
+                            <Image style={styles.kibityLogo} source={kibityLogo}/>
+                            <View style={{padding: 10}}/>
+                            <Text style={styles.buttonText}>Customize profile #1</Text>
+                            <MyButton buttonStyle={myStyles.selectButton}
+                                      textStyle={myStyles.selectButtonText}
+                                      onPress={() => this.goToSpecificProfile(0)}
+                                      title={this.props.profiles.profile[0].character[0].name}/>
+                            <View style={{padding: 10}}/>
 
-                        <Text style={styles.buttonText}>Customize profile #2</Text>
-                        <MyButton buttonStyle={myStyles.selectButton}
-                                  textStyle={myStyles.selectButtonText}
-                                  onPress={() => this.goToSpecificProfile(1)}
-                                  title={this.props.profiles.profile[1].character[0].name}/>
-                        <View style={{padding: 10}}/>
+                            <Text style={styles.buttonText}>Customize profile #2</Text>
+                            <MyButton buttonStyle={myStyles.selectButton}
+                                      textStyle={myStyles.selectButtonText}
+                                      onPress={() => this.goToSpecificProfile(1)}
+                                      title={this.props.profiles.profile[1].character[0].name}/>
+                            <View style={{padding: 10}}/>
 
-                        <Text style={styles.buttonText}>Customize profile #3</Text>
-                        <MyButton buttonStyle={myStyles.selectButton}
-                                  textStyle={myStyles.selectButtonText}
-                                  onPress={() => this.goToSpecificProfile(2)}
-                                  title={this.props.profiles.profile[2].character[0].name}/>
-                    </View>
+                            <Text style={styles.buttonText}>Customize profile #3</Text>
+                            <MyButton buttonStyle={myStyles.selectButton}
+                                      textStyle={myStyles.selectButtonText}
+                                      onPress={() => this.goToSpecificProfile(2)}
+                                      title={this.props.profiles.profile[2].character[0].name}/>
+                        </View>
 
-                </Layout>
-                <MyHelpIcon onPress={this.onHelpPress}/>
-                <MyHelpModal screen={"Profiles"}
-                             onExitPress={this.onHelpExitPress}
-                             isVisible={this.state.isModalVisible}/>
-            </SafeAreaView>
-        );
+                    </Layout>
+                    <MyHelpIcon onPress={this.onHelpPress}/>
+                    <MyHelpModal screen={"Profiles"}
+                                 onExitPress={this.onHelpExitPress}
+                                 isVisible={this.state.isModalVisible}/>
+                </SafeAreaView>
+            );
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     }
     goToSetActiveProfile = () => {
-        // console.log("updateSetActiveProfile");
-        this.props.navigation.navigate("ProfileSetActive");
+        try {
+            myfuncs.myBreadCrumbs('getToSetActiveProfile', this.props.navigation.state.routeName);
+            this.props.navigation.navigate("ProfileSetActive");
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     };
     goToSpecificProfile = (profileIdx) => {
-        // console.log("updateSoecificProfile:", profileIdx);
-        this.props.navigation.navigate("ProfileCustomize", {customizeIdx: profileIdx});
+        try {
+            myfuncs.myBreadCrumbs('goToSpecificProfile', this.props.navigation.state.routeName);
+            this.props.navigation.navigate("ProfileCustomize", {customizeIdx: profileIdx});
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     };
     onHelpPress = () => {
         try {

@@ -16,7 +16,7 @@ import myStyles from "../myStyles";
 const {height, width} = Dimensions.get('window');
 
 let profiles_data = MyDefines.profiles_data;
-let kibityLogo = require('../assets/images/PurpleFaceIcon512.png');
+let kibityLogo = require('../assets/images/PurpleFace_512x512.png');
 
 class ProfileSetActive extends React.Component {
     static navigationOptions = ({navigation}) => {
@@ -33,70 +33,85 @@ class ProfileSetActive extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            profiles: this.props.profiles,
+            profiles: JSON.parse(JSON.stringify(this.props.profiles)),
         };
     };
     componentDidMount() {
-        console.log("ProfilesSetActive DidMount");
-        this.updateActiveProfilesList();
+        try {
+            myfuncs.myBreadCrumbs('DidMount', this.props.navigation.state.routeName);
+            this.updateActiveProfilesList();
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     }
     static getDerivedStateFromProps(nextProps, prevState){
-        let update = {};
+        try {
+            myfuncs.myBreadCrumbs('getDerivedStateFromProps', "ProfileSetActive");
+            let update = {};
 
-        if (prevState.profiles !== nextProps.profiles) {
-            update.profiles = nextProps.profiles;
+            if (prevState.profiles !== nextProps.profiles) {
+                update.profiles = nextProps.profiles;
+            }
+            return Object.keys(update).length ? update: null;
+        } catch (error) {
+            myfuncs.mySentry(error);
+            return null;
         }
-        return Object.keys(update).length ? update: null;
     };
     updateActiveProfilesList = () => {
-        for (let i=0; i<profiles_data.length; i++) {
-            profiles_data[i].text = this.props.profiles.profile[i].character[0].name;
+        try {
+            myfuncs.myBreadCrumbs('DidMount', this.props.navigation.state.routeName);
+            for (let i=0; i<profiles_data.length; i++) {
+                profiles_data[i].text = this.props.profiles.profile[i].character[0].name;
+            }
+            this.setState({data_correct: true})
+        } catch (error) {
+            myfuncs.mySentry(error);
         }
-        this.setState({data_correct: true})
     };
     render () {
-        return (
-            <SafeAreaView style={myStyles.container}>
-                <Layout style={{flex: 1, paddingLeft: 10, justifyContent: 'center'}}>
+        try {
+            myfuncs.myBreadCrumbs('render', this.props.navigation.state.routeName);
+            return (
+                <SafeAreaView style={myStyles.container}>
+                    <Layout style={{flex: 1, paddingLeft: 10, justifyContent: 'center'}}>
 
-                    { ( (this.state.data_correct === true) &&
-                        (this.state.profiles.retrieved_user_data === true) ) ?
-                    <View  style={{alignItems: 'flex-start'}}>
+                        { ( (this.state.data_correct === true) &&
+                            (this.state.profiles.retrieved_user_data === true) ) &&
+                        <View  style={{alignItems: 'flex-start'}}>
 
-                        <Select
-                            style={styles.select}
-                            data={profiles_data}
-                            status='warning'
-                            label='Active Profile'
-                            onSelect={(event) =>
-                                this.updateActive({profilesIdx: event.idx})}
-                            selectedOption={profiles_data[this.state.profiles.profilesIdx]}
-                            textStyle={styles.textStyle}
-                            labelStyle={styles.labelStyle}
-                            controlStyle={styles.controlStyle}
-                        />
-                    </View>
-                        :
-                        <View>
-                        <View style={{padding:40}} />
+                            <Select
+                                style={styles.select}
+                                data={profiles_data}
+                                status='warning'
+                                label='Active Profile'
+                                onSelect={(event) =>
+                                    this.updateActive({profilesIdx: event.idx})}
+                                selectedOption={profiles_data[this.state.profiles.profilesIdx]}
+                                textStyle={styles.textStyle}
+                                labelStyle={styles.labelStyle}
+                                controlStyle={styles.controlStyle}
+                            />
                         </View>
-                    }
+                        }
 
-                    <View>
                         <View style={{padding: 25}}/>
                         <Image style={styles.kibityLogo} source={kibityLogo}/>
-                    </View>
-                    <View style={{padding:40}} />
-                </Layout>
-                <MyHelpIcon onPress={this.onHelpPress}/>
-                <MyHelpModal screen={"ProfileSetActive"}
-                             onExitPress={this.onHelpExitPress}
-                             isVisible={this.state.isModalVisible}/>
-            </SafeAreaView>
-        );
+                        {/*<View style={{padding:40}} />*/}
+                    </Layout>
+                    <MyHelpIcon onPress={this.onHelpPress}/>
+                    <MyHelpModal screen={"ProfileSetActive"}
+                                 onExitPress={this.onHelpExitPress}
+                                 isVisible={this.state.isModalVisible}/>
+                </SafeAreaView>
+            );
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     }
     updateActive = async (new_prop) => {
         try {
+            myfuncs.myBreadCrumbs('updateActive', this.props.navigation.state.routeName);
             let new_profiles = {...this.state.profiles, ...new_prop};
 
             // Note, no need to update state, because state auto-updates in getDerivedState
@@ -146,7 +161,6 @@ const styles = StyleSheet.create({
         color: 'mediumpurple',
         fontSize: 20,
         lineHeight: 20,
-
     },
     controlStyle: {
         borderRadius: 8,

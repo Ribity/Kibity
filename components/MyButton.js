@@ -1,21 +1,27 @@
 import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import myStyles from "../myStyles";
+import myfuncs from "../services/myFuncs";
 
 export const MyButton = ( {buttonStyle, textStyle, onPress, title} ) => {
-    let bStyle = myStyles.regularButton;
-    let tStyle = myStyles.regularButtonText;
-    if (buttonStyle !== undefined && buttonStyle !== null) {
-        bStyle = {...bStyle, ...buttonStyle};
+    try {
+        myfuncs.myBreadCrumbs('MyButton', 'MyButton');
+        let bStyle = myStyles.regularButton;
+        let tStyle = myStyles.regularButtonText;
+        if (buttonStyle !== undefined && buttonStyle !== null) {
+            bStyle = {...bStyle, ...buttonStyle};
+        }
+        if (tStyle !== undefined && buttonStyle !== null) {
+            tStyle = {...tStyle, ...textStyle};
+        }
+        return (
+            <View>
+                <TouchableOpacity style={bStyle} onPress={onPress}>
+                    <Text style={tStyle}>{title}</Text>
+                </TouchableOpacity>
+            </View>
+        );
+    } catch (error) {
+        myfuncs.mySentry(error);
     }
-    if (tStyle !== undefined && buttonStyle !== null) {
-        tStyle = {...tStyle, ...textStyle};
-    }
-    return (
-        <View>
-            <TouchableOpacity style={bStyle} onPress={onPress}>
-                <Text style={tStyle}>{title}</Text>
-            </TouchableOpacity>
-        </View>
-    );
 };

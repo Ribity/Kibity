@@ -3,7 +3,6 @@ import {
     StyleSheet,
     Text, TouchableOpacity,
     View,
-    // ScrollView,
 } from "react-native";
 
 import MyDefines from '../constants/MyDefines';
@@ -14,14 +13,9 @@ import {connect} from "react-redux";
 import {Ionicons} from '@expo/vector-icons';
 import {MyHelpIcon} from "../components/MyHelpIcon";
 import {MyHelpModal} from "../components/MyHelpModal";
-import {SafeAreaView} from "react-navigation";
 import myfuncs from "../services/myFuncs";
 import {ScreenTitle} from "../components/screenTitle";
 import {StoriesHeaderButton} from "../components/StoriesHeaderButton";
-import * as Speech from "expo-speech";
-
-
-// let my_story_list =
 
 class StoriesScreen extends React.Component {
     static navigationOptions = ({navigation}) => {
@@ -58,33 +52,45 @@ class StoriesScreen extends React.Component {
         this.componentWillFocus = this.componentWillFocus.bind(this);
     };
     componentDidMount() {
-        // setTimeout(this.buildStoryList, 1000);  // mk1 be sure to clear the timeout on unmount
-        this.populateStateStoryList();  // mk1 be sure to clear the timeout on unmount
+        try {
+            myfuncs.myBreadCrumbs('Did mount', this.props.navigation.state.routeName);
 
-        this.subs = [
-            this.props.navigation.addListener('willFocus', this.componentWillFocus),
-        ];
+            // setTimeout(this.buildStoryList, 1000);  // mk1 be sure to clear the timeout on unmount
+            this.populateStateStoryList();  // mk1 be sure to clear the timeout on unmount
 
-        this.props.navigation.setParams({getRight: this.listList});
-        this.props.navigation.setParams({getLeft: this.listFaves});
-        this.props.navigation.setParams({numFaves: this.props.profiles.profile[this.props.profiles.profilesIdx].favorites.length});
-        this.props.navigation.setParams({activeProfile: this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name});
-        this.props.navigation.setParams({filterType: this.state.filterType});
-        // console.log("StoriesScreen DidMount:", this.props.story_list);
+            this.subs = [
+                this.props.navigation.addListener('willFocus', this.componentWillFocus),
+            ];
+
+            this.props.navigation.setParams({getRight: this.listList});
+            this.props.navigation.setParams({getLeft: this.listFaves});
+            this.props.navigation.setParams({numFaves: this.props.profiles.profile[this.props.profiles.profilesIdx].favorites.length});
+            this.props.navigation.setParams({activeProfile: this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name});
+            this.props.navigation.setParams({filterType: this.state.filterType});
+            // console.log("StoriesScreen DidMount:", this.props.story_list);
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     }
     componentWillFocus() {
         try {
+            myfuncs.myBreadCrumbs('Will Focus', this.props.navigation.state.routeName);
             this.props.navigation.setParams({activeProfile: this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name});
         } catch (error) {
-            // myfuncs.mySentry(error);
+            myfuncs.mySentry(error);
         }
     }
     componentWillUnmount() {
-        this.subs.forEach(sub => sub.remove());  // removes the componentWillFocus listener
+        try {
+            myfuncs.myBreadCrumbs('Will UnMount', this.props.navigation.state.routeName);
+            this.subs.forEach(sub => sub.remove());  // removes the componentWillFocus listener
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     };
     listList = () => {
         try {
-            myfuncs.myBreadCrumbs('getRight', this.props.navigation.state.routeName);
+            myfuncs.myBreadCrumbs('listList', this.props.navigation.state.routeName);
             if (this.state.filterType === 2) {
                 this.setState({filterType: 0});
                 this.props.navigation.setParams({filterType: 0});
@@ -134,122 +140,158 @@ class StoriesScreen extends React.Component {
     //     } else return null;
     // };
     static getDerivedStateFromProps(nextProps, prevState){
-        let update = {};
+        try {
+            myfuncs.myBreadCrumbs('getDerivedStateFromProps', "Stories");
+            let update = {};
 
-        if (MyDefines.log_details)
-            console.log("stories getDerivedStateFromProps");
-        if (prevState.stories_list !== nextProps.stories_list) {
-            update.stories_list = nextProps.stories_list;
+            if (MyDefines.log_details)
+                console.log("stories getDerivedStateFromProps");
+            if (prevState.stories_list !== nextProps.stories_list) {
+                update.stories_list = nextProps.stories_list;
+            }
+            if (prevState.profiles !== nextProps.profiles) {
+                update.profiles = nextProps.profiles;
+            }
+            if (MyDefines.log_details)
+                console.log("stories derivedState:", update);
+            return Object.keys(update).length ? update: null;
+        } catch (error) {
+            myfuncs.mySentry(error);
+            return null;
         }
-        if (prevState.profiles !== nextProps.profiles) {
-            update.profiles = nextProps.profiles;
-        }
-        if (MyDefines.log_details)
-            console.log("stories derivedState:", update);
-        return Object.keys(update).length ? update: null;
     };
-    componentDidUpdate(prevProps, prevState) {
-        // this.props.navigation.setParams({activeProfile: this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name});
-        console.log("StoriesScreenDidUpdate");
-    }
+    // componentDidUpdate(prevProps, prevState) {
+    //     // this.props.navigation.setParams({activeProfile: this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name});
+    //     // console.log("StoriesScreenDidUpdate");
+    // }
     populateStateStoryList = () => {
-        if (MyDefines.log_details)
-            console.log("populateStoryList in StoriesScreen");
-        this.setState({story_list: this.props.story_list});
+        try {
+            myfuncs.myBreadCrumbs('populateStateStoryList', this.props.navigation.state.routeName);
+            if (MyDefines.log_details)
+                console.log("populateStoryList in StoriesScreen");
+            this.setState({story_list: this.props.story_list});
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     };
     updateStoriesProfiles = () => {
-        console.log("updateStoriesProfile");
-        this.setState({profiles: this.props.profiles});
-        this.props.navigation.setParams({numFaves: this.props.profiles.profile[this.props.profiles.profilesIdx].favorites.length});
-        this.props.navigation.setParams({numList: this.props.profiles.profile[this.props.profiles.profilesIdx].playList.length});
-        this.updateStorage();
+        try {
+            myfuncs.myBreadCrumbs('updateStoriesProfiles', this.props.navigation.state.routeName);
+
+            // console.log("updateStoriesProfile");
+            this.setState({profiles: this.props.profiles});
+            this.props.navigation.setParams({numFaves: this.props.profiles.profile[this.props.profiles.profilesIdx].favorites.length});
+            this.props.navigation.setParams({numList: this.props.profiles.profile[this.props.profiles.profilesIdx].playList.length});
+            this.updateStorage();
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     };
     updateStorage = () => {
-        myfuncs.writeUserDataToLocalStorage("user_profiles", this.props.profiles);
-        // console.log("storage updated NewProfiles:", this.props.profiles);
+        try {
+            myfuncs.myBreadCrumbs('updateStorage', this.props.navigation.state.routeName);
+            myfuncs.writeUserDataToLocalStorage("user_profiles", this.props.profiles);
+            // console.log("storage updated NewProfiles:", this.props.profiles);
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     };
     onPressStorySelection = (story, idx) => {
-        // console.log("onPressStorySelection:", idx );
-        this.props.setListType(0);
-        this.props.setStoryIdx(idx);
-        this.props.navigation.navigate("Audio", {storySelected: true});
+        try {
+            myfuncs.myBreadCrumbs('onPressStorySelection', this.props.navigation.state.routeName);
+            this.props.setListType(0);
+            this.props.setStoryIdx(idx);
+            this.props.navigation.navigate("Audio", {storySelected: true});
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     };
     playFavorites = () => {
-        // console.log("Play faves");
-        if (this.state.profiles.profile[this.props.profiles.profilesIdx].favorites.length) {
-            this.props.setListType(1);
-            this.props.setListIdx(0);
-            this.props.setStoryIdx(this.state.profiles.profile[this.props.profiles.profilesIdx].favorites[0]);
-            this.props.navigation.navigate("Audio", {storySelected: true});
+        try {
+            myfuncs.myBreadCrumbs('playFavorites', this.props.navigation.state.routeName);
+            if (this.state.profiles.profile[this.props.profiles.profilesIdx].favorites.length) {
+                this.props.setListType(1);
+                this.props.setListIdx(0);
+                this.props.setStoryIdx(this.state.profiles.profile[this.props.profiles.profilesIdx].favorites[0]);
+                this.props.navigation.navigate("Audio", {storySelected: true});
+            }
+        } catch (error) {
+            myfuncs.mySentry(error);
         }
     };
     playPlayList = () => {
-        // console.log("Play PlayList");
-        if (this.state.profiles.profile[this.props.profiles.profilesIdx].playList.length) {
-            this.props.setListType(2);
-            this.props.setListIdx(0);
-            this.props.setStoryIdx(this.state.profiles.profile[this.props.profiles.profilesIdx].playList[0]);
-            this.props.navigation.navigate("Audio", {storySelected: true});
+        try {
+            myfuncs.myBreadCrumbs('playPlayList', this.props.navigation.state.routeName);
+            if (this.state.profiles.profile[this.props.profiles.profilesIdx].playList.length) {
+                this.props.setListType(2);
+                this.props.setListIdx(0);
+                this.props.setStoryIdx(this.state.profiles.profile[this.props.profiles.profilesIdx].playList[0]);
+                this.props.navigation.navigate("Audio", {storySelected: true});
+            }
+        } catch (error) {
+            myfuncs.mySentry(error);
         }
     };
     render() {
-        // if (this.state.story_list.stories.length !== myListLength)
-        //     unMount the MyListComponent;
+        try {
+            myfuncs.myBreadCrumbs('render', this.props.navigation.state.routeName);
+            return (
+                <View style={styles.container}>
+                    <View style={styles.topRow}>
 
-        return (
-            <View style={styles.container}>
-                <View style={styles.topRow}>
-
-                    {(this.state.profiles.profile[this.props.profiles.profilesIdx].favorites.length > 0) &&
-                    <View>
-                        <TouchableOpacity onPress={this.playFavorites}>
-                            <View style={styles.faves}>
-                                <View>
-                                    <Text style={styles.pText}> Play</Text>
-                                    <Text style={styles.pText}>Faves</Text>
-                                </View>
-                                <Ionicons name={"ios-heart"} size={30} color={'red'}/>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    }
-
-                    <View style={styles.title}>
-                        <Text style={styles.titleText}>Select a story</Text>
-                    </View>
-
-                    {(this.state.profiles.profile[this.props.profiles.profilesIdx].playList.length > 0) &&
+                        {(this.state.profiles.profile[this.props.profiles.profilesIdx].favorites.length > 0) &&
                         <View>
-                        <TouchableOpacity onPress={this.playPlayList}>
-                            <View style={styles.playList}>
-                                <Ionicons name={"ios-list-box"} size={30} color={'goldenrod'}/>
-                                <View style={{marginLeft: 2}}>
-                                    <Text style={styles.pText}>Play</Text>
-                                    <Text style={styles.pText}>PlayList</Text>
+                            <TouchableOpacity onPress={this.playFavorites}>
+                                <View style={styles.faves}>
+                                    <View>
+                                        <Text style={styles.pText}> Play</Text>
+                                        <Text style={styles.pText}>Faves</Text>
+                                    </View>
+                                    <Ionicons name={"ios-heart"} size={30} color={'red'}/>
                                 </View>
-                            </View>
-                        </TouchableOpacity>
+                            </TouchableOpacity>
                         </View>
-                    }
-                </View>
-                <View style={{paddingTop: 5}}/>
+                        }
 
-                {this.state.story_list.stories.length > 1 &&
-                <MyListComponent navigation={this.props.navigation}
-                                 myList={this.state.story_list.stories}
-                                 screenType={'Stories'}
-                                 updateParentStoriesCurrentProfile={this.updateStoriesProfiles}
-                                 resetFilter={this.resetFilter}
-                                 onPressItem={this.onPressStorySelection}
-                                 filterType={this.state.filterType}
-                />
-                }
-                <MyHelpIcon onPress={this.onHelpPress}/>
-                <MyHelpModal screen={"Stories"}
-                             onExitPress={this.onHelpExitPress}
-                             isVisible={this.state.isModalVisible}/>
-            </View>
-        );
+                        <View style={styles.title}>
+                            <Text style={styles.titleText}>Select a story</Text>
+                        </View>
+
+                        {(this.state.profiles.profile[this.props.profiles.profilesIdx].playList.length > 0) &&
+                            <View>
+                            <TouchableOpacity onPress={this.playPlayList}>
+                                <View style={styles.playList}>
+                                    <Ionicons name={"ios-list-box"} size={30} color={'goldenrod'}/>
+                                    <View style={{marginLeft: 2}}>
+                                        <Text style={styles.pText}>Play</Text>
+                                        <Text style={styles.pText}>PlayList</Text>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                            </View>
+                        }
+                    </View>
+                    <View style={{paddingTop: 5}}/>
+
+                    {this.state.story_list.stories.length > 1 &&
+                    <MyListComponent navigation={this.props.navigation}
+                                     myList={this.state.story_list.stories}
+                                     screenType={'Stories'}
+                                     updateParentStoriesCurrentProfile={this.updateStoriesProfiles}
+                                     resetFilter={this.resetFilter}
+                                     onPressItem={this.onPressStorySelection}
+                                     filterType={this.state.filterType}
+                    />
+                    }
+                    <MyHelpIcon onPress={this.onHelpPress}/>
+                    <MyHelpModal screen={"Stories"}
+                                 onExitPress={this.onHelpExitPress}
+                                 isVisible={this.state.isModalVisible}/>
+                </View>
+            );
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     }
     onHelpPress = () => {
         try {

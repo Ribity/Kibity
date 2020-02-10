@@ -23,7 +23,7 @@ class SettingsScreen extends React.Component {
 
     static navigationOptions = ({navigation}) => {
         try {
-            myfuncs.myBreadCrumbs('navigationOptions', 'AudioScreen');
+            myfuncs.myBreadCrumbs('navigationOptions', 'SettingsScreen');
             return {
                 headerTitle: () => <ScreenTitle title={"Settings"}/>,
                 headerRight: () => <ThemeButton/>,
@@ -39,108 +39,117 @@ class SettingsScreen extends React.Component {
         };
     };
     static getDerivedStateFromProps(nextProps, prevState){
-        let update = {};
+        try {
+            myfuncs.myBreadCrumbs('getDerivedStateFromProps', "Settings");
+            let update = {};
 
-        if (prevState.settings !== nextProps.settings) {
-            update.settings = nextProps.settings;
+            if (prevState.settings !== nextProps.settings) {
+                update.settings = nextProps.settings;
+            }
+            return Object.keys(update).length ? update: null;
+        } catch (error) {
+            myfuncs.mySentry(error);
         }
-        return Object.keys(update).length ? update: null;
     };
 
     render() {
-        return (
-            <SafeAreaView style={styles.container}>
-                <Layout style={{flex: 1, paddingLeft: 10, alignItems: 'flex-start'}}>
+        try {
+            myfuncs.myBreadCrumbs('render', this.props.navigation.state.routeName);
+            return (
+                <SafeAreaView style={styles.container}>
+                    <Layout style={{flex: 1, paddingLeft: 10, alignItems: 'flex-start'}}>
 
-                    <Toggle
-                        style={styles.toggle}
-                        status='warning'
-
-                        text='Keep Screen Awake'
-                        textStyle={styles.text}
-                        checked={this.state.settings.keep_awake}
-                        onChange={(bEvent) => this.updateSettings({keep_awake: bEvent})}
-                    />
-
-                    <Toggle
-                        style={styles.toggle}
-                        status='warning'
-
-                        text='Play Ribbit After Each Story'
-                        textStyle={styles.text}
-                        checked={this.state.settings.playEndOfStoryRibbit}
-                        onChange={(bEvent) => this.updateSettings({playEndOfStoryRibbit: bEvent})}
-                    />
-
-                    <View style={{paddingTop: 5}}/>
-
-                    { (this.state.settings.retrieved_user_data === true) &&
-                        <View>
-                            <Select
-                            style={styles.select}
-                            data={pause_data}
+                        <Toggle
+                            style={styles.toggle}
                             status='warning'
-                            label='Pause between each line'
-                            onSelect={(event) =>
-                                this.updateSettings({pauseLineIdx: event.idx})}
-                            selectedOption={pause_data[this.state.settings.pauseLineIdx]}
-                            textStyle={styles.textStyle}
-                            labelStyle={styles.labelStyle}
-                            controlStyle={styles.controlStyle}
-                            />
-                            <Select
+
+                            text='Keep Screen Awake'
+                            textStyle={styles.text}
+                            checked={this.state.settings.keep_awake}
+                            onChange={(bEvent) => this.updateSettings({keep_awake: bEvent})}
+                        />
+
+                        <Toggle
+                            style={styles.toggle}
+                            status='warning'
+
+                            text='Play Ribbit After Each Story'
+                            textStyle={styles.text}
+                            checked={this.state.settings.playEndOfStoryRibbit}
+                            onChange={(bEvent) => this.updateSettings({playEndOfStoryRibbit: bEvent})}
+                        />
+
+                        <View style={{paddingTop: 5}}/>
+
+                        { (this.state.settings.retrieved_user_data === true) &&
+                            <View>
+                                <Select
                                 style={styles.select}
                                 data={pause_data}
                                 status='warning'
-                                label='Pause between each story'
+                                label='Pause between each line'
                                 onSelect={(event) =>
-                                    this.updateSettings({pauseStoryIdx: event.idx})}
-                                selectedOption={pause_data[this.state.settings.pauseStoryIdx]}
+                                    this.updateSettings({pauseLineIdx: event.idx})}
+                                selectedOption={pause_data[this.state.settings.pauseLineIdx]}
                                 textStyle={styles.textStyle}
                                 labelStyle={styles.labelStyle}
                                 controlStyle={styles.controlStyle}
-                            />
+                                />
+                                <Select
+                                    style={styles.select}
+                                    data={pause_data}
+                                    status='warning'
+                                    label='Pause between each story'
+                                    onSelect={(event) =>
+                                        this.updateSettings({pauseStoryIdx: event.idx})}
+                                    selectedOption={pause_data[this.state.settings.pauseStoryIdx]}
+                                    textStyle={styles.textStyle}
+                                    labelStyle={styles.labelStyle}
+                                    controlStyle={styles.controlStyle}
+                                />
 
-                            <Select
-                                style={styles.select}
-                                data={pitch_data}
-                                status='warning'
-                                label='Voice pitch'
-                                onSelect={(event) =>
-                                    this.updateSettings({pitchIdx: event.idx})}
-                                selectedOption={pitch_data[this.state.settings.pitchIdx]}
-                                textStyle={styles.textStyle}
-                                labelStyle={styles.labelStyle}
-                                controlStyle={styles.controlStyle}
-                            />
-                            <Select
-                                style={styles.select}
-                                data={rate_data}
-                                status='warning'
-                                label='Voice speed'
-                                onSelect={(event) =>
-                                    this.updateSettings({rateIdx: event.idx})}
-                                selectedOption={rate_data[this.state.settings.rateIdx]}
-                                textStyle={styles.textStyle}
-                                labelStyle={styles.labelStyle}
-                                controlStyle={styles.controlStyle}
-                            />
-                        </View>
-                    }
+                                <Select
+                                    style={styles.select}
+                                    data={pitch_data}
+                                    status='warning'
+                                    label='Voice pitch'
+                                    onSelect={(event) =>
+                                        this.updateSettings({pitchIdx: event.idx})}
+                                    selectedOption={pitch_data[this.state.settings.pitchIdx]}
+                                    textStyle={styles.textStyle}
+                                    labelStyle={styles.labelStyle}
+                                    controlStyle={styles.controlStyle}
+                                />
+                                <Select
+                                    style={styles.select}
+                                    data={rate_data}
+                                    status='warning'
+                                    label='Voice speed'
+                                    onSelect={(event) =>
+                                        this.updateSettings({rateIdx: event.idx})}
+                                    selectedOption={rate_data[this.state.settings.rateIdx]}
+                                    textStyle={styles.textStyle}
+                                    labelStyle={styles.labelStyle}
+                                    controlStyle={styles.controlStyle}
+                                />
+                            </View>
+                        }
 
-                </Layout>
+                    </Layout>
 
-                <MyHelpIcon onPress={this.onHelpPress}/>
-                <MyHelpModal screen={"Settings"}
-                             onExitPress={this.onHelpExitPress}
-                             isVisible={this.state.isModalVisible}/>
-            </SafeAreaView>
-        );
+                    <MyHelpIcon onPress={this.onHelpPress}/>
+                    <MyHelpModal screen={"Settings"}
+                                 onExitPress={this.onHelpExitPress}
+                                 isVisible={this.state.isModalVisible}/>
+                </SafeAreaView>
+            );
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     }
     updateSettings = async (new_prop) => {
         try {
-            // console.log("new_prop:", new_prop);
-
+            myfuncs.myBreadCrumbs('updateSettings', this.props.navigation.state.routeName);
             let new_settings = {...this.state.settings, ...new_prop};
 
             // Note, no need to update state, because state auto-updates in getDerivedState
@@ -163,8 +172,13 @@ class SettingsScreen extends React.Component {
         }
     };
     updateStorage = async () => {
-        await myfuncs.writeUserDataToLocalStorage("user_settings", this.props.settings);
-        // console.log("storage updated NewSettings:", this.props.settings);
+        try {
+            myfuncs.myBreadCrumbs('updateStorage', this.props.navigation.state.routeName);
+            await myfuncs.writeUserDataToLocalStorage("user_settings", this.props.settings);
+            // console.log("storage updated NewSettings:", this.props.settings);
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     };
     onHelpPress = () => {
         try {

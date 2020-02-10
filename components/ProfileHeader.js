@@ -1,20 +1,26 @@
 import React from 'react';
 import {Text, View, TouchableOpacity, StyleSheet} from "react-native";
+import myfuncs from "../services/myFuncs";
 
 export const ProfileHeader = ( {profile, onPress} ) => {
-    let text = "";
-    if (profile !== undefined && profile !== null) {
-        if (profile.character[0].name !== undefined && profile.character[0].name !== null)
-            text = profile.character[0].name;
+    try {
+        myfuncs.myBreadCrumbs('StoriesHeaderButton', 'StoriesHeaderButton');
+        let text = "";
+        if (profile !== undefined && profile !== null) {
+            if (profile.character[0].name !== undefined && profile.character[0].name !== null)
+                text = profile.character[0].name;
+        }
+        return (
+            <View>
+                <TouchableOpacity onPress={() => onPress()} hitSlop={styles.hitSlop}>
+                    <Text style={styles.myText}>Active Profile</Text>
+                    <Text style={styles.myText}>{text}</Text>
+                </TouchableOpacity>
+            </View>
+        );
+    } catch (error) {
+        myfuncs.mySentry(error);
     }
-    return (
-        <View>
-            <TouchableOpacity onPress={() => onPress()} hitSlop={styles.hitSlop}>
-                <Text style={styles.myText}>Active Profile</Text>
-                <Text style={styles.myText}>{text}</Text>
-            </TouchableOpacity>
-        </View>
-    );
 };
 
 const styles = StyleSheet.create({

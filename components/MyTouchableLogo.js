@@ -1,18 +1,24 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {LogoComponent} from "./LogoComponent";
+import myfuncs from "../services/myFuncs";
 
 export const MyTouchableLogo = ( {imageStyle, onPress} ) => {
-    let iStyle = {};
+    try {
+        myfuncs.myBreadCrumbs('MyTouchableLogo', 'MyTouchableLogo');
+        let iStyle = {};
 
-    if (imageStyle)
-        iStyle = {...iStyle, ...imageStyle};
+        if (imageStyle)
+            iStyle = {...iStyle, ...imageStyle};
 
-    return (
-            <TouchableOpacity style={iStyle} onPress={() => onPress()} hitSlop={styles.hitSlop}>
-                <LogoComponent/>
-            </TouchableOpacity>
-    );
+        return (
+                <TouchableOpacity style={iStyle} onPress={() => onPress()} hitSlop={styles.hitSlop}>
+                    <LogoComponent/>
+                </TouchableOpacity>
+        );
+    } catch (error) {
+        myfuncs.mySentry(error);
+    }
 };
 
 const styles = StyleSheet.create({

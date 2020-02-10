@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import myStyles from "../myStyles";
 import {bindActionCreators} from "redux";
 import {addFavorite, addPlayList, removeFavorite, removePlayList} from "../actions/profilesActions";
+import myfuncs from "../services/myFuncs";
 
 const {height, width} = Dimensions.get('window');
 
@@ -30,26 +31,17 @@ class MyListComponent extends React.Component {
     };
     componentDidMount() {
         try {
-            console.log("MyListComponent DidMount");
+            myfuncs.myBreadCrumbs('DidMount', "MyListComponent");
             this.setState({data: this.props.myList});
             this.arrayholder = this.props.myList;
         } catch (error) {
-            // myfuncs.mySentry(error);
+            myfuncs.mySentry(error);
         }
     }
-    // static getDerivedStateFromProps(nextProps, prevState){
-    //     console.log("GetDerivedStateFromProps myListComponent");
-    //     if (prevState.myList !== nextProps.myList) {
-    //         return{data: nextProps.myList};
-    //     } else return null;
-    // };
-    // componentDidUpdate(prevProps, prevState) {
-    //     console.log("MyListComponentDidUpdate");
-    //     this.arrayholder = this.props.myList;
-    // }
-
     renderSeparator = () => {
         try {
+            myfuncs.myBreadCrumbs('renderSeparator', "MyListComponent");
+
             return (
                 <View
                     style={{
@@ -61,12 +53,14 @@ class MyListComponent extends React.Component {
                 />
             );
         } catch (error) {
-            // myfuncs.mySentry(error);
+            myfuncs.mySentry(error);
         }
     };
 
     searchFilterFunction = text => {
         try {
+            myfuncs.myBreadCrumbs('searchFilter', "MyListComponent");
+
             this.query = text;
             const searchString = this.query.toLowerCase();
             const wordArray = searchString.split(" ");
@@ -98,16 +92,16 @@ class MyListComponent extends React.Component {
                     }
                     return true;
             });
-            console.log("newData");
+            // console.log("newData");
             this.setState({data: newData});
         } catch (error) {
-            console.log(error);
-            // myfuncs.mySentry(error);
+            myfuncs.mySentry(error);
         }
     };
-
     renderHeader = () => {
         try {
+            myfuncs.myBreadCrumbs('renderHeader', "MyListComponent");
+
             return (
                 <SearchBar
                     placeholder="Search this list..."
@@ -119,231 +113,255 @@ class MyListComponent extends React.Component {
                 />
             );
         } catch (error) {
-            // myfuncs.mySentry(error);
+            myfuncs.mySentry(error);
         }
     };
     addToFaves = (index) => {
-        let msg = "Added to " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s Favorites";
-        this.refs.toast.show(msg, 500);
-        this.props.addFavorite(index);
-        this.setState({data: this.props.myList});
-        this.props.updateParentStoriesCurrentProfile();
+        try {
+            myfuncs.myBreadCrumbs('addToFaves', "MyListComponent");
+            let msg = "Added to " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s Favorites";
+            this.refs.toast.show(msg, 500);
+            this.props.addFavorite(index);
+            this.setState({data: this.props.myList});
+            this.props.updateParentStoriesCurrentProfile();
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     };
     removeFromFaves = (index) => {
-        let msg = "Removed from " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s Favorites";
-        this.refs.toast.show(msg, 500);
-        this.props.removeFavorite(index);
-        this.setState({data: this.props.myList});
-        this.props.updateParentStoriesCurrentProfile();
+        try {
+            myfuncs.myBreadCrumbs('removeFromFaves', "MyListComponent");
+            let msg = "Removed from " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s Favorites";
+            this.refs.toast.show(msg, 500);
+            this.props.removeFavorite(index);
+            this.setState({data: this.props.myList});
+            this.props.updateParentStoriesCurrentProfile();
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     };
     addToPlayList = (index) => {
-        let msg = "Added to " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s PlayList";
-        this.refs.toastPlay.show(msg, 500);
-        this.props.addPlayList(index);
-        this.setState({data: this.props.myList});
-        this.props.updateParentStoriesCurrentProfile();
+        try {
+            myfuncs.myBreadCrumbs('addToPlayList', "MyListComponent");
+            let msg = "Added to " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s PlayList";
+            this.refs.toastPlay.show(msg, 500);
+            this.props.addPlayList(index);
+            this.setState({data: this.props.myList});
+            this.props.updateParentStoriesCurrentProfile();
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     };
     removeFromPlayList = (index) => {
-        let msg = "Removed from " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s PlayList";
-        this.refs.toastPlay.show(msg, 500);
-        this.props.removePlayList(index);
-        this.setState({data: this.props.myList});
-        this.props.updateParentStoriesCurrentProfile();
+        try {
+            myfuncs.myBreadCrumbs('removeFromPlayList', "MyListComponent");
+            let msg = "Removed from " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s PlayList";
+            this.refs.toastPlay.show(msg, 500);
+            this.props.removePlayList(index);
+            this.setState({data: this.props.myList});
+            this.props.updateParentStoriesCurrentProfile();
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     };
     rightIcons = (index) => {
-        // console.log("item:", index);
-        let bFave = false;
-        for (let fave of this.props.profiles.profile[this.props.profiles.profilesIdx].favorites) {
-            if (index === fave)
-                bFave = true;
-        }
-        let bPlayList = false;
-        for (let play of this.props.profiles.profile[this.props.profiles.profilesIdx].playList) {
-            if (index === play)
-                bPlayList = true;
-        }
+        try {
+            myfuncs.myBreadCrumbs('rightIcons', "MyListComponent");
+            let bFave = false;
+            for (let fave of this.props.profiles.profile[this.props.profiles.profilesIdx].favorites) {
+                if (index === fave)
+                    bFave = true;
+            }
+            let bPlayList = false;
+            for (let play of this.props.profiles.profile[this.props.profiles.profilesIdx].playList) {
+                if (index === play)
+                    bPlayList = true;
+            }
 
-        return (
-            <View>
-                {bFave ?
-                    <Ionicons name={"ios-heart"} onPress={() => this.removeFromFaves(index)} size={25} color={'red'}/>
-                    :
-                    <Ionicons name={"ios-heart-empty"} onPress={() => this.addToFaves(index)}  size={25} color={'gray'}/>
-                }
-                {bPlayList ?
-                    <Ionicons name={"ios-list-box"} onPress={() => this.removeFromPlayList(index)} size={25} color={'goldenrod'}/>
-                    :
-                    <Ionicons name={"ios-list"} onPress={() => this.addToPlayList(index)} size={25} color={'gray'}/>
-                }
-            </View>
-        )
+            return (
+                <View>
+                    {bFave ?
+                        <Ionicons name={"ios-heart"} onPress={() => this.removeFromFaves(index)} size={40} color={'red'} hitSlop={styles.hitSlop}/>
+                        :
+                        <Ionicons name={"ios-heart-empty"} onPress={() => this.addToFaves(index)}  size={40} color={'gray'} hitSlop={styles.hitSlop}/>
+                    }
+                    {bPlayList ?
+                        <Ionicons name={"ios-list-box"} onPress={() => this.removeFromPlayList(index)} size={40} color={'goldenrod'} hitSlop={styles.hitSlop}/>
+                        :
+                        <Ionicons name={"ios-list"}  onPress={() => this.addToPlayList(index)} size={40} color={'gray'} hitSlop={styles.hitSlop}/>
+                    }
+                </View>
+            )
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     };
     renderItem = (({item, index}) => {
-            try {
-                // console.log("Insight renderItem. FilterType = ", this.props.filterType);
+        try {
+            myfuncs.myBreadCrumbs('renderItem', "MyListComponent");
 
-                if (this.props.filterType === 1) {
-                    let bIsItemInFaves = false;
-                    let faves = this.props.profiles.profile[this.props.profiles.profilesIdx].favorites;
+            if (this.props.filterType === 1) {
+                let bIsItemInFaves = false;
+                let faves = this.props.profiles.profile[this.props.profiles.profilesIdx].favorites;
 
-                    if (faves.length === 0) {
-                        if (index === 0) {
-                            return (
-                                <ListItem
-                                    title={
-                                        <Text style={styles.titleView}>You have no Favorites</Text>
-                                    }
-                                    subtitle={
-                                        <View>
-                                            <View style={{paddingTop: 5}}/>
-                                            <Text style={styles.subtitleView}>To add to your Favorites</Text>
-
-                                            <View style={{paddingTop: 5}}/>
-                                            <View style={{flexDirection: 'row'}}>
-                                                <Text style={styles.subtitleView}>Click  </Text>
-                                                <Ionicons name={"ios-heart-empty"} size={25} color={'gray'}/>
-                                                <Text style={styles.subtitleView}>  next to a story</Text>
-                                            </View>
-                                            <Text style={styles.subtitleView}>Then you can play your Favorites</Text>
-
-                                            <MyButton title={'Go back to All Stories'}
-                                                      buttonStyle={styles.selectButton}
-                                                      textStyle={styles.selectButtonText}
-                                                      onPress={this.props.resetFilter}/>
-                                        </View>
-                                    }
-                                    containerStyle={{borderBottomWidth: 0, backgroundColor: 'goldenrod', borderRadius: 10}}
-                                />
-                            )
-                        } else {
-                            return;
-                        }
-                    }
-
-                    for (let i = 0; i < faves.length; i++) {
-                        if (index === faves[i]) {
-                            bIsItemInFaves = true;
-                            break;
-                        }
-                    }
-                    if (bIsItemInFaves === false)
-                        return;
-                } else if (this.props.filterType === 2) {
-                    let bIsItemInList = false;
-                    let list = this.props.profiles.profile[this.props.profiles.profilesIdx].playList;
-                    if (list.length === 0) {
-                        if (index === 0) {
-                            return (
-                                <ListItem
-                                    title={
-                                        <Text style={styles.titleView}>You have no PlayList</Text>
-                                    }
-                                    subtitle={
-                                        <View>
-                                            <View style={{paddingTop: 5}}/>
-                                            <Text style={styles.subtitleView}>To add to your PlayList</Text>
-
-                                            <View style={{paddingTop: 5}}/>
-
-                                            <View style={{flexDirection: 'row'}}>
-                                                <Text style={styles.subtitleView}>Click  </Text>
-                                                <Ionicons name={"ios-list"} size={25} color={'gray'}/>
-                                                <Text style={styles.subtitleView}>  next to a story</Text>
-                                            </View>
-                                            <Text style={styles.subtitleView}>Then you can play your PlayList</Text>
-                                            <MyButton title={'Go back to All Stories'}
-                                                      buttonStyle={styles.selectButton}
-                                                      textStyle={styles.selectButtonText}
-                                                      onPress={this.props.resetFilter}/>
-                                        </View>
-                                    }
-                                    containerStyle={{borderBottomWidth: 0, backgroundColor: 'goldenrod', borderRadius: 10}}
-                                />
-                            )
-                        } else {
-                            return;
-                        }
-                    }
-
-                    for (let i = 0; i < list.length; i++) {
-                        if (index === list[i]) {
-                            bIsItemInList = true;
-                            break;
-                        }
-                    }
-                    if (bIsItemInList === false)
-                        return;
-                }
-
-                let color = 'white';
-                let image = "";
-                let subtitle = "";
-
-                // console.log(item);
-
-                let title = item.title;
-
-                if (item.written_by !== null && item.written_by !== "" && item.written_by !== undefined)
-                    subtitle += "Written by: " + item.written_by + "\r\n";
-                if (item.date_published !== null && item.date_published !== "" && item.date_published !== undefined)
-                    subtitle += item.date_published + "  ";
-                if (item.num_lines !== null && item.num_lines !== "" && item.num_lines !== undefined)
-                    subtitle += " #Lines: " + item.num_lines.toString();
-                if (item.snippet !== null && item.snippet !== "" && item.snippet !== undefined)
-                    subtitle += "\r\n" + item.snippet;
-                // if (item.keywords !== null && item.keywords !== "" && item.keywords !== undefined)
-                //     subtitle += "\r\n" + item.keywords;
-                if (item.ages !== null && item.ages !== "" && item.ages !== undefined)
-                    subtitle += "\r\nAges: " + item.ages;
-
-                if (item.color !== null && item.color !== "" && item.color !== undefined)
-                    color = item.color;
-                // else if (item.gender === 1)
-                //     color = 'powderblue';
-                // else if (item.gender === 2)
-                //     color = 'mistyrose';
-
-                if (image === "") {
-                    return (
-                                <TouchableOpacity onPress={() => this.props.onPressItem(item, index)}>
-                                    <ListItem
-                                        title={
-                                            <Text style={styles.titleView}>{title}</Text>
-                                        }
-                                        subtitle={
-                                            <Text style={styles.subtitleView}>{subtitle}</Text>
-                                        }
-                                        containerStyle={{borderBottomWidth: 0, backgroundColor: color, borderRadius: 10 }}
-                                        // rightElement={this.rightIcons show=true}
-                                        rightElement={() => this.rightIcons(index)}
-
-                                    />
-                                </TouchableOpacity>
-                    )
-                } else {
-                    return (
-                        <TouchableOpacity onPress={() => this.props.onPressItem(item, index)}>
+                if (faves.length === 0) {
+                    if (index === 0) {
+                        return (
                             <ListItem
                                 title={
-                                    <Text style={styles.titleView}>{title}</Text>
+                                    <Text style={styles.titleView}>You have no Favorites</Text>
                                 }
                                 subtitle={
-                                    <Text style={styles.subtitleView}>{subtitle}</Text>
+                                    <View>
+                                        <View style={{paddingTop: 5}}/>
+                                        <Text style={styles.subtitleView}>To add to your Favorites</Text>
+
+                                        <View style={{paddingTop: 5}}/>
+                                        <View style={{flexDirection: 'row'}}>
+                                            <Text style={styles.subtitleView}>Click  </Text>
+                                            <Ionicons name={"ios-heart-empty"} size={25} color={'gray'}/>
+                                            <Text style={styles.subtitleView}>  next to a story</Text>
+                                        </View>
+                                        <Text style={styles.subtitleView}>Then you can play your Favorites</Text>
+
+                                        <MyButton title={'Go back to All Stories'}
+                                                  buttonStyle={styles.selectButton}
+                                                  textStyle={styles.selectButtonText}
+                                                  onPress={this.props.resetFilter}/>
+                                    </View>
                                 }
-                                leftAvatar={{source: image, height: 45, width: 31}}
-                                containerStyle={{borderBottomWidth: 0, backgroundColor: color }}
+                                containerStyle={{borderBottomWidth: 0, backgroundColor: 'goldenrod', borderRadius: 10}}
                             />
-                        </TouchableOpacity>
-                    )
+                        )
+                    } else {
+                        return;
+                    }
                 }
-            } catch (error) {
-                // myfuncs.mySentry(error);
+
+                for (let i = 0; i < faves.length; i++) {
+                    if (index === faves[i]) {
+                        bIsItemInFaves = true;
+                        break;
+                    }
+                }
+                if (bIsItemInFaves === false)
+                    return;
+            } else if (this.props.filterType === 2) {
+                let bIsItemInList = false;
+                let list = this.props.profiles.profile[this.props.profiles.profilesIdx].playList;
+                if (list.length === 0) {
+                    if (index === 0) {
+                        return (
+                            <ListItem
+                                title={
+                                    <Text style={styles.titleView}>You have no PlayList</Text>
+                                }
+                                subtitle={
+                                    <View>
+                                        <View style={{paddingTop: 5}}/>
+                                        <Text style={styles.subtitleView}>To add to your PlayList</Text>
+
+                                        <View style={{paddingTop: 5}}/>
+
+                                        <View style={{flexDirection: 'row'}}>
+                                            <Text style={styles.subtitleView}>Click  </Text>
+                                            <Ionicons name={"ios-list"} size={25} color={'gray'}/>
+                                            <Text style={styles.subtitleView}>  next to a story</Text>
+                                        </View>
+                                        <Text style={styles.subtitleView}>Then you can play your PlayList</Text>
+                                        <MyButton title={'Go back to All Stories'}
+                                                  buttonStyle={styles.selectButton}
+                                                  textStyle={styles.selectButtonText}
+                                                  onPress={this.props.resetFilter}/>
+                                    </View>
+                                }
+                                containerStyle={{borderBottomWidth: 0, backgroundColor: 'goldenrod', borderRadius: 10}}
+                            />
+                        )
+                    } else {
+                        return;
+                    }
+                }
+
+                for (let i = 0; i < list.length; i++) {
+                    if (index === list[i]) {
+                        bIsItemInList = true;
+                        break;
+                    }
+                }
+                if (bIsItemInList === false)
+                    return;
             }
+
+            let color = 'white';
+            let image = "";
+            let subtitle = "";
+
+            // console.log(item);
+
+            let title = item.title;
+
+            if (item.written_by !== null && item.written_by !== "" && item.written_by !== undefined)
+                subtitle += "Written by: " + item.written_by + "\r\n";
+            if (item.date_published !== null && item.date_published !== "" && item.date_published !== undefined)
+                subtitle += item.date_published + "  ";
+            if (item.num_lines !== null && item.num_lines !== "" && item.num_lines !== undefined)
+                subtitle += " #Lines: " + item.num_lines.toString();
+            if (item.snippet !== null && item.snippet !== "" && item.snippet !== undefined)
+                subtitle += "\r\n" + item.snippet;
+            // if (item.keywords !== null && item.keywords !== "" && item.keywords !== undefined)
+            //     subtitle += "\r\n" + item.keywords;
+            if (item.ages !== null && item.ages !== "" && item.ages !== undefined)
+                subtitle += "\r\nAges: " + item.ages;
+
+            if (item.color !== null && item.color !== "" && item.color !== undefined)
+                color = item.color;
+            // else if (item.gender === 1)
+            //     color = 'powderblue';
+            // else if (item.gender === 2)
+            //     color = 'mistyrose';
+
+            if (image === "") {
+                return (
+                            <TouchableOpacity onPress={() => this.props.onPressItem(item, index)}>
+                                <ListItem
+                                    title={
+                                        <Text style={styles.titleView}>{title}</Text>
+                                    }
+                                    subtitle={
+                                        <Text style={styles.subtitleView}>{subtitle}</Text>
+                                    }
+                                    containerStyle={{borderBottomWidth: 0, backgroundColor: color, borderRadius: 10 }}
+                                    // rightElement={this.rightIcons show=true}
+                                    rightElement={() => this.rightIcons(index)}
+
+                                />
+                            </TouchableOpacity>
+                )
+            } else {
+                return (
+                    <TouchableOpacity onPress={() => this.props.onPressItem(item, index)}>
+                        <ListItem
+                            title={
+                                <Text style={styles.titleView}>{title}</Text>
+                            }
+                            subtitle={
+                                <Text style={styles.subtitleView}>{subtitle}</Text>
+                            }
+                            leftAvatar={{source: image, height: 45, width: 31}}
+                            containerStyle={{borderBottomWidth: 0, backgroundColor: color }}
+                        />
+                    </TouchableOpacity>
+                )
+            }
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     });
 
     render() {
         try {
-            // console.log("render state.data:", this.state.data);
+            myfuncs.myBreadCrumbs('render', "MyListComponent");
             return (
                 <View>
                     <Toast
@@ -386,7 +404,7 @@ class MyListComponent extends React.Component {
                 </View>
             );
         } catch (error) {
-            // myfuncs.mySentry(error);
+            myfuncs.mySentry(error);
         }
     }
 }
@@ -432,6 +450,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         margin: 5,
     },
+    hitSlop: {
+        top: 10,
+        bottom: 10,
+        left: 10,
+        right: 10,
+    }
 });
 
 const mapStateToProps = (state) => {

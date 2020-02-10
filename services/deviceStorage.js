@@ -25,14 +25,14 @@ class deviceStorage  {
         }
     };
 
-    deleteKey = async (key) => {
-        try{
-            await AsyncStorage.removeItem(key);
-        } catch (error) {
-            console.log('AsyncStorage.deleteKey Error: ' + error.message);
-            // myfuncs.mySentry(error);
-        }
-    };
+    // deleteKey = async (key) => {
+    //     try{
+    //         await AsyncStorage.removeItem(key);
+    //     } catch (error) {
+    //         console.log('AsyncStorage.deleteKey Error: ' + error.message);
+    //         // myfuncs.mySentry(error);
+    //     }
+    // };
 
     clearAll = async () => {
         try{

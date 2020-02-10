@@ -10,6 +10,7 @@ import {HelpProfileSetActive} from './helpModals/HelpProfileSetActive';
 import {HelpProfileCustomize} from './helpModals/HelpProfileCustomize';
 export const HelpComponent= ( {screen, parm1} ) => {
     try {
+        myfuncs.myBreadCrumbs('HelpComponent', 'HelpComponent');
         return <View style={helpStyles.modalStyle}>
 
             {screen === "Audio" &&

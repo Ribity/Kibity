@@ -45,16 +45,25 @@ class ProfileCustomize extends React.Component {
         };
     }
     componentDidMount() {
-        console.log("ProfileCustomize DidMount");
-        this.checkCustomizeIdxParm();
+        try {
+            myfuncs.myBreadCrumbs('Did Mount', this.props.navigation.state.routeName);
+            // console.log("ProfileCustomize DidMount");
+            this.checkCustomizeIdxParm();
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     }
     checkCustomizeIdxParm = () => {
-        let customizeIdx = this.props.navigation.getParam('customizeIdx', 0);
-        this.setState({customizeIdx: customizeIdx});
-        let profileNumText = "Profile #" + (customizeIdx+1);
-        this.props.navigation.setParams({profileNum: profileNumText});
+        try {
+            myfuncs.myBreadCrumbs('checkCustomizeIdxParm', this.props.navigation.state.routeName);
+            let customizeIdx = this.props.navigation.getParam('customizeIdx', 0);
+            this.setState({customizeIdx: customizeIdx});
+            let profileNumText = "Profile #" + (customizeIdx+1);
+            this.props.navigation.setParams({profileNum: profileNumText});
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     };
-
     onSubmitPress = async () => {
         try {
             myfuncs.myBreadCrumbs('onSubmitPress', this.props.navigation.state.routeName);
@@ -269,28 +278,43 @@ class ProfileCustomize extends React.Component {
         }
     };
     updateStateGender = (isChecked, charIdx, value) => {
-        console.log("updateStateGender: ", isChecked, charIdx, " ", value);
+        try {
+            myfuncs.myBreadCrumbs('updateStateGender', this.props.navigation.state.routeName);
+            // console.log("updateStateGender: ", isChecked, charIdx, " ", value);
 
-        // We only need to update something if user is clicking a radio that is not the active radio.
-        if (isChecked === true) {
-            if (this.state.profiles.profile[this.state.customizeIdx].character[charIdx].pronoun !== value) {
-                this.state.profiles.profile[this.state.customizeIdx].character[charIdx].pronoun = value;
+            // We only need to update something if user is clicking a radio that is not the active radio.
+            if (isChecked === true) {
+                if (this.state.profiles.profile[this.state.customizeIdx].character[charIdx].pronoun !== value) {
+                    this.state.profiles.profile[this.state.customizeIdx].character[charIdx].pronoun = value;
 
-                this.updateStateChar({pronoun: value}, charIdx);
+                    this.updateStateChar({pronoun: value}, charIdx);
+                }
             }
+        } catch (error) {
+            myfuncs.mySentry(error);
         }
     };
     updateStateChar = (new_prop, charIdx) => {
-        let newProfiles = {...this.state.profiles};
-        newProfiles.profile[this.state.customizeIdx].character[charIdx] =
-            {...newProfiles.profile[this.state.customizeIdx].character[charIdx], ...new_prop};
-        this.setState({profiles: newProfiles});
+        try {
+            myfuncs.myBreadCrumbs('updateStateChar', this.props.navigation.state.routeName);
+            let newProfiles = {...this.state.profiles};
+            newProfiles.profile[this.state.customizeIdx].character[charIdx] =
+                {...newProfiles.profile[this.state.customizeIdx].character[charIdx], ...new_prop};
+            this.setState({profiles: newProfiles});
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     };
     updateState = (new_prop) => {
-        let newProfiles = {...this.state.profiles};
-        newProfiles.profile[this.state.customizeIdx] =
-            {...newProfiles.profile[this.state.customizeIdx], ...new_prop};
-        this.setState({profiles: newProfiles});
+        try {
+            myfuncs.myBreadCrumbs('updateState', this.props.navigation.state.routeName);
+            let newProfiles = {...this.state.profiles};
+            newProfiles.profile[this.state.customizeIdx] =
+                {...newProfiles.profile[this.state.customizeIdx], ...new_prop};
+            this.setState({profiles: newProfiles});
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     };
 };
 const styles = StyleSheet.create({

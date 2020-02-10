@@ -6,6 +6,7 @@ import {bindActionCreators} from "redux";
 import {updateStoryList} from "../actions/storyListActions";
 import MyDefines from "../constants/MyDefines";
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
+import myfuncs from "../services/myFuncs";
 
 // import _ from 'lodash'
 
@@ -26,6 +27,8 @@ class TasksComponent extends React.Component {
     }
     componentDidMount() {
         try {
+            myfuncs.myBreadCrumbs('DidMount', "TasksComponent");
+
             this.buildStoryList();
             sixtyMinute = setInterval(this.sixtyMinuteTask, 10 * 60 * 1000);
             // sixtyMinute = setInterval(this.sixtyMinuteTask, 10 * 1000);
@@ -36,40 +39,55 @@ class TasksComponent extends React.Component {
                 deactivateKeepAwake();
             }
         } catch (error) {
+            myfuncs.mySentry(error);
         }
     }
     componentWillUnmount() {
         try {
+            myfuncs.myBreadCrumbs('WillUnMount', "TasksComponent");
+
             if (sixtyMinute !== null)
                 clearInterval(sixtyMinute);
 
             AppState.removeEventListener('change', this._handleAppStateChange);
 
         } catch (error) {
-            console.log(error);
+            myfuncs.mySentry(error);
         }
     }
     _handleAppStateChange = (nextAppState) => {
-        if (appState.match(/inactive|background/) && nextAppState === 'active') {
-            // if (MyDefines.detail_logging)
-                console.log("App has come to foreground");
-            if (this.props.keep_awake) {
-                activateKeepAwake();
+        try {
+            myfuncs.myBreadCrumbs('handleAppStateChange', "TasksComponent");
+            if (appState.match(/inactive|background/) && nextAppState === 'active') {
+                if (MyDefines.log_details)
+                    console.log("App has come to foreground");
+                if (this.props.keep_awake) {
+                    activateKeepAwake();
+                }
+            } else {    // Else gone to the background
+                // if (MyDefines.detail_logging)
+                    console.log("App has gone to background");
+                deactivateKeepAwake();
             }
-        } else {    // Else gone to the background
-            // if (MyDefines.detail_logging)
-                console.log("App has gone to background");
-            deactivateKeepAwake();
+            appState = nextAppState;
+        } catch (error) {
+            myfuncs.mySentry(error);
         }
-        appState = nextAppState;
     };
     buildStoryList = () => {
-        let local_story_list = require('../assets/allStoriesList.json');
-        this.props.updateStoryList(local_story_list);
+        try {
+            myfuncs.myBreadCrumbs('buildStoryList', "TasksComponent");
+            let local_story_list = require('../assets/allStoriesList.json');
+            this.props.updateStoryList(local_story_list);
 
-        this.getStoryListFromServer();
+            this.getStoryListFromServer();
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     };
     getStoryListFromServer = () => {
+        try {
+            myfuncs.myBreadCrumbs('getStoryListFromServer', "TasksComponent");
         // let storyList_url = MyDefines.stories_url_bucket + "allStoriesList.json";
         // console.log("serverStoryList url:", storyList_url);
         // fetch(storyList_url)
@@ -86,6 +104,9 @@ class TasksComponent extends React.Component {
         //         console.error(error);
         //     });
         // return null;
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     };
     // appendServerStoryList = (serverStoryList) => {
     //     if (serverStoryList.stories.length > this.props.story_list.stories.length) {
@@ -116,20 +137,22 @@ class TasksComponent extends React.Component {
     // };
     sixtyMinuteTask = () => {
         try {
+            myfuncs.myBreadCrumbs('sixtyMinuteTask', "TasksComponent");
             if (MyDefines.detail_logging)
                 console.log("sixtyMinuteTask");
             this.getStoryListFromServer();
         } catch (error) {
-            console.log(error);
+            myfuncs.mySentry(error);
         }
     };
     render() {
         try {
+            myfuncs.myBreadCrumbs('render', "TasksComponent");
             return (
                 <View style={{padding:0}} />
             );
         } catch (error) {
-            console.log(error);
+            myfuncs.mySentry(error);
         }
     }
 }
