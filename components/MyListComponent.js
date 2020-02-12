@@ -200,7 +200,7 @@ class MyListComponent extends React.Component {
         try {
             myfuncs.myBreadCrumbs('renderItem', "MyListComponent");
 
-            if (this.props.filterType === 1) {
+            if (this.props.listType === 1) {
                 let bIsItemInFaves = false;
                 let faves = this.props.profiles.profile[this.props.profiles.profilesIdx].favorites;
 
@@ -227,7 +227,7 @@ class MyListComponent extends React.Component {
                                         <MyButton title={'Go back to All Stories'}
                                                   buttonStyle={styles.selectButton}
                                                   textStyle={styles.selectButtonText}
-                                                  onPress={this.props.resetFilter}/>
+                                                  onPress={this.props.resetList}/>
                                     </View>
                                 }
                                 containerStyle={{borderBottomWidth: 0, backgroundColor: 'goldenrod', borderRadius: 10}}
@@ -246,7 +246,7 @@ class MyListComponent extends React.Component {
                 }
                 if (bIsItemInFaves === false)
                     return;
-            } else if (this.props.filterType === 2) {
+            } else if (this.props.listType === 2) {
                 let bIsItemInList = false;
                 let list = this.props.profiles.profile[this.props.profiles.profilesIdx].playList;
                 if (list.length === 0) {
@@ -272,7 +272,7 @@ class MyListComponent extends React.Component {
                                         <MyButton title={'Go back to All Stories'}
                                                   buttonStyle={styles.selectButton}
                                                   textStyle={styles.selectButtonText}
-                                                  onPress={this.props.resetFilter}/>
+                                                  onPress={this.props.resetList}/>
                                     </View>
                                 }
                                 containerStyle={{borderBottomWidth: 0, backgroundColor: 'goldenrod', borderRadius: 10}}
@@ -288,6 +288,22 @@ class MyListComponent extends React.Component {
                         bIsItemInList = true;
                         break;
                     }
+                }
+                if (bIsItemInList === false)
+                    return;
+            }
+
+            if (this.props.showType !== 0) {
+                let bIsItemInList = false;
+                if (this.props.showType === 1) {
+                    if (item.keywords.toLowerCase().indexOf('toddler') > -1)
+                        bIsItemInList = true;
+                } else if (this.props.showType === 2) {
+                    if (item.keywords.toLowerCase().indexOf('boy') > -1)
+                        bIsItemInList = true;
+                } else if (this.props.showType === 3) {
+                    if (item.keywords.toLowerCase().indexOf('girl') > -1)
+                        bIsItemInList = true;
                 }
                 if (bIsItemInList === false)
                     return;

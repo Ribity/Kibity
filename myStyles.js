@@ -1,7 +1,5 @@
-import {Dimensions, StyleSheet, TextInput} from "react-native";
-import Constants from 'expo-constants';
+import {Dimensions, StyleSheet} from "react-native";
 import MyDefines from "./constants/MyDefines";
-import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import React from "react";
 
 const {height, width} = Dimensions.get('window');
@@ -120,7 +118,6 @@ const myStyles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 18,
         color: 'purple',
-
     },
     regularButton: {
         backgroundColor: 'mediumpurple',
@@ -140,7 +137,7 @@ const myStyles = StyleSheet.create({
     },
     selectButton: {
         // marginVertical: 15,
-        marginHorizontal: 70,
+        // marginHorizontal: 70,
         backgroundColor: 'mediumpurple',
         alignSelf: 'center',
         borderColor: 'goldenrod',

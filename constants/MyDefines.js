@@ -23,6 +23,7 @@ export default {
         pauseStoryIdx: 2,
         pitchIdx: 6,
         rateIdx: 6,
+        voice: "",
         retrieved_user_data: false,
     },
 
@@ -87,7 +88,7 @@ export default {
                 character: [
                     {name: 'Mark Anthony', pronoun: 0},
                     {name: 'Dennis', pronoun: 0},
-                    {name: 'Chunky', pronoun: 0},
+                    {name: 'The Johnson Twins', pronoun: 2},
                 ],
                 team: 'Atlanta Braves',
                 sport: 'baseball',
@@ -114,6 +115,7 @@ export default {
                 "snippet": "",
                 "written_by": "",
                 "keywords": "",
+                "ages": "",
             }
             ]
         },

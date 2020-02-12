@@ -2,103 +2,267 @@ import React from 'react';
 import {
     Text,
     View,
-    TouchableHighlight,
-	ScrollView,
+    Picker,
+    TextInput, StyleSheet, Dimensions,
 } from 'react-native';
+import * as Speech from 'expo-speech';
 
 import myStyles from "../myStyles";
 import myfuncs from "../services/myFuncs";
 
-import MyTouchableLogo from "../components/MyTouchableLogo";
+import {MyButton} from "../components/MyButton";
 import {ScreenTitle} from "../components/screenTitle";
+import MyDefines from "../constants/MyDefines";
+import {SafeAreaView} from "react-navigation";
+import {Layout} from "@ui-kitten/components";
+import {ThemeButton} from "../components/themeButton";
+import {bindActionCreators} from "redux";
+import {updateSettings} from "../actions/settingsActions";
+import {connect} from "react-redux";
 
-export default class SettingsAudio extends React.Component {
+
+const {height, width} = Dimensions.get('window');
+
+const pitch_data = MyDefines.pitch_data;
+const rate_data = MyDefines.rate_data;
+
+class SettingsAudio extends React.Component {
     static navigationOptions = ({navigation}) => {
         try {
-            myfuncs.myBreadCrumbs('navigationOptions', 'AudioScreen');
+            myfuncs.myBreadCrumbs('navigationOptions', 'SettingsAudio');
             return {
                 headerTitle: () => <ScreenTitle title={"Settings"} second={"Audio"}/>,
+                headerRight: () => <ThemeButton/>,
+
             };
         } catch (error) {
             myfuncs.mySentry(error);
         }
     };
     constructor(props) {
-	super(props);
-	this.state = {};
+        super(props);
+        this.state = {
+            myText: "Please enjoy the stories",
+            voice: JSON.parse(JSON.stringify(this.props.settings.voice)),
+            voice_list: [],
+        };
     }
-
-    render() {
-	try {
-	    myfuncs.myBreadCrumbs('render', this.props.navigation.state.routeName);
-	    return <View style={myStyles.container}>
-
-		<View style={{padding: 20}}>
-
-		    <ScrollView
-			contentContainerStyle={{
-			    flexGrow: 1,
-			    justifyContent: 'space-between'
-			}}>
-
-			<View>
-
-			<Text style={myStyles.myText}>
-				Hello, I'm Mark.
-			    {"\n"}
-			    {"\n"}
-			    The idea behind Ribity originated during a February 2018 national tragedy
-			    which dominated the national media outlets.  Beth and I were talking: "There should be
-			    a way for the general population to show their personal empathy
-			    for such an event".
-			    {"\n"}
-			    {"\n"}
-			    That idea coupled with desire to learn mobile software platforms
-			    along with cloud storage and cloud services ... all led to the birth of Ribity.
-			    {"\n"}
-			    {"\n"}
-			    I'm 56-years-old and not the most technical person in the world.
-			    I had zero experience or knowledge in mobile application development,
-			    AWS hosting, databases, Google Services, etc. For 18 months I researched, scratched my head,
-			    struggled, researched, struggled. Ribity became more than an idea. Ribity became more than a pastime. Ribity became an entity.
-			    I remember my excitement the first time the map displayed on the simulator. I also remember
-			    the first time ribbons displayed on the map. There was new excitement each week.
-			    The weekly excitement and Beth's encouragement kept me going.
-			    Our hopes for Ribity were becoming reality.
-			    {"\n"}
-			    {"\n"}
-			    October of 2019 Ribity was launched to the App stores.
-			    {"\n"}
-			    {"\n"}
-			    We hope Ribity serves the intended purpose of unity and compassion.
-			    {"\n"}
-			    {"\n"}
-			    Beth and I support and promote inclusiveness and tolerance.  However, we will
-			    not allow extreme opinions, hate or vulgarities as part of a Ribbon or Event.
-			    We ask you to report
-			    vulgar or extreme ribbons or events. We'll take subjective action for each
-			    report. The reported ribbon or event will likely not
-			    be deleted, but instead the text will be modified. The plan for the future is to enable users
-			    that reach a certain "Point total" the ability to modify ribbons and
-			    events that have been reported as vulgar or extreme.
-			    Basically we see Ribity becoming a self-reporting, self-moderating community.
-                {"\n"}
-                {"\n"}
-				Thank you for creating and advancing ribbons.  Thank you for your part in Ribbon Serendipity.
-                {"\n"}
-                {"\n"}
-                EMail:  Ribity@yahoo.com
-                {"\n"}
-                {"\n"}
-                - Mark and Beth
-
-			</Text>
-			</View>
-		    </ScrollView>
-		</View>
-	    </View>
-	} catch (error) {
-	    myfuncs.mySentry(error);
-	}
+    componentDidMount() {
+        try {
+            myfuncs.myBreadCrumbs('Did mount', this.props.navigation.state.routeName);
+            this.getVoices();
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
+    }
+    getVoices = async () => {
+        let list = await Speech.getAvailableVoicesAsync();
+        await this.setState({voice_list: list});
+        await this.setState({voice_obj_selected: list[0]});
     };
+    render() {
+        try {
+            myfuncs.myBreadCrumbs('render', this.props.navigation.state.routeName);
+            // let pitchStr = pitch_data[this.state.pitchIdx].toString();
+            // let rateStr = rate_data[this.state.rateIdx].toString();
+            // let rateStr = this.state.rate.toFixed(1).toString();
+
+            let voices = this.state.voice_list.map( (v, i) => {
+                return <Picker.Item label={v.name}  value={v.identifier} key={v.identifier}/>
+            });
+
+            return (
+                <SafeAreaView style={styles.container}>
+                    <Layout style={{flex: 1, alignItems: 'center'}}>
+                        <View style={{paddingTop: 10}}/>
+
+                        {this.props.settings.voice === "" &&
+                            <View>
+                            <Text style={styles.thisText}>You're currently using the default</Text>
+                            <Text style={styles.thisText}>voice of your device for your</Text>
+                            <Text style={styles.thisText}>Kibity presentation voice</Text>
+                            </View>
+                        }
+                        <Text style={myStyles.iFieldLabel}>This text will be spoken:</Text>
+                        <TextInput style={styles.iField}
+                               value={this.state.myText}
+                               onChangeText={(text) => this.setState({myText: text})}
+                               clearButtonMode='always'
+                               placeholder={"enter text here"}
+                               returnKeyType='done'
+                               placeholderTextColor={"grey"}
+                               maxLength={200}
+                    />
+
+                        <View style={{paddingTop: 10}}/>
+                        <MyButton title={'Test the Voice'} onPress={this.speak}/>
+                        <View style={{paddingTop: 10}}/>
+                        <MyButton title={'Save'} onPress={this.updateSettings}/>
+                        {/*<View style={{paddingTop: 10}}/>*/}
+                        {/*<View style={{flexDirection: 'row'}}>*/}
+                            {/*<MyButton title={'Decrease'} onPress={this.decreasePitch}/>*/}
+                            {/*<Text style={styles.thisText}> Pitch {pitchStr} </Text>*/}
+                            {/*<MyButton title={'Increase'} onPress={this.increasePitch}/>*/}
+                        {/*</View>*/}
+                        {/*<View style={{paddingTop: 10}}/>*/}
+                        {/*<View style={{flexDirection: 'row'}}>*/}
+                            {/*<MyButton title={'Decrease'} onPress={this.decreaseRate}/>*/}
+                            {/*<Text style={styles.thisText}> Rate {rateStr} </Text>*/}
+                            {/*<MyButton title={'Increase'} onPress={this.increaseRate}/>*/}
+                        {/*</View>*/}
+
+                        <View style={{paddingTop: 10}}/>
+
+                    {this.state.voice_list.length > 0 &&
+                        <View>
+                            <Text style={styles.thisText}>Select a voice to test/save</Text>
+
+                            <Picker
+                                selectedValue={this.state.voice.identifier}
+                                style={{height: 50, width: 200, borderRadius: 10}}
+                                itemStyle={{backgroundColor: 'goldenrod', color: 'purple', borderRadius: 10}}
+                                onValueChange={(identifier) =>
+                                    (this.setVoiceState(identifier))}>
+                                {voices}
+                            </Picker>
+                        </View>
+                    }
+                    </Layout>
+                </SafeAreaView>
+            );
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
+    };
+    setVoiceState = (identifier) => {
+        // console.log(identifier);
+        for (let i=0; i<this.state.voice_list.length; i++) {
+            if (this.state.voice_list[i].identifier === identifier){
+                // console.log("Found");
+                this.setState({voice: this.state.voice_list[i]});
+                break;
+            }
+        }
+    };
+    updateSettings = async () => {
+        try {
+            myfuncs.myBreadCrumbs('updateSettings', this.props.navigation.state.routeName);
+
+            // console.log(this.state.voice);
+            let new_settings = {...this.props.settings, ...{
+                    voice: this.state.voice,
+                }};
+            await this.props.updateSettings(new_settings);
+            await this.updateStorage();
+
+        } catch (error) {
+            // console.log(error);
+            myfuncs.mySentry(error);
+        }
+    };
+    updateStorage = async () => {
+        try {
+            myfuncs.myBreadCrumbs('updateStorage', this.props.navigation.state.routeName);
+            await myfuncs.writeUserDataToLocalStorage("user_settings", this.props.settings);
+            // console.log("storage updated NewSettings:", this.props.settings);
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
+    };
+
+    speak = () => {
+        // console.log(this.state.voice);
+        Speech.speak(this.state.myText, {
+            voice: this.state.voice.identifier,
+            // language: this.state.language,
+            pitch: pitch_data[this.props.settings.pitchIdx].value,
+            rate: pitch_data[this.props.settings.rateIdx].value,
+        });
+    };
+
+    // increasePitch = () => {
+    //     this.setState(state => ({
+    //         ...state,
+    //         pitch: state.pitch + 0.1,
+    //     }));
+    // };
+    // decreasePitch = () => {
+    //     this.setState(state => ({
+    //         ...state,
+    //         pitch: state.pitch - 0.1,
+    //     }));
+    // };
+    // increaseRate = () => {
+    //     this.setState(state => ({
+    //         ...state,
+    //         rate: state.rate + 0.1,
+    //     }));
+    // };
+    // decreaseRate = () => {
+    //     this.setState(state => ({
+    //         ...state,
+    //         rate: state.rate - 0.1,
+    //     }));
+    // };
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: MyDefines.myTabColor,
+    },
+    thisContainer: {
+        flex: 1,
+        width: width,
+        // backgroundColor: 'lightgrey',
+    },
+    contentContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingBottom: 100,
+        paddingTop: 100
+    },
+    thisText: {
+        fontSize: 17,
+        alignSelf: 'center',
+        color: 'mediumpurple',
+        fontWeight: 'bold',
+    },
+    iField: {
+        width: width-20,
+        height: 30,
+        borderWidth: 1,
+        paddingLeft: 5,
+        borderRadius: 10,
+        fontWeight: 'bold',
+        fontSize: 18,
+        color: 'mediumpurple',
+    },
+});
+
+const mapStateToProps = (state) => {
+    const { settings } = state;
+    return { settings }
+};
+const mapDispatchToProps = dispatch => (
+    bindActionCreators({
+        updateSettings,
+    }, dispatch)
+);
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsAudio);
+
+
+//     Array [
+// Object {
+//     "identifier": "com.apple.ttsbundle.Maged-compact",
+//     "language": "ar-SA",
+//     "name": "Maged",
+//     "quality": "Default",
+// },
+// Object {
+//     "identifier": "com.apple.ttsbundle.Zuzana-compact",
+//         "language": "cs-CZ",
+//         "name": "Zuzana",
+//         "quality": "Default",
+// },

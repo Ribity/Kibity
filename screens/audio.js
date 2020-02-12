@@ -107,9 +107,9 @@ class AudioScreen extends React.Component {
         try {
             myfuncs.myBreadCrumbs('getDerivedStateFromProps', "AudioScreen");
             let update = {};
-            if (prevState.stories_list !== nextProps.stories_list) {
-                update.stories_list = nextProps.stories_list;
-            }
+            // if (prevState.stories_list !== nextProps.stories_list) {
+            //     update.stories_list = nextProps.stories_list;
+            // }
             if (prevState.profiles !== nextProps.profiles) {
                 update.profiles = nextProps.profiles;
             }
@@ -303,15 +303,29 @@ class AudioScreen extends React.Component {
                 if (MyDefines.log_audio)
                     console.log("speak: ", myStory.line[myIdx]);
                 if (myStory.line[myIdx] !== "The End" || this.props.settings.playEndOfStoryRibbit === false) {
-                    Speech.speak(myStory.line[myIdx], {
-                        // voice: "com.apple.ttsbundle.Samantha-compact",
-                        // language: 'en',
-                        pitch: pitch_data[this.props.settings.pitchIdx].value,
-                        rate: pitch_data[this.props.settings.rateIdx].value,
-                        onDone: this.queueNextLine,
-                        // onStopped: speechStopped,
-                        // onStart: scheduleTheCheckSpeech,
-                    });
+                    if (this.props.settings.voice === "" || this.props.settings.voice === null) {
+                        // console.log("default voice");
+                        Speech.speak(myStory.line[myIdx], {
+                            // voice: "com.apple.ttsbundle.Samantha-compact",
+                            // language: 'en',
+                            pitch: pitch_data[this.props.settings.pitchIdx].value,
+                            rate: pitch_data[this.props.settings.rateIdx].value,
+                            onDone: this.queueNextLine,
+                            // onStopped: speechStopped,
+                            // onStart: scheduleTheCheckSpeech,
+                        });
+                    } else {
+                        // console.log("custom voice:", this.props.settings.voice );
+                        Speech.speak(myStory.line[myIdx], {
+                            voice: this.props.settings.voice.identifier,
+                            // language: 'en',
+                            pitch: pitch_data[this.props.settings.pitchIdx].value,
+                            rate: pitch_data[this.props.settings.rateIdx].value,
+                            onDone: this.queueNextLine,
+                            // onStopped: speechStopped,
+                            // onStart: scheduleTheCheckSpeech,
+                        });
+                    }
                 } else {
                     // console.log("play ribbit");
                     myfuncs.playRibbit(this.props.navigation.state.routeName);
@@ -787,7 +801,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         lineHeight: 25,
         color: 'goldenrod',
-        marginHorizontal: 10,
+        marginHorizontal: 5,
         marginVertical: 5,
     },
     currentText: {

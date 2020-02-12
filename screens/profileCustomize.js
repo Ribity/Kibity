@@ -22,6 +22,10 @@ import MyDefines from "../constants/MyDefines";
 import {bindActionCreators} from "redux";
 import {updateProfiles} from "../actions/profilesActions";
 
+TextInput.defaultProps = TextInput.defaultProps || {};
+TextInput.defaultProps.allowFontScaling = false;
+// TextInput.defaultProps.allowFontScaling=false;
+
 class ProfileCustomize extends React.Component {
     static navigationOptions = ({navigation}) => {
         try {

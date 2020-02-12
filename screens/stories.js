@@ -16,6 +16,10 @@ import {MyHelpModal} from "../components/MyHelpModal";
 import myfuncs from "../services/myFuncs";
 import {ScreenTitle} from "../components/screenTitle";
 import {StoriesHeaderButton} from "../components/StoriesHeaderButton";
+import {MyButton} from "../components/MyButton";
+
+Text.defaultProps = Text.defaultProps || {};
+Text.defaultProps.allowFontScaling = false;
 
 class StoriesScreen extends React.Component {
     static navigationOptions = ({navigation}) => {
@@ -27,14 +31,14 @@ class StoriesScreen extends React.Component {
                     <StoriesHeaderButton buttonType={1}
                                          numItems={params.numFaves}
                                          action={params.getLeft}
-                                         filterType={params.filterType}
+                                         listType={params.listType}
                     />,
                 headerTitle: () => <ScreenTitle title={"Stories"} second={params.activeProfile} />,
                 headerRight: () =>
                     <StoriesHeaderButton buttonType={2}
                                          numItems={params.numList}
                                          action={params.getRight}
-                                         filterType={params.filterType}
+                                         listType={params.listType}
                     />,
 
             };
@@ -47,7 +51,8 @@ class StoriesScreen extends React.Component {
         this.state = {
             story_list: MyDefines.default_story_list,
             profiles: MyDefines.default_profiles,
-            filterType: 0,
+            listType: 0,
+            showType: 0,
         };
         this.componentWillFocus = this.componentWillFocus.bind(this);
     };
@@ -66,7 +71,7 @@ class StoriesScreen extends React.Component {
             this.props.navigation.setParams({getLeft: this.listFaves});
             this.props.navigation.setParams({numFaves: this.props.profiles.profile[this.props.profiles.profilesIdx].favorites.length});
             this.props.navigation.setParams({activeProfile: this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name});
-            this.props.navigation.setParams({filterType: this.state.filterType});
+            this.props.navigation.setParams({listType: this.state.listType});
             // console.log("StoriesScreen DidMount:", this.props.story_list);
         } catch (error) {
             myfuncs.mySentry(error);
@@ -91,12 +96,12 @@ class StoriesScreen extends React.Component {
     listList = () => {
         try {
             myfuncs.myBreadCrumbs('listList', this.props.navigation.state.routeName);
-            if (this.state.filterType === 2) {
-                this.setState({filterType: 0});
-                this.props.navigation.setParams({filterType: 0});
+            if (this.state.listType === 2) {
+                this.setState({listType: 0});
+                this.props.navigation.setParams({listType: 0});
             } else {
-                this.setState({filterType: 2});
-                this.props.navigation.setParams({filterType: 2});
+                this.setState({listType: 2});
+                this.props.navigation.setParams({listType: 2});
             }
             if (MyDefines.log_details)
                 console.log("PressedRight");
@@ -107,12 +112,12 @@ class StoriesScreen extends React.Component {
     listFaves = () => {
         try {
             myfuncs.myBreadCrumbs('listFaves', this.props.navigation.state.routeName);
-            if (this.state.filterType === 1) {
-                this.setState({filterType: 0});
-                this.props.navigation.setParams({filterType: 0});
+            if (this.state.listType === 1) {
+                this.setState({listType: 0});
+                this.props.navigation.setParams({listType: 0});
             } else {
-                this.setState({filterType: 1});
-                this.props.navigation.setParams({filterType: 1});
+                this.setState({listType: 1});
+                this.props.navigation.setParams({listType: 1});
             }
             if (MyDefines.log_details)
                 console.log("PressedLeft");
@@ -120,13 +125,13 @@ class StoriesScreen extends React.Component {
             myfuncs.mySentry(error);
         }
     };
-    resetFilter = () => {
+    resetList = () => {
         try {
-            myfuncs.myBreadCrumbs('resetFilter', this.props.navigation.state.routeName);
-            this.setState({filterType: 0});
-            this.props.navigation.setParams({filterType: 0});
+            myfuncs.myBreadCrumbs('resetList', this.props.navigation.state.routeName);
+            this.setState({listType: 0});
+            this.props.navigation.setParams({listType: 0});
             if (MyDefines.log_details)
-                console.log("ResetFilter");
+                console.log("ResetList");
         } catch (error) {
             myfuncs.mySentry(error);
         }
@@ -237,7 +242,8 @@ class StoriesScreen extends React.Component {
             myfuncs.myBreadCrumbs('render', this.props.navigation.state.routeName);
             return (
                 <View style={styles.container}>
-                    <View style={styles.topRow}>
+
+                    <View style={styles.secondRow}>
 
                         {(this.state.profiles.profile[this.props.profiles.profilesIdx].favorites.length > 0) &&
                         <View>
@@ -271,6 +277,24 @@ class StoriesScreen extends React.Component {
                             </View>
                         }
                     </View>
+
+                    <View style={styles.showRow}>
+                        <Text style={styles.showTextGold}>Filter: </Text>
+                        <TouchableOpacity onPress={() => this.setState({showType: 0})}>
+                            <Text style={(this.state.showType === 0) ? styles.showTextGold : styles.showText}>All</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.setState({showType: 1})}>
+                            <Text style={(this.state.showType === 1) ? styles.showTextGold : styles.showText}>Toddlers</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.setState({showType: 2})}>
+                            <Text style={(this.state.showType === 2) ? styles.showTextGold : styles.showText}>Boys</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.setState({showType: 3})}>
+                            <Text style={(this.state.showType === 3) ? styles.showTextGold : styles.showText}>Girls</Text>
+                        </TouchableOpacity>
+
+                    </View>
+
                     <View style={{paddingTop: 5}}/>
 
                     {this.state.story_list.stories.length > 1 &&
@@ -278,9 +302,10 @@ class StoriesScreen extends React.Component {
                                      myList={this.state.story_list.stories}
                                      screenType={'Stories'}
                                      updateParentStoriesCurrentProfile={this.updateStoriesProfiles}
-                                     resetFilter={this.resetFilter}
+                                     resetList={this.resetList}
                                      onPressItem={this.onPressStorySelection}
-                                     filterType={this.state.filterType}
+                                     listType={this.state.listType}
+                                     showType={this.state.showType}
                     />
                     }
                     <MyHelpIcon onPress={this.onHelpPress}/>
@@ -318,11 +343,26 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 25,
     },
-    topRow: {
-        // flex: 1,
+    showRow: {
         flexDirection: 'row',
-        // justifyContent: 'space-around',
-        // alignItems: 'stretch'
+        alignItems: 'stretch',
+    },
+    showTextGold: {
+        color: 'gold',
+        fontSize: 20,
+        // fontWeight: 'bold',
+        marginHorizontal: 5,
+    },
+    showText: {
+        color: 'silver',
+        fontSize: 20,
+        marginHorizontal: 5,
+    },
+    secondRow: {
+        paddingTop: 20,
+        borderBottomColor: 'purple',
+        borderBottomWidth: 3,
+        flexDirection: 'row',
     },
     faves: {
         flexDirection: 'row',
@@ -334,6 +374,7 @@ const styles = StyleSheet.create({
     },
     pText: {
         color: 'gold',
+
     },
     title: {
         // height: 50,

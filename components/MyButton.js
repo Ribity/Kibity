@@ -3,6 +3,9 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import myStyles from "../myStyles";
 import myfuncs from "../services/myFuncs";
 
+Text.defaultProps = Text.defaultProps || {};
+Text.defaultProps.allowFontScaling = false;
+
 export const MyButton = ( {buttonStyle, textStyle, onPress, title} ) => {
     try {
         myfuncs.myBreadCrumbs('MyButton', 'MyButton');

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApplicationProvider } from '@ui-kitten/components';
+import { ApplicationProvider, Text } from '@ui-kitten/components';
 import { mapping, light, dark } from '@eva-design/eva';
 import { AppNavigator } from './navigation';
 import { ThemeContext } from './theme-context';
@@ -13,6 +13,8 @@ import { createStore } from 'redux';
 // The yellowBox thing hides warning on Android
 import { YellowBox } from 'react-native';
 YellowBox.ignoreWarnings(['Setting a timer']);
+Text.defaultProps = Text.defaultProps || {};
+Text.defaultProps.allowFontScaling = false;
 
 const store = createStore(rootReducer);
 

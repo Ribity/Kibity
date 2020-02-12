@@ -1,5 +1,4 @@
 import React from 'react';
-// import { StyleSheet} from "react-native";
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator} from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
@@ -13,9 +12,7 @@ import ProfilesScreen  from './screens/profiles';
 import ProfileSetActive from './screens/profileSetActive';
 import ProfileCustomize  from './screens/profileCustomize';
 import SettingsScreen from './screens/settings';
-// import SettingsEndOfStory from './screens/SettingsEndOfStory';
-// import SettingsAudio from './screens/SettingsAudio';
-// import SettingsAbout from './screens/SettingsAbout';
+import SettingsAudio from './screens/SettingsAudio';
 
 let defNav = {
     headerStyle: {backgroundColor: MyDefines.myTabColor},
@@ -41,9 +38,7 @@ const ProfilesStack = createStackNavigator({
 
 const SettingsStack = createStackNavigator({
     Settings: SettingsScreen,
-    // SettingsEndOfStory: SettingsEndOfStory,
-    // SettingsAudio: SettingsAudio,
-    // SettingsAbout: SettingsAbout,
+    SettingsAudio: SettingsAudio,
 }, {defaultNavigationOptions: () => (defNav)});
 
 AudioStack.navigationOptions = {

@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Dimensions, Image} from 'react-native'
-import {Layout, Text, Select, Button} from '@ui-kitten/components';
+import {Layout, Text} from '@ui-kitten/components';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import myfuncs from "../services/myFuncs";
@@ -57,7 +57,7 @@ class ProfilesScreen extends React.Component {
                 <SafeAreaView style={styles.container}>
                     <Layout style={{flex: 1, paddingLeft: 10}}>
                         <View>
-                            <View style={{padding: 20}}/>
+                            <View style={{padding: 10}}/>
 
                             <Text style={styles.buttonText}>Active Profile</Text>
                             <Text style={styles.textStyle}>{this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name}</Text>
@@ -65,10 +65,10 @@ class ProfilesScreen extends React.Component {
                                       textStyle={myStyles.selectButtonText}
                                       onPress={() => this.goToSetActiveProfile(0)}
                                       title="Select Active Profile"/>
-                            <View style={{padding: 25}}/>
+                            <View style={{padding: 15}}/>
 
 
-                            <Image style={styles.kibityLogo} source={kibityLogo}/>
+                            <Image style={styles.kibityLogoSmall} source={kibityLogo}/>
                             <View style={{padding: 10}}/>
                             <Text style={styles.buttonText}>Customize profile #1</Text>
                             <MyButton buttonStyle={myStyles.selectButton}
@@ -166,12 +166,12 @@ const styles = StyleSheet.create({
         width: width-30,
         color: 'mediumpurple',
     },
-    kibityLogo: {
+    kibityLogoSmall: {
         justifyContent:'center',
         alignItems: 'center',
         alignSelf: 'center',
-        width: 60,
-        height: 60,
+        width: 40,
+        height: 40,
     },
     buttonText: {textAlign: 'center', color: 'mediumpurple', fontSize: 20, fontWeight: 'bold'},
 

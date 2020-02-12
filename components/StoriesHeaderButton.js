@@ -2,13 +2,13 @@ import React from 'react';
 import {Text, View, TouchableOpacity, StyleSheet} from "react-native";
 import myfuncs from "../services/myFuncs";
 
-export const StoriesHeaderButton = ( {buttonType, filterType, action} ) => {
+export const StoriesHeaderButton = ( {buttonType, listType, action} ) => {
     try {
         myfuncs.myBreadCrumbs('StoriesHeaderButton', 'StoriesHeaderButton');
         let text = "All";
-        if (buttonType === 1 && filterType !== 1)
+        if (buttonType === 1 && listType !== 1)
             text = "Faves";
-        else if (buttonType === 2 && filterType !== 2)
+        else if (buttonType === 2 && listType !== 2)
             text = "PlayList";
 
         return (

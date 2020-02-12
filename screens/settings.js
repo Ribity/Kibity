@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native'
 import {SafeAreaView} from "react-navigation";
-import {Text, Layout, Select, Toggle} from "@ui-kitten/components";
+import {Layout, Select, Text, Toggle} from "@ui-kitten/components";
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import myfuncs from "../services/myFuncs";
 import MyDefines from "../constants/MyDefines";
@@ -12,6 +12,9 @@ import {bindActionCreators} from "redux";
 import {updateSettings} from "../actions/settingsActions";
 import {ScreenTitle} from "../components/screenTitle";
 import {ThemeButton} from "../components/themeButton";
+import {MyButton} from "../components/MyButton";
+import myStyles from "../myStyles";
+import * as Speech from "expo-speech";
 
 const {height, width} = Dimensions.get('window');
 
@@ -36,8 +39,17 @@ class SettingsScreen extends React.Component {
         super(props);
         this.state = {
             settings: this.props.settings,
+            bVoicesAvailable: false,
         };
     };
+    componentDidMount() {
+        try {
+            myfuncs.myBreadCrumbs('Did mount', this.props.navigation.state.routeName);
+            this.getVoices();
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
+    }
     static getDerivedStateFromProps(nextProps, prevState){
         try {
             myfuncs.myBreadCrumbs('getDerivedStateFromProps', "Settings");
@@ -51,7 +63,19 @@ class SettingsScreen extends React.Component {
             myfuncs.mySentry(error);
         }
     };
-
+    getVoices = async () => {
+        let list = await Speech.getAvailableVoicesAsync();
+        if (list !== null && list.length > 1 )
+            this.setState({bVoicesAvailable: true});
+    };
+    goToSettingsAudio = () => {
+        try {
+            myfuncs.myBreadCrumbs('goToSettingsAudio', this.props.navigation.state.routeName);
+            this.props.navigation.navigate("SettingsAudio");
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
+    };
     render() {
         try {
             myfuncs.myBreadCrumbs('render', this.props.navigation.state.routeName);
@@ -134,7 +158,15 @@ class SettingsScreen extends React.Component {
                                 />
                             </View>
                         }
-
+                        {this.state.bVoicesAvailable === true &&
+                        <View style={{alignSelf: 'center'}}>
+                            <View style={{padding: 10}}/>
+                            <MyButton buttonStyle={myStyles.selectButton}
+                                      textStyle={myStyles.selectButtonText}
+                                      onPress={() => this.goToSettingsAudio()}
+                                      title="Select Voice"/>
+                        </View>
+                        }
                     </Layout>
 
                     <MyHelpIcon onPress={this.onHelpPress}/>
@@ -214,6 +246,10 @@ const styles = StyleSheet.create({
     },
     textStyle: {
         color: 'mediumpurple',
+
+        fontSize: 23,
+        lineHeight: 25,
+        alignSelf: 'center',
     },
     labelStyle: {
         color: 'mediumpurple',
@@ -224,6 +260,8 @@ const styles = StyleSheet.create({
         width: width-30,
         color: 'mediumpurple',
     },
+
+    buttonText: {textAlign: 'center', color: 'mediumpurple', fontSize: 20, fontWeight: 'bold'},
 
 });
 
