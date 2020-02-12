@@ -181,14 +181,30 @@ class MyListComponent extends React.Component {
             return (
                 <View>
                     {bFave ?
-                        <Ionicons name={"ios-heart"} onPress={() => this.removeFromFaves(index)} size={40} color={'red'} hitSlop={styles.hitSlop}/>
+                        <View>
+                            <TouchableOpacity hitSlop={styles.hitSlop} onPress={() => this.removeFromFaves(index)}>
+                                <Ionicons name={"ios-heart"}  size={40} color={'red'}/>
+                            </TouchableOpacity>
+                        </View>
                         :
-                        <Ionicons name={"ios-heart-empty"} onPress={() => this.addToFaves(index)}  size={40} color={'gray'} hitSlop={styles.hitSlop}/>
+                        <View>
+                            <TouchableOpacity hitSlop={styles.hitSlop} onPress={() => this.addToFaves(index)}>
+                                <Ionicons name={"ios-heart-empty"}  size={40} color={'gray'}/>
+                            </TouchableOpacity>
+                        </View>
                     }
                     {bPlayList ?
-                        <Ionicons name={"ios-list-box"} onPress={() => this.removeFromPlayList(index)} size={40} color={'goldenrod'} hitSlop={styles.hitSlop}/>
+                        <View>
+                            <TouchableOpacity hitSlop={styles.hitSlop} onPress={() => this.removeFromPlayList(index)}>
+                                <Ionicons name={"ios-list-box"}  size={40} color={'goldenrod'}/>
+                            </TouchableOpacity>
+                        </View>
                         :
-                        <Ionicons name={"ios-list"}  onPress={() => this.addToPlayList(index)} size={40} color={'gray'} hitSlop={styles.hitSlop}/>
+                        <View>
+                            <TouchableOpacity hitSlop={styles.hitSlop} onPress={() => this.addToPlayList(index)}>
+                                <Ionicons name={"ios-list"}  size={40} color={'gray'}/>
+                            </TouchableOpacity>
+                        </View>
                     }
                 </View>
             )
@@ -469,9 +485,9 @@ const styles = StyleSheet.create({
     hitSlop: {
         top: 10,
         bottom: 10,
-        left: 10,
-        right: 10,
-    }
+        left: 70,
+        right: 70,
+    },
 });
 
 const mapStateToProps = (state) => {

@@ -677,7 +677,6 @@ class AudioScreen extends React.Component {
                            <View>
                                <View style={{padding: 25}}/>
                                <Text style={styles.welcomeUser}>Welcome to Kibity</Text>
-                               <View style={{padding: 5}}/>
                                <Image style={styles.kibityLogo} source={kibityLogo}/>
                                <View style={{padding: 15}}/>
                                <View>
@@ -746,8 +745,8 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems: 'center',
         alignSelf: 'center',
-        width: 60,
-        height: 60,
+        width: 40,
+        height: 40,
     },
     playRow: {
         flexDirection: 'row',

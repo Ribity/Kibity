@@ -6,6 +6,7 @@ import {HelpAudio} from './helpModals/HelpAudio';
 import {HelpStories} from './helpModals/HelpStories';
 import {HelpProfiles} from './helpModals/HelpProfiles';
 import {HelpSettings} from './helpModals/HelpSettings';
+import {HelpSettingsAudio} from './helpModals/HelpSettingsAudio';
 import {HelpProfileSetActive} from './helpModals/HelpProfileSetActive';
 import {HelpProfileCustomize} from './helpModals/HelpProfileCustomize';
 export const HelpComponent= ( {screen, parm1} ) => {
@@ -30,6 +31,9 @@ export const HelpComponent= ( {screen, parm1} ) => {
             }
             {screen === "Settings" &&
             <HelpSettings/>
+            }
+            {screen === "SettingsAudio" &&
+            <HelpSettingsAudio/>
             }
 
         </View>;

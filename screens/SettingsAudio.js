@@ -19,6 +19,8 @@ import {ThemeButton} from "../components/themeButton";
 import {bindActionCreators} from "redux";
 import {updateSettings} from "../actions/settingsActions";
 import {connect} from "react-redux";
+import {MyHelpIcon} from "../components/MyHelpIcon";
+import {MyHelpModal} from "../components/MyHelpModal";
 
 
 const {height, width} = Dimensions.get('window');
@@ -42,7 +44,7 @@ class SettingsAudio extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            myText: "Please enjoy the stories",
+            myText: "This is only a test. Save, if you like this voice",
             voice: JSON.parse(JSON.stringify(this.props.settings.voice)),
             voice_list: [],
         };
@@ -58,7 +60,13 @@ class SettingsAudio extends React.Component {
     getVoices = async () => {
         let list = await Speech.getAvailableVoicesAsync();
         await this.setState({voice_list: list});
-        await this.setState({voice_obj_selected: list[0]});
+        if (this.state.voice === "" || this.state.voice === null) {
+            let idx = list.length;
+            if (idx > 1) {
+                idx = idx / 2;  // start with one in the middle of the list
+                this.setState({voice: list[idx]});
+            }
+        }
     };
     render() {
         try {
@@ -83,21 +91,21 @@ class SettingsAudio extends React.Component {
                             <Text style={styles.thisText}>Kibity presentation voice</Text>
                             </View>
                         }
-                        <Text style={myStyles.iFieldLabel}>This text will be spoken:</Text>
-                        <TextInput style={styles.iField}
-                               value={this.state.myText}
-                               onChangeText={(text) => this.setState({myText: text})}
-                               clearButtonMode='always'
-                               placeholder={"enter text here"}
-                               returnKeyType='done'
-                               placeholderTextColor={"grey"}
-                               maxLength={200}
-                    />
+                        {/*<Text style={myStyles.iFieldLabel}>This text will be spoken:</Text>*/}
+                        {/*<TextInput style={styles.iField}*/}
+                               {/*value={this.state.myText}*/}
+                               {/*onChangeText={(text) => this.setState({myText: text})}*/}
+                               {/*clearButtonMode='always'*/}
+                               {/*placeholder={"enter text here"}*/}
+                               {/*returnKeyType='done'*/}
+                               {/*placeholderTextColor={"grey"}*/}
+                               {/*maxLength={200}*/}
+                        {/*/>*/}
 
                         <View style={{paddingTop: 10}}/>
-                        <MyButton title={'Test the Voice'} onPress={this.speak}/>
+                        <MyButton title={'Test a new voice'} onPress={this.speak}/>
                         <View style={{paddingTop: 10}}/>
-                        <MyButton title={'Save'} onPress={this.updateSettings}/>
+                        <MyButton title={'Save new voice'} onPress={this.updateSettings}/>
                         {/*<View style={{paddingTop: 10}}/>*/}
                         {/*<View style={{flexDirection: 'row'}}>*/}
                             {/*<MyButton title={'Decrease'} onPress={this.decreasePitch}/>*/}
@@ -117,17 +125,24 @@ class SettingsAudio extends React.Component {
                         <View>
                             <Text style={styles.thisText}>Select a voice to test/save</Text>
 
-                            <Picker
-                                selectedValue={this.state.voice.identifier}
-                                style={{height: 50, width: 200, borderRadius: 10}}
-                                itemStyle={{backgroundColor: 'goldenrod', color: 'purple', borderRadius: 10}}
-                                onValueChange={(identifier) =>
-                                    (this.setVoiceState(identifier))}>
-                                {voices}
-                            </Picker>
+                            <View style={{alignSelf: 'center'}}>
+                                <Picker
+                                    selectedValue={this.state.voice.identifier}
+                                    style={{height: 50, width: 200, borderRadius: 10}}
+                                    itemStyle={{backgroundColor: 'goldenrod', color: 'purple', borderRadius: 10}}
+                                    onValueChange={(identifier) =>
+                                        (this.setVoiceState(identifier))}>
+                                    {voices}
+                                </Picker>
+                            </View>
                         </View>
                     }
                     </Layout>
+
+                    <MyHelpIcon onPress={this.onHelpPress}/>
+                    <MyHelpModal screen={"SettingsAudio"}
+                                 onExitPress={this.onHelpExitPress}
+                                 isVisible={this.state.isModalVisible}/>
                 </SafeAreaView>
             );
         } catch (error) {
@@ -178,6 +193,22 @@ class SettingsAudio extends React.Component {
             pitch: pitch_data[this.props.settings.pitchIdx].value,
             rate: pitch_data[this.props.settings.rateIdx].value,
         });
+    };
+    onHelpPress = () => {
+        try {
+            myfuncs.myBreadCrumbs('onHelpPress', this.props.navigation.state.routeName);
+            this.setState({isModalVisible: true});
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
+    };
+    onHelpExitPress = () => {
+        try {
+            myfuncs.myBreadCrumbs('onHelpExitPress', this.props.navigation.state.routeName);
+            this.setState({isModalVisible: false});
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
     };
 
     // increasePitch = () => {

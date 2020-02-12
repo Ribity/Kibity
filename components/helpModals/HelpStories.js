@@ -6,7 +6,7 @@ import myfuncs from "../../services/myFuncs";
 
 export const HelpStories = ( {} ) => {
     try {
-        myfuncs.myBreadCrumbs('HelpStories', 'HelpStories');
+	myfuncs.myBreadCrumbs('HelpStories', 'HelpStories');
 		return (<KeyboardAwareScrollView
 			// style={helpStyles.container}
 			resetScrollToCoords={{x:0, y:0}}
@@ -15,39 +15,68 @@ export const HelpStories = ( {} ) => {
 
 			<Text  style={helpStyles.helpText}>
 				<Text style={helpStyles.helpBold}>Stories: </Text>
-				Your point total is updated periodically. Not real time.
+				The 'Stories' tab presents a full list of all stories in the Kibity
+				library. Simply tap a story and it will start playing.
 				{"\n"}
 				{"\n"}
-				By default, a new user is an Advanced User.  If you would like
-				to keep Ribity as simple to understand and operate as possible simply flip Advanced User to OFF.  Off will disable several
-				options for searching, creating events, etc.
+				If you cannot hear the story, ensure the hardware switches on your
+				devices are correct and the volume is turned up. On iPhones the
+				Ring/Silent switch on the left side must be ON/UP.
+				for Kibity stories to be heard.
 				{"\n"}
 				{"\n"}
-				Allow pop-up enables several additional popups that many users might find
-				cumbersome and slow. For example, if you disable popups, when you create/drop a ribbon, you'll
-				be taken directly to the Map screen instead of a popup giving you options to text or view
-				the ribbon.
+				You may utilize the search field to narrow the existing/current list of
+				stories.  The search field is 'inclusive'.
+				If you type 'summer' in the search field, only stories containing
+				'summer' in each story's pertinent data will be displayed. If you
+				type 'summer grandma', only the stories containing 'summer' AND
+				'grandma' will be listed. You may type 'Grimm' to list only
+				the stories that contain 'Grimm' (stories written by the Grimm brothers).
+				The search field is powerful and may help quickly find a specific story.
+				Note, our search only searches 'pertinent' data.  Pertinent data is the
+				data we have subjectively added to the master story list for each story.
+
 				{"\n"}
 				{"\n"}
-				If "Keep Awake" is ON, your phone will not go to sleep if the Ribity application is on the screen.  Once
-				Ribity is no longer the active application, your phone's Sleep/Display mode will operate according to your
-				overall phone settings.
+				The Favorites and PlayLists are per profile. You may have a different
+				Favorites and PlayList for each of the three profiles.
+				Add a story to 'Favorites' by tapping the heart on the right of the
+				each story. The Favorites list persists until you modify the Favorites list.
+				We suggest keeping Favorites lists as a permanent/persistent list of
+				favorite stories for each profile.
+				You may play the entire Favorites list non-stop.
 				{"\n"}
 				{"\n"}
-				The other (non-switch) settings will take to a new screen for additional settings/options.
+				Add a story to 'PlayList' by tapping the 'list' icon just below the heart on the right of the
+				each story.  A profile's Playlist persists until you modify the PlayList.
+				You may play your entire Playlist non-stop.
 				{"\n"}
 				{"\n"}
-				The "Sign Out" tab will immediately sign you out and take you to the Login screen.
+				We suggest using your PlayList as a 'current' list of stories to play.  For example, if you
+				enjoy a story, add it to Favorites.  Then each time you want to listen to specific favorites
+				tap ShowPlayList at the top right. That will present
+				a list of stories in the current Playlist.  Remove any story you do not wish to hear
+				today.	Then tap the 'ShowFaves' at the top left and add stories from Favorites to the
+				PlayList. Then play your PlayList.
 				{"\n"}
 				{"\n"}
-				The "About" tab will display the background and history of Ribity.
+				What is 'Filter'?  Filter is independent of the ShowFaves and ShowPlayList.
+				Filter defaults to show ALL stories. If you tap 'Toddlers', the current list
+				will be narrowed to only stories that target toddlers.
+				If you tap 'Girls', the list will eliminate stories that are target
+				Boys. We say 'eliminate Boys' because tapping 'Girls' will show
+				all stories targeted to girls as well as all generic stories.
 				{"\n"}
 				{"\n"}
-				The "Disclaimer" tab will display a "We're not responsible" screen.
+				If you have an existing Favorites list, you'll see a 'Play Faves' button near the top. Tapping
+				'Play Faves' will immediately begin playing the favorite stories. Same for 'Play PlayList'
+				{"\n"}
+				{"\n"}
+
 			   </Text>
 			</KeyboardAwareScrollView>
 		);
     } catch (error) {
-        myfuncs.mySentry(error);
+	myfuncs.mySentry(error);
     }
 };

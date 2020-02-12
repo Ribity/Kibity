@@ -160,7 +160,7 @@ class SettingsScreen extends React.Component {
                         }
                         {this.state.bVoicesAvailable === true &&
                         <View style={{alignSelf: 'center'}}>
-                            <View style={{padding: 10}}/>
+                            <View style={{padding: 5}}/>
                             <MyButton buttonStyle={myStyles.selectButton}
                                       textStyle={myStyles.selectButtonText}
                                       onPress={() => this.goToSettingsAudio()}
@@ -235,20 +235,20 @@ const styles = StyleSheet.create({
         backgroundColor: MyDefines.myTabColor,
     },
     toggle: {
-        margin: 8,
+        margin: 6,
     },
     select: {
-        margin: 8,
+        margin: 6,
     },
     text: {
         color: 'mediumpurple',
-        fontSize: 20,
+        fontSize: 15,
     },
     textStyle: {
         color: 'mediumpurple',
 
-        fontSize: 23,
-        lineHeight: 25,
+        fontSize: 20,
+        lineHeight: 22,
         alignSelf: 'center',
     },
     labelStyle: {

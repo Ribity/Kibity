@@ -4,9 +4,10 @@ import helpStyles from './helpStyles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import myfuncs from "../../services/myFuncs";
 
-export const HelpProfiles = ( {} ) => {
+
+export const HelpSettingsAudio = ( {} ) => {
     try {
-        myfuncs.myBreadCrumbs('HelpProfiles', 'HelpProfiles');
+        myfuncs.myBreadCrumbs('HelpSettings', 'HelpSettings');
 		return (<KeyboardAwareScrollView
 			// style={helpStyles.container}
 			resetScrollToCoords={{x:0, y:0}}
@@ -14,16 +15,15 @@ export const HelpProfiles = ( {} ) => {
 		>
 
 			<Text  style={helpStyles.helpText}>
-				<Text style={helpStyles.helpBold}>Profiles: </Text>
-				Help Screen for Profiles main page
+				<Text style={helpStyles.helpBold}>Settings Audio: </Text>
+				Help Screen for Audio Settings ...
 				{"\n"}
 				{"\n"}
-
 			   </Text>
 			</KeyboardAwareScrollView>
 		);
     } catch (error) {
         myfuncs.mySentry(error);
     }
-}
+};
 
