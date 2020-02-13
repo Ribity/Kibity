@@ -112,10 +112,10 @@ export default {
                 "num_lines": 0,
                 "filename": "uncleNedsFireworks.json",
                 "date_published": "",
-                "snippet": "",
                 "written_by": "",
                 "keywords": "",
                 "ages": "",
+                "toddler_pause": 0,
             }
             ]
         },

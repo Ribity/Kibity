@@ -108,6 +108,10 @@ class myStories {
                 case 'uncleNedsFireworks':
                     storyToUse = require('../assets/stories/uncleNedsFireworks.json');
                     break;
+                case 'toysAndAnimals.json':
+                case 'toysAndAnimals':
+                    storyToUse = require('../assets/stories/toysAndAnimals.json');
+                    break;
                 default:
                     break;
             }

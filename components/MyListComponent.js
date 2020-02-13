@@ -11,8 +11,11 @@ import myStyles from "../myStyles";
 import {bindActionCreators} from "redux";
 import {addFavorite, addPlayList, removeFavorite, removePlayList} from "../actions/profilesActions";
 import myfuncs from "../services/myFuncs";
+import MyDefines from "../constants/MyDefines";
 
 const {height, width} = Dimensions.get('window');
+const pause_data = MyDefines.pause_data;
+
 
 class MyListComponent extends React.Component {
 
@@ -339,19 +342,19 @@ class MyListComponent extends React.Component {
                 subtitle += item.date_published + "  ";
             if (item.num_lines !== null && item.num_lines !== "" && item.num_lines !== undefined)
                 subtitle += " #Lines: " + item.num_lines.toString();
-            if (item.snippet !== null && item.snippet !== "" && item.snippet !== undefined)
-                subtitle += "\r\n" + item.snippet;
+            // if (item.snippet !== null && item.snippet !== "" && item.snippet !== undefined)
+            //     subtitle += "\r\n" + item.snippet;
             // if (item.keywords !== null && item.keywords !== "" && item.keywords !== undefined)
             //     subtitle += "\r\n" + item.keywords;
             if (item.ages !== null && item.ages !== "" && item.ages !== undefined)
                 subtitle += "\r\nAges: " + item.ages;
+            if (item.toddler_pause !== null && item.toddler_pause !== 0 &&
+                item.toddler_pause !== undefined)
+                subtitle += "\r\nAdditional toddler pause: " +
+                    (item.toddler_pause + pause_data[this.props.settings.pauseLineIdx].value) + " Secs";
 
             if (item.color !== null && item.color !== "" && item.color !== undefined)
                 color = item.color;
-            // else if (item.gender === 1)
-            //     color = 'powderblue';
-            // else if (item.gender === 2)
-            //     color = 'mistyrose';
 
             if (image === "") {
                 return (
@@ -382,6 +385,7 @@ class MyListComponent extends React.Component {
                             }
                             leftAvatar={{source: image, height: 45, width: 31}}
                             containerStyle={{borderBottomWidth: 0, backgroundColor: color }}
+                            rightElement={() => this.rightIcons(index)}
                         />
                     </TouchableOpacity>
                 )
@@ -492,7 +496,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     const { profiles } = state;
-    return {profiles}
+    const { settings } = state;
+    return {profiles, settings}
 };
 const mapDispatchToProps = dispatch => (
     bindActionCreators({

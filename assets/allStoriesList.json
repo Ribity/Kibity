@@ -46,14 +46,15 @@
     },
     {
         "story_num": 5,
-        "title": "Stub Toddler Story",
+        "title": "Toys and Animals",
         "ages": "1-4",
         "color": "lightgreen",
-        "num_lines": 102,
-        "filename": "hotelCaledonia.json",
-        "date_published": "Feb 11, 2020",
+        "num_lines": 25,
+        "filename": "toysAndAnimals.json",
+        "date_published": "Feb 12, 2020",
         "written_by": "Beth Allen",
-        "keywords": "toddler boy girl kibity"
+        "keywords": "toddler boy girl kibity animals dreams",
+        "toddler_pause": 1
     }
 
     ]

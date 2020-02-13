@@ -58,14 +58,22 @@ class SettingsAudio extends React.Component {
         }
     }
     getVoices = async () => {
-        let list = await Speech.getAvailableVoicesAsync();
-        await this.setState({voice_list: list});
-        if (this.state.voice === "" || this.state.voice === null) {
-            let idx = list.length;
-            if (idx > 1) {
-                idx = idx / 2;  // start with one in the middle of the list
-                this.setState({voice: list[idx]});
+        try {
+            myfuncs.myBreadCrumbs('Did mount', this.props.navigation.state.routeName);
+            let list = await Speech.getAvailableVoicesAsync();
+
+            // myfuncs.mySentry(list);
+            // console.log(list);
+            await this.setState({voice_list: list});
+            if (this.state.voice === "" || this.state.voice === null) {
+                let idx = list.length;
+                if (idx > 1) {
+                    idx = idx / 2;  // start with one in the middle of the list
+                    this.setState({voice: list[idx]});
+                }
             }
+        } catch (error) {
+            myfuncs.mySentry(error);
         }
     };
     render() {

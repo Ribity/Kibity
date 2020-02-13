@@ -347,10 +347,20 @@ class AudioScreen extends React.Component {
     queueNextLine = () => {
         try {
             myfuncs.myBreadCrumbs('queueNextLine', this.props.navigation.state.routeName);
-            delayedPlay = setTimeout(() => {this.playNextLine();}, pause_data[this.props.settings.pauseLineIdx].value*1000);
+            let pause_seconds = this.determine_pause_secs();
+            delayedPlay = setTimeout(() => {this.playNextLine()}, pause_seconds*1000);
         } catch (error) {
             myfuncs.mySentry(error);
         }
+    };
+    determine_pause_secs = () => {
+        let pause_seconds = pause_data[this.props.settings.pauseLineIdx].value;
+
+        if (this.props.story_list.stories[story_idx].toddler_pause !== null &&
+            this.props.story_list.stories[story_idx].toddler_pause !== null &&
+            this.props.story_list.stories[story_idx].toddler_pause !== 0)
+            pause_seconds += this.props.story_list.stories[story_idx].toddler_pause;
+        return pause_seconds;
     };
     playNextLine = () => {
         try {
@@ -580,11 +590,12 @@ class AudioScreen extends React.Component {
                <SafeAreaView style={styles.container}>
                    <Layout style={{flex: 1, alignItems: 'center'}}>
                        <TasksComponent/>
-                       {this.state.playing &&
-                       <Text style={styles.audioTitle}>{this.state.story_title}</Text>
-                       }
                        {this.state.num_lines > 0 ?
-                           <View style={{justifyContent: 'space-between'}}>
+                           <View>
+                               <View style={{alignSelf: 'center'}}>
+                               <Text style={styles.audioTitle}>{this.state.story_title}</Text>
+                               </View>
+
                                <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center'}}>
                                    <Text style={styles.audioCountdown}>Part {this.state.line_idx + 1} of {this.state.num_lines}</Text>
                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -608,7 +619,9 @@ class AudioScreen extends React.Component {
                                                onPress={this.restartIt}>Start Over</Button>
                                    </View>
                                    {this.state.playing &&
-                                   <Text style={styles.currentText}>{this.state.curr_text}</Text>
+                                       <View>
+                                           <Text style={height>=500 ? styles.bigText:styles.smallText}>{this.state.curr_text}</Text>
+                                       </View>
                                    }
                                    </View>
                                <View style={styles.bottom}>
@@ -779,7 +792,7 @@ const styles = StyleSheet.create({
         // flexDirection: 'row',
         alignItems: 'center',
         bottom: (MyDefines.myBottomTabBarHeight),
-        marginBottom: 30,
+        marginBottom: 15,
     },
     audioButton: {
         marginVertical: 2,
@@ -803,14 +816,23 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
         marginVertical: 5,
     },
-    currentText: {
-        fontSize: 25,
-        lineHeight: 35,
+    bigText: {
+        fontSize: 23,
+        lineHeight: 25,
         fontWeight: 'bold',
         // textAlign: 'justify',
         color: 'mediumpurple',
-        marginHorizontal: 10,
-        paddingTop: 20,
+        marginHorizontal: 5,
+        paddingTop: 10,
+    },
+    smallText: {
+        fontSize: 19,
+        lineHeight: 21,
+        fontWeight: 'bold',
+        // textAlign: 'justify',
+        color: 'mediumpurple',
+        marginHorizontal: 5,
+        paddingTop: 10,
     },
 });
 
