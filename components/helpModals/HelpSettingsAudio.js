@@ -7,7 +7,7 @@ import myfuncs from "../../services/myFuncs";
 
 export const HelpSettingsAudio = ( {} ) => {
     try {
-        myfuncs.myBreadCrumbs('HelpSettings', 'HelpSettings');
+	myfuncs.myBreadCrumbs('HelpSettings', 'HelpSettings');
 		return (<KeyboardAwareScrollView
 			// style={helpStyles.container}
 			resetScrollToCoords={{x:0, y:0}}
@@ -16,14 +16,14 @@ export const HelpSettingsAudio = ( {} ) => {
 
 			<Text  style={helpStyles.helpText}>
 				<Text style={helpStyles.helpBold}>Settings Audio: </Text>
-				Help Screen for Audio Settings ...
-				{"\n"}
-				{"\n"}
+				This screen is only available if your device offers additional
+				voices. Select a voice, then hit Test.	If you like the voice,
+				save it.  The voice you save will persist until you modify
+				the voice via this screen again.
 			   </Text>
 			</KeyboardAwareScrollView>
 		);
     } catch (error) {
-        myfuncs.mySentry(error);
+	myfuncs.mySentry(error);
     }
 };
-

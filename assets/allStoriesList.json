@@ -6,7 +6,7 @@
         "title": "Uncle Ned's Fireworks",
         "color": "powderblue",
         "ages": "7+",
-        "num_lines": 50,
+        "num_lines": 51,
         "filename": "uncleNedsFireworks.json",
         "date_published": "Jan 13, 2020",
         "written_by": "Mark King",
@@ -21,7 +21,7 @@
         "filename": "summerVacationAtGrandmas.json",
         "date_published": "Jan 13, 2020",
         "snippet": "A week-long stay at Grandma's takes a turn at the local store.",
-        "written_by": "Beth Allen",
+        "written_by": "Cricket Allen",
         "keywords": "Gems garden dog Lucky girl pink kibity"
     },
     {
@@ -31,14 +31,14 @@
         "num_lines": 63,
         "filename": "pecanTree.json",
         "date_published": "Jan 23, 2020",
-        "written_by": "Beth Allen",
+        "written_by": "Cricket Allen",
         "keywords": "bird summer fort tree house boy girl kibity"
     },
     {
         "story_num": 4,
         "title": "Hotel Caledonia",
         "ages": "6+",
-        "num_lines": 102,
+        "num_lines": 106,
         "filename": "hotelCaledonia.json",
         "date_published": "Jan 24, 2020",
         "written_by": "Mark King",
@@ -49,12 +49,22 @@
         "title": "Toys and Animals",
         "ages": "1-4",
         "color": "lightgreen",
-        "num_lines": 25,
+        "num_lines": 28,
         "filename": "toysAndAnimals.json",
         "date_published": "Feb 12, 2020",
-        "written_by": "Beth Allen",
+        "written_by": "Cricket Allen and Mark King",
         "keywords": "toddler boy girl kibity animals dreams",
         "toddler_pause": 1
+    },
+    {
+        "story_num": 6,
+        "title": "Class Field Trip",
+        "ages": "4-12",
+        "num_lines": 65,
+        "filename": "classFieldTrip.json",
+        "date_published": "Feb 13, 2020",
+        "written_by": "Cricket Allen",
+        "keywords": "kibity cows milk cereal farm",
     }
 
     ]

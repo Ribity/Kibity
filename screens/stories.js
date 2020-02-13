@@ -16,7 +16,6 @@ import {MyHelpModal} from "../components/MyHelpModal";
 import myfuncs from "../services/myFuncs";
 import {ScreenTitle} from "../components/screenTitle";
 import {StoriesHeaderButton} from "../components/StoriesHeaderButton";
-import {MyButton} from "../components/MyButton";
 
 Text.defaultProps = Text.defaultProps || {};
 Text.defaultProps.allowFontScaling = false;

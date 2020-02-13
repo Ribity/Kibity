@@ -98,6 +98,7 @@ class AudioScreen extends React.Component {
             await this.props.updateProfiles(retObj.profiles);
             this.props.navigation.setParams({myProfile: this.props.profiles.profile[this.props.profiles.profilesIdx]});
             this.props.navigation.setParams({onPress: this.goToProfilesSetActive});
+            myfuncs.setAwakeorNot(this.props.settings.keep_awake);
         } catch (error) {
             myfuncs.mySentry(error);
         }

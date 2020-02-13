@@ -13,6 +13,8 @@ import * as Device from 'expo-device';
 // import {connect} from "react-redux";
 // import {bindActionCreators} from "redux";
 // import {updateSettings} from "../actions/settingsActions";
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
+
 
 import * as Speech from "expo-speech";
 
@@ -432,6 +434,13 @@ class myFuncs  {
     //         myfuncs.mySentry(error);
     //     }
     // };
+    setAwakeorNot = (bKeepAwake) => {
+        if (bKeepAwake) {
+            activateKeepAwake();
+        } else {
+            deactivateKeepAwake();
+        }
+    };
 
     isEmpty = (myObj) => {
         return !myObj || Object.keys(myObj).length === 0;

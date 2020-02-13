@@ -51,6 +51,10 @@ class myStories {
                 case 'hotelCaledonia':
                     storyToUse = require('../assets/stories/hotelCaledonia.json');
                     break;
+                case 'classFieldTrip.json':
+                case 'classFieldTrip':
+                    storyToUse = require('../assets/stories/classFieldTrip.json');
+                    break;
                 default:
                     break;
             }

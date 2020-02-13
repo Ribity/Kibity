@@ -5,7 +5,6 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {updateStoryList} from "../actions/storyListActions";
 import MyDefines from "../constants/MyDefines";
-import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import myfuncs from "../services/myFuncs";
 
 // import _ from 'lodash'
@@ -32,12 +31,7 @@ class TasksComponent extends React.Component {
             this.buildStoryList();
             sixtyMinute = setInterval(this.sixtyMinuteTask, 10 * 60 * 1000);
             // sixtyMinute = setInterval(this.sixtyMinuteTask, 10 * 1000);
-
-            if (this.props.settings.keep_awake) {
-                activateKeepAwake();
-            } else {
-                deactivateKeepAwake();
-            }
+            // myfuncs.setAwakeorNot(this.props.settings.keep_awake);
         } catch (error) {
             myfuncs.mySentry(error);
         }
@@ -62,12 +56,12 @@ class TasksComponent extends React.Component {
                 if (MyDefines.log_details)
                     console.log("App has come to foreground");
                 if (this.props.keep_awake) {
-                    activateKeepAwake();
+                    myfuncs.setAwakeorNot(true);
                 }
             } else {    // Else gone to the background
                 // if (MyDefines.detail_logging)
                     console.log("App has gone to background");
-                deactivateKeepAwake();
+                myfuncs.setAwakeorNot(false);
             }
             appState = nextAppState;
         } catch (error) {

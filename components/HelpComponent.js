@@ -1,5 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
+
 import myfuncs from '../services/myFuncs';
 import helpStyles from "./helpModals/helpStyles";
 import {HelpAudio} from './helpModals/HelpAudio';
@@ -12,7 +13,9 @@ import {HelpProfileCustomize} from './helpModals/HelpProfileCustomize';
 export const HelpComponent= ( {screen, parm1} ) => {
     try {
         myfuncs.myBreadCrumbs('HelpComponent', 'HelpComponent');
-        return <View style={helpStyles.modalStyle}>
+        return (
+
+        <View style={helpStyles.modalStyle}>
 
             {screen === "Audio" &&
             <HelpAudio/>
@@ -36,7 +39,8 @@ export const HelpComponent= ( {screen, parm1} ) => {
             <HelpSettingsAudio/>
             }
 
-        </View>;
+        </View>
+        );
     } catch (error) {
         myfuncs.mySentry(error);
     }

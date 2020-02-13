@@ -2,7 +2,6 @@ import React from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native'
 import {SafeAreaView} from "react-navigation";
 import {Layout, Select, Text, Toggle} from "@ui-kitten/components";
-import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import myfuncs from "../services/myFuncs";
 import MyDefines from "../constants/MyDefines";
 import {MyHelpIcon} from "../components/MyHelpIcon";
@@ -190,13 +189,7 @@ class SettingsScreen extends React.Component {
             await this.updateStorage();
 
             if (new_prop.keep_awake !== undefined) {
-                if (new_prop.keep_awake === true) {
-                    // console.log("settings activate keepAwake")
-                    activateKeepAwake();
-                } else {
-                    // console.log("settings de-activate keepAwake")
-                    deactivateKeepAwake();
-                }
+                myfuncs.setAwakeorNot(new_prop.keep_awake);
             }
         } catch (error) {
             console.log(error);
