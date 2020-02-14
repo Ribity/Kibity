@@ -4,8 +4,7 @@ import helpStyles from './helpStyles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import myfuncs from "../../services/myFuncs";
 
-
-export const HelpSettingsAudio = ( {} ) => {
+export const HelpSettings = ( {} ) => {
     try {
 	myfuncs.myBreadCrumbs('HelpSettings', 'HelpSettings');
 		return (<KeyboardAwareScrollView
@@ -20,7 +19,7 @@ export const HelpSettingsAudio = ( {} ) => {
 				persists.
 				{"\n"}
 				{"\n"}
-				Turn ON 'Keep Screen Awake' will override your device settings
+				Turning ON 'Keep Screen Awake' will override your device settings
 				and NOT go to sleep while the Kibity app is in the foreground on your screen.
 				We turn this ON by default to keep the stories playing and not
 				going to sleep.
@@ -35,14 +34,14 @@ export const HelpSettingsAudio = ( {} ) => {
 				list the specified additional pause for each specific toddler story.
 				{"\n"}
 				{"\n"}
-				By default, we pause 3 seconds after each. You may modify this for your liking.
+				By default, we pause 3 seconds after each story. You may modify this for your liking.
 				{"\n"}
 				{"\n"}
 				The last two settings specify the pitch and speed of the voice for the stories. These
-				are mostly for fun.  Set it as you like.
+				are mostly for fun.  Set them as you like.
 				{"\n"}
 				{"\n"}
-				If you device offers addtional voices, you'll see a 'Select Voice' button. Click
+				If your device offers addtional voices, you'll see a 'Select Voice' button. Click
 				that to see a list of additional voices you can use.
 			   </Text>
 			</KeyboardAwareScrollView>

@@ -26,18 +26,18 @@ export const HelpAudio = ( {} ) => {
 				You may tap 'Settings' on the very bottom right and increase the pause
 				between each line that is spoken/displayed. Increasing the pause may allow
 				listeners that are beginning to read a longer time to process each sentence
-				as they attempt read it in their minds.
+				as they attempt to read it in their minds.
 				{"\n"}
 				{"\n"}
-				Also over in 'Settings', you can speed up the voice, or slow it down.
+				Also in 'Settings', you can speed up the voice, or slow it down.
 				{"\n"}
 				{"\n"}
 				Depending on your device, 'Settings' may present you with a list of
 				other voices to choose from.
 				{"\n"}
 				{"\n"}
-				To switch to a different active profile, you may tap the 'Active Profile'
-				text on the top left of the screen. If you change active profiles, the new profile will
+				To easily switch to a different active profile, you may tap the Active Profile
+				on the top left of the Audio screen. If you change active profiles, the new profile will
 				be used on the next story presented.  (The current story will finish with the previous
 				profile).
 			   </Text>

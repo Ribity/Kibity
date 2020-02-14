@@ -125,7 +125,7 @@ class MyListComponent extends React.Component {
             let msg = "Added to " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s Favorites";
             this.refs.toast.show(msg, 500);
             this.props.addFavorite(index);
-            this.setState({data: this.props.myList});
+            // this.setState({data: this.props.myList});
             this.props.updateParentStoriesCurrentProfile();
         } catch (error) {
             myfuncs.mySentry(error);
@@ -137,7 +137,7 @@ class MyListComponent extends React.Component {
             let msg = "Removed from " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s Favorites";
             this.refs.toast.show(msg, 500);
             this.props.removeFavorite(index);
-            this.setState({data: this.props.myList});
+            // this.setState({data: this.props.myList});
             this.props.updateParentStoriesCurrentProfile();
         } catch (error) {
             myfuncs.mySentry(error);
@@ -149,7 +149,7 @@ class MyListComponent extends React.Component {
             let msg = "Added to " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s PlayList";
             this.refs.toastPlay.show(msg, 500);
             this.props.addPlayList(index);
-            this.setState({data: this.props.myList});
+            // this.setState({data: this.props.myList});
             this.props.updateParentStoriesCurrentProfile();
         } catch (error) {
             myfuncs.mySentry(error);
@@ -161,7 +161,7 @@ class MyListComponent extends React.Component {
             let msg = "Removed from " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s PlayList";
             this.refs.toastPlay.show(msg, 500);
             this.props.removePlayList(index);
-            this.setState({data: this.props.myList});
+            // this.setState({data: this.props.myList});
             this.props.updateParentStoriesCurrentProfile();
         } catch (error) {
             myfuncs.mySentry(error);
@@ -258,7 +258,7 @@ class MyListComponent extends React.Component {
                 }
 
                 for (let i = 0; i < faves.length; i++) {
-                    if (index === faves[i]) {
+                    if ((item.story_num-1) === faves[i]) {
                         bIsItemInFaves = true;
                         break;
                     }
@@ -303,7 +303,7 @@ class MyListComponent extends React.Component {
                 }
 
                 for (let i = 0; i < list.length; i++) {
-                    if (index === list[i]) {
+                    if ((item.story_num-1) === list[i]) {
                         bIsItemInList = true;
                         break;
                     }
@@ -358,24 +358,23 @@ class MyListComponent extends React.Component {
 
             if (image === "") {
                 return (
-                            <TouchableOpacity onPress={() => this.props.onPressItem(item, index)}>
-                                <ListItem
-                                    title={
-                                        <Text style={styles.titleView}>{title}</Text>
-                                    }
-                                    subtitle={
-                                        <Text style={styles.subtitleView}>{subtitle}</Text>
-                                    }
-                                    containerStyle={{borderBottomWidth: 0, backgroundColor: color, borderRadius: 10 }}
-                                    // rightElement={this.rightIcons show=true}
-                                    rightElement={() => this.rightIcons(index)}
+                    <TouchableOpacity onPress={() => this.props.onPressItem(item.story_num-1)}>
+                        <ListItem
+                            title={
+                                <Text style={styles.titleView}>{title}</Text>
+                            }
+                            subtitle={
+                                <Text style={styles.subtitleView}>{subtitle}</Text>
+                            }
+                            containerStyle={{borderBottomWidth: 0, backgroundColor: color, borderRadius: 10 }}
+                            rightElement={() => this.rightIcons(item.story_num-1)}
 
-                                />
-                            </TouchableOpacity>
+                        />
+                    </TouchableOpacity>
                 )
             } else {
                 return (
-                    <TouchableOpacity onPress={() => this.props.onPressItem(item, index)}>
+                    <TouchableOpacity onPress={() => this.props.onPressItem(item.story_num-1)}>
                         <ListItem
                             title={
                                 <Text style={styles.titleView}>{title}</Text>
@@ -385,7 +384,7 @@ class MyListComponent extends React.Component {
                             }
                             leftAvatar={{source: image, height: 45, width: 31}}
                             containerStyle={{borderBottomWidth: 0, backgroundColor: color }}
-                            rightElement={() => this.rightIcons(index)}
+                            rightElement={() => this.rightIcons(item.story_num-1)}
                         />
                     </TouchableOpacity>
                 )

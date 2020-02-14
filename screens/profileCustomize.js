@@ -32,7 +32,7 @@ class ProfileCustomize extends React.Component {
             myfuncs.myBreadCrumbs('navigationOptions', 'AudioScreen');
             const { params = {} } = navigation.state;
             return {
-                headerTitle: () => <ScreenTitle title={"Profiles"} second={params.profileNum}/>,
+                headerTitle: () => <ScreenTitle title={"Customize"} second={params.profileNum}/>,
             };
         } catch (error) {
             myfuncs.mySentry(error);

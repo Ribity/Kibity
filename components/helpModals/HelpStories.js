@@ -20,7 +20,7 @@ export const HelpStories = ( {} ) => {
 				{"\n"}
 				{"\n"}
 				If you cannot hear the story, ensure the hardware switches on your
-				devices are correct and the volume is turned up. On iPhones the
+				device are correct and the volume is turned up. On iPhones the
 				Ring/Silent switch on the left side must be ON/UP
 				for Kibity stories to be heard.
 				{"\n"}
@@ -39,14 +39,15 @@ export const HelpStories = ( {} ) => {
 				{"\n"}
 				The Favorites and PlayLists are per profile. You may have a different
 				Favorites and PlayList for each of the three profiles.
-				Add a story to 'Favorites' by tapping the heart on the right of the
-				each story. The Favorites list persists until you modify the Favorites list.
+				Add a story to the active profile's 'Favorites' by tapping the grey heart icon to the right of
+				each story in the scrollable list.
+				The Favorites list for each profile persists until you modify the Favorites list for that profile.
 				We suggest keeping Favorites lists as a permanent/persistent list of
 				favorite stories for each profile.
 				You may play the entire Favorites list non-stop.
 				{"\n"}
 				{"\n"}
-				Add a story to 'PlayList' by tapping the icon just below the heart on the right of the
+				Add a story to 'PlayList' by tapping the icon just below the heart on the right of
 				each story.  A profile's Playlist persists until you modify the PlayList.
 				You may play your entire Playlist non-stop.
 				{"\n"}
@@ -64,7 +65,7 @@ export const HelpStories = ( {} ) => {
 				will be narrowed to only stories that target toddlers.
 				If you tap 'Girls', the list will eliminate stories that target
 				Boys. We say 'eliminate Boys' because tapping 'Girls' will show
-				all stories targeted to girls as well as all generic stories.
+				all stories targeted to girls as well as all generic stories, not just stories targeted for girls.
 				{"\n"}
 				{"\n"}
 				If you have an existing Favorites list, you'll see a 'Play Faves' button near the top. Tapping

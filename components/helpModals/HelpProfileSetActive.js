@@ -13,14 +13,16 @@ export const HelpProfileSetActive = ( {} ) => {
 
 			<Text  style={helpStyles.helpText}>
 				<Text style={helpStyles.helpBold}>Set Active Profile: </Text>
-				There is one exactly one active profile. The customized names of the active profile is used
-				for stories that read aloud.
+				There is exactly one active profile. The customized names of the active profile is used
+				for stories that are read aloud.
 				{"\n"}
 				{"\n"}
 				Tap the name in the box. Then tap the profile you wish to make active.
 				{"\n"}
 				{"\n"}
-				You new active profile is automatically made active immediately. However, if a story is currently
+				You do not have to 'Save' your modification.
+				Your newly selected active profile is automatically saved and made active immediately.
+				However, if a story is currently
 				playing, the new active profile will be used for the next story.
 			   </Text>
 			</KeyboardAwareScrollView>

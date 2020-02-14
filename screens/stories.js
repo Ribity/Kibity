@@ -200,7 +200,7 @@ class StoriesScreen extends React.Component {
             myfuncs.mySentry(error);
         }
     };
-    onPressStorySelection = (story, idx) => {
+    onPressStorySelection = (idx) => {
         try {
             myfuncs.myBreadCrumbs('onPressStorySelection', this.props.navigation.state.routeName);
             this.props.setListType(0);

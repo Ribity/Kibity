@@ -18,7 +18,7 @@ export const HelpProfileCustomize = ( {} ) => {
 				{"\n"}
 				{"\n"}
 				Be sure to SAVE any modifications you make. Once you go back to the main
-				profile screen, any unsaved changes in the Profile Customize screen will be lost.
+				profile screen, any unsaved changes in the Customize Profile screen will be discarded.
 				There are three potential profiles you may set up.
 				If you have three kids, you may wish to set up a separate profile for each kid.
 				You set up one profile at a time, save it, then go set up a second profile.
@@ -44,7 +44,7 @@ export const HelpProfileCustomize = ( {} ) => {
 				{"\n"}
 				{"\n"}
 				The pet fields are typically your actual pet and pet's name,
-				but these fields could 'Tyrannosaurus Rex' and 'Charlie Brown' if you like.
+				but these fields could be 'Tyrannosaurus Rex' and 'Charlie Brown' if you like.
 				{"\n"}
 				{"\n"}
 				Again, be sure to save before going back to the main Profiles screen.

@@ -587,6 +587,16 @@ class AudioScreen extends React.Component {
     render() {
         try {
             myfuncs.myBreadCrumbs('render', this.props.navigation.state.routeName);
+
+            let toddler = false;
+            if (story_idx >= 0) {
+                if (this.props.story_list.stories[story_idx].toddler_pause !== null &&
+                    this.props.story_list.stories[story_idx].toddler_pause !== null &&
+                    this.props.story_list.stories[story_idx].toddler_pause !== 0) {
+                    toddler = true;
+                }
+            }
+
             return (
                <SafeAreaView style={styles.container}>
                    <Layout style={{flex: 1, alignItems: 'center'}}>
@@ -621,7 +631,13 @@ class AudioScreen extends React.Component {
                                    </View>
                                    {this.state.playing &&
                                        <View>
-                                           <Text style={height>=500 ? styles.bigText:styles.smallText}>{this.state.curr_text}</Text>
+                                           {toddler ?
+                                               <Text
+                                                   style={styles.toddlerText}>{this.state.curr_text}</Text>
+                                               :
+                                               <Text
+                                                   style={height >= 500 ? styles.bigText : styles.smallText}>{this.state.curr_text}</Text>
+                                           }
                                        </View>
                                    }
                                    </View>
@@ -816,6 +832,15 @@ const styles = StyleSheet.create({
         color: 'goldenrod',
         marginHorizontal: 5,
         marginVertical: 5,
+    },
+    toddlerText: {
+        fontSize: 30,
+        lineHeight: 34,
+        fontWeight: 'bold',
+        // textAlign: 'justify',
+        color: 'mediumpurple',
+        marginHorizontal: 5,
+        paddingTop: 15,
     },
     bigText: {
         fontSize: 23,
