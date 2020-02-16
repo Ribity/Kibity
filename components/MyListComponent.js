@@ -312,18 +312,21 @@ class MyListComponent extends React.Component {
                     return;
             }
 
-            if (this.props.showType !== 0) {
+            if (this.props.otherFilter !== "") {
                 let bIsItemInList = false;
-                if (this.props.showType === 1) {
-                    if (item.keywords.toLowerCase().indexOf('toddler') > -1)
-                        bIsItemInList = true;
-                } else if (this.props.showType === 2) {
-                    if (item.keywords.toLowerCase().indexOf('boy') > -1)
-                        bIsItemInList = true;
-                } else if (this.props.showType === 3) {
-                    if (item.keywords.toLowerCase().indexOf('girl') > -1)
-                        bIsItemInList = true;
-                }
+                let searchWords = "";
+
+                if (item.title !== null && item.title !== "" && item.title !== undefined)
+                    searchWords += item.title;
+                if (item.keywords !== null && item.keywords !== "" && item.keywords !== undefined)
+                    searchWords += item.keywords;
+                if (item.written_by !== null && item.written_by !== "" && item.written_by !== undefined)
+                    searchWords += item.written_by;
+                if (item.ageSearch !== null && item.ageSearch !== "" && item.ageSearch !== undefined)
+                    searchWords += item.ageSearch;
+
+                if (searchWords.toLowerCase().indexOf(this.props.otherFilter.toLowerCase()) > -1)
+                    bIsItemInList = true;
                 if (bIsItemInList === false)
                     return;
             }

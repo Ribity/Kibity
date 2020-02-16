@@ -18,17 +18,6 @@ const helpStyles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
     },
-    helpBoldCenter: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignSelf: 'center',
-    },
-    helpBoldSmall: {
-        fontWeight: 'bold',
-        fontSize: 20,
-    },
     helpText: {
         fontSize: 22,
     },

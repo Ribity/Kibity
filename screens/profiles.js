@@ -60,7 +60,7 @@ class ProfilesScreen extends React.Component {
                             <View style={{padding: 10}}/>
 
                             <Text style={styles.buttonText}>Active Profile</Text>
-                            <Text style={styles.textStyle}>{this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name}</Text>
+                            <Text style={styles.textStyle}>{myfuncs.shortenName(this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name, 20)}</Text>
                             <MyButton buttonStyle={myStyles.selectButton}
                                       textStyle={myStyles.selectButtonText}
                                       onPress={() => this.goToSetActiveProfile(0)}
@@ -74,21 +74,21 @@ class ProfilesScreen extends React.Component {
                             <MyButton buttonStyle={myStyles.selectButton}
                                       textStyle={myStyles.selectButtonText}
                                       onPress={() => this.goToSpecificProfile(0)}
-                                      title={this.props.profiles.profile[0].character[0].name}/>
+                                      title={myfuncs.shortenName(this.props.profiles.profile[0].character[0].name, 20)}/>
                             <View style={{padding: 10}}/>
 
                             <Text style={styles.buttonText}>Customize profile #2</Text>
                             <MyButton buttonStyle={myStyles.selectButton}
                                       textStyle={myStyles.selectButtonText}
                                       onPress={() => this.goToSpecificProfile(1)}
-                                      title={this.props.profiles.profile[1].character[0].name}/>
+                                      title={myfuncs.shortenName(this.props.profiles.profile[1].character[0].name, 20)}/>
                             <View style={{padding: 10}}/>
 
                             <Text style={styles.buttonText}>Customize profile #3</Text>
                             <MyButton buttonStyle={myStyles.selectButton}
                                       textStyle={myStyles.selectButtonText}
                                       onPress={() => this.goToSpecificProfile(2)}
-                                      title={this.props.profiles.profile[2].character[0].name}/>
+                                      title={myfuncs.shortenName(this.props.profiles.profile[2].character[0].name, 20)}/>
                         </View>
 
                     </Layout>

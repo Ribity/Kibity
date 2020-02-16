@@ -28,10 +28,6 @@ const App = () => {
         const nextTheme = theme === 'light' ? 'dark' : 'light';
         setTheme(nextTheme);
     };
-
-    // console.log("Calling init");
-    // myfuncs.init();
-
     return (
         <React.Fragment>
             <ThemeContext.Provider value={{theme, toggleTheme}}>
@@ -47,7 +43,6 @@ const App = () => {
             </ThemeContext.Provider>
         </React.Fragment>
     );
-
 };
 
 export default App;

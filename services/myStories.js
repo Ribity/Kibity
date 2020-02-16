@@ -3,7 +3,7 @@ class myStories {
     getStory = (storyName) => {
         try {
             let storyToUse = -1;
-            console.log("mystories.getStory storyName:", storyName);
+            // console.log("mystories.getStory storyName:", storyName);
 
             if (storyName < 'c')
                 storyToUse = this.getStory_a_to_b(storyName);
@@ -115,6 +115,10 @@ class myStories {
                 case 'toysAndAnimals.json':
                 case 'toysAndAnimals':
                     storyToUse = require('../assets/stories/toysAndAnimals.json');
+                    break;
+                case 'thisLittlePiggy.json':
+                case 'thisLittlePiggy':
+                    storyToUse = require('../assets/stories/thisLittlePiggy.json');
                     break;
                 default:
                     break;

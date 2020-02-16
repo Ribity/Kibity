@@ -15,9 +15,6 @@ import * as Device from 'expo-device';
 // import {updateSettings} from "../actions/settingsActions";
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 
-
-import * as Speech from "expo-speech";
-
 const SOUNDS = {};
 let SOURCES = {};
 let bSoundsAreLoaded = false;
@@ -30,7 +27,6 @@ class myFuncs  {
         let profiles = MyDefines.default_profiles;
         let new_user = false;
         try {
-
             this.initSentry();
 
             myfuncs.myBreadCrumbs('init', "myfuncs");
@@ -41,8 +37,17 @@ class myFuncs  {
             new_user = await this.check_new_user();
 
             let retObj = await this.getUserSettingsFromLocalStorage();
+            if (retObj.profiles.profile[0].character.length === 3) {
+                for (let i=0; i<3; i++) {
+                    retObj.profiles.profile[i].character[3] = JSON.parse(JSON.stringify(profiles.profile[i].character[3]));
+                    retObj.profiles.profile[i].character[4] = JSON.parse(JSON.stringify(profiles.profile[i].character[4]));
+                    retObj.profiles.profile[i].character[5] = JSON.parse(JSON.stringify(profiles.profile[i].character[5]));
+                }
+            }
             settings = {...settings, ...retObj.settings};
-            profiles = {...profiles, ...retObj.profiles};
+            profiles = { ...profiles, ...retObj.profiles};
+
+            // console.log("init after", profiles);
 
             this.prepareSound();
 
@@ -280,160 +285,6 @@ class myFuncs  {
             console.log(error);
         }
     };
-    // sendToRecipient = async (ribbon_or_event, routeName, bRibbon) => {
-    //     try {
-    //         this.myBreadCrumbs('sendToRecipient', routeName);
-    //         let type = "ribbon";
-    //
-    //         if (bRibbon === false)
-    //             type = "event";
-    //
-    //         // console.log("SMS or Email the ribbon");
-    //
-    //         Alert.alert(ribbon_or_event.name,"Click to Text or Email this " + type + " using your normal services",
-    //             [
-    //                 {text: 'Text', onPress: () => {this.textTheRecipient(ribbon_or_event, routeName, bRibbon)} },
-    //                 // {text: 'EMail', onPress: () => {this.emailTheRecipient(ribbon_or_event, routeName, bRibbon)} },
-    //                 {text: 'Never mind'},
-    //             ]);
-    //     } catch (error) {
-    //         myfuncs.mySentry(null);
-    //     }
-    // };
-    //
-    // buildContactMsg = (ribbon_or_event, bRibbon) => {
-    //     let msg;
-    //     let type = "ribbon";
-    //
-    //     if (bRibbon === false)
-    //         type = "event";
-    //     // if (ribbon_or_event.creator_id === funcsUserParms.user_id)
-    //     //     msg = "I created a Ribity " + type + " that may interest you:" + "\r\n'" + ribbon_or_event.name + "'";
-    //     // else
-    //         msg = "This Ribity " + type + " may interest you:" + "\r\n'" + ribbon_or_event.name + "'";
-    //
-    //     if (bRibbon === false) {
-    //         if (ribbon_or_event.end_address.length > 0 )
-    //             msg += "\r\nDestination: " + ribbon_or_event.end_address;
-    //         if (ribbon_or_event.sponsor.length > 0)
-    //             msg += "\r\nPledge by: " + ribbon_or_event.sponsor;
-    //         msg += "\r\nClick the following link to view it:";
-    //         msg += "\r\n" + Linking.makeUrl("event/" + ribbon_or_event.id);
-    //     } else {
-    //         msg += "\r\nRibbonId #:  " + ribbon_or_event.id;
-    //         if (ribbon_or_event.start_address.length > 0)
-    //             msg += "\r\nStarting address: " + ribbon_or_event.start_address;
-    //         if (ribbon_or_event.bearing_desc !== "Wandering")
-    //             msg += "\r\nCurrently Headed: " + ribbon_or_event.bearing_desc;
-    //         else
-    //             msg += "\r\n" + ribbon_or_event.bearing_desc;
-    //         if (ribbon_or_event.end_address.length > 0)
-    //             msg += "\r\nDestination: " + ribbon_or_event.end_address;
-    //         if (ribbon_or_event.public_message.length > 0)
-    //             msg += "\r\n'" + ribbon_or_event.public_message + "'";
-    //         msg += "\r\nClick the following link to vuew it:";
-    //         msg += "\r\n" + Linking.makeUrl("ribbon/" + ribbon_or_event.id);
-    //     }
-    //     return(msg);
-    // };
-    //
-    // textTheRecipient = async (ribbon_or_event, routeName, bRibbon) => {
-    //     try {
-    //         this.myBreadCrumbs('textTheRecipient', routeName);
-    //         // console.log("Text the ribbon or event: ", ribbon_or_event);
-    //         const isAvailable = await SMS.isAvailableAsync();
-    //         if (isAvailable) {
-    //             // console.log("SMS is available on this device");
-    //             // await SMS.sendSMSAsync(['9196968390'], this.buildContactMsg(ribbon));  -- you can specify a phone number in if desired.
-    //             try {
-    //                 await SMS.sendSMSAsync([], this.buildContactMsg(ribbon_or_event, bRibbon));
-    //             } catch (error) {
-    //                 alert("SMS Texting not available on your device");
-    //             }
-    //         } else {
-    //             console.log("SMS is NOT available on this device");
-    //         }
-    //     } catch (error) {
-    //         this.mySentry(error);
-    //     }
-    // };
-
-    // emailTheRecipient = async (ribbon_or_event, routeName, bRibbon) => {
-    //     try {
-    //         this.myBreadCrumbs('emailTheRecipient', routeName);
-    //
-    //         // console.log("EMail the ribbon or event: ", ribbon_or_event);
-    //
-    //         // let myImage = myimages.getImage(ribbon_or_event.image);
-    //
-    //         let options = {
-    //             // recipients: ['mark_king@yahoo.com'],
-    //             subject: ribbon_or_event.name,
-    //             body: this.buildContactMsg(ribbon_or_event, bRibbon),
-    //             // attachments: [myImage]
-    //         };
-    //         try {
-    //             MailComposer.composeAsync(options)
-    //         } catch (error) {
-    //             alert("EMail is not available on your device");
-    //         }
-    //
-    //     } catch (error) {
-    //         this.mySentry(error);
-    //     }
-    // };
-    // playSpeech = (text, date) => {
-    //     try {
-    //         this.myBreadCrumbs('playTest', "MyFuncs");
-    //
-    //
-    //         Speech.speak(text, {
-    //             // voice: "com.apple.ttsbundle.Samantha-compact",
-    //             // language: 'en',
-    //             pitch: 0.9,
-    //             rate: 0.9,
-    //             // onDone: this.Done,
-    //             // onStopped: this.Stopped,
-    //             // onStart: this.Started,
-    //         });
-    //
-    //     } catch (error) {
-    //         myfuncs.mySentry(error);
-    //     }
-    // };
-    // Done = () => {
-    //     console.log("Speech Done");
-    // };
-    // Stopped = () => {
-    //     console.log("Speech Stopped");
-    // };
-    // Started = () => {
-    //     console.log("Speech Started");
-    // };
-    // pauseSpeech = () => {
-    //     try {
-    //         Speech.pause();
-    //
-    //     } catch (error) {
-    //         myfuncs.mySentry(error);
-    //     }
-    // };
-    // resumeSpeech = () => {
-    //     try {
-    //         Speech.resume();
-    //
-    //     } catch (error) {
-    //         myfuncs.mySentry(error);
-    //     }
-    // };
-    // stopSpeech = () => {
-    //     try {
-    //         Speech.stop();
-    //
-    //     } catch (error) {
-    //         myfuncs.mySentry(error);
-    //     }
-    // };
     setAwakeorNot = (bKeepAwake) => {
         if (bKeepAwake) {
             activateKeepAwake();
@@ -441,25 +292,20 @@ class myFuncs  {
             deactivateKeepAwake();
         }
     };
+    shortenName = (name, length) => {
+        // console.log("Shorten name: ", name, " len: ", length);
+        let short_name = name.substr(0, length);
+        let space_ofs = short_name.lastIndexOf(" ");
+        if (space_ofs > 0)
+            short_name = short_name.substr(0, space_ofs);
 
+        // console.log("Short: ", short_name);
+        return short_name;
+    };
     isEmpty = (myObj) => {
         return !myObj || Object.keys(myObj).length === 0;
     };
-    // androidPadding = (textFocused, extraPad) => {
-    //     let padLines = 0;
-    //     if (Platform.OS === 'android' && textFocused === true)
-    //         padLines = 100 + extraPad;
-    //     return(padLines);
-    // };
-    // isAndroid = () => {
-    //     if (Platform.OS === 'android')
-    //         return true;
-    //     else
-    //         return false;
-    // };
-    // sleep = (ms) => {
-    //     return new Promise(resolve => setTimeout(resolve, ms));
-    // };
+
 }
 
 const myfuncs = new myFuncs();

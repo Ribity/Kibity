@@ -13,6 +13,7 @@ import {connect} from "react-redux";
 import {Ionicons} from '@expo/vector-icons';
 import {MyHelpIcon} from "../components/MyHelpIcon";
 import {MyHelpModal} from "../components/MyHelpModal";
+import {MyOtherModal} from "../components/MyOtherModal";
 import myfuncs from "../services/myFuncs";
 import {ScreenTitle} from "../components/screenTitle";
 import {StoriesHeaderButton} from "../components/StoriesHeaderButton";
@@ -32,7 +33,8 @@ class StoriesScreen extends React.Component {
                                          action={params.getLeft}
                                          listType={params.listType}
                     />,
-                headerTitle: () => <ScreenTitle title={"Stories"} second={params.activeProfile} />,
+                headerTitle: () => <ScreenTitle title={params.num_stories + " Stories"}
+                                                second={"Active: " + params.activeProfile}/>,
                 headerRight: () =>
                     <StoriesHeaderButton buttonType={2}
                                          numItems={params.numList}
@@ -48,16 +50,20 @@ class StoriesScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            story_list: MyDefines.default_story_list,
+            stories: MyDefines.default_story_list.stories,
             profiles: MyDefines.default_profiles,
             listType: 0,
             showType: 0,
+            otherFilter: "",
+            isOtherModalVisible: false,
         };
         this.componentWillFocus = this.componentWillFocus.bind(this);
     };
     componentDidMount() {
         try {
             myfuncs.myBreadCrumbs('Did mount', this.props.navigation.state.routeName);
+
+            // console.log("StoriesScreen DidMount:", this.props.stories);
 
             // setTimeout(this.buildStoryList, 1000);  // mk1 be sure to clear the timeout on unmount
             this.populateStateStoryList();  // mk1 be sure to clear the timeout on unmount
@@ -68,10 +74,11 @@ class StoriesScreen extends React.Component {
 
             this.props.navigation.setParams({getRight: this.listList});
             this.props.navigation.setParams({getLeft: this.listFaves});
+            this.props.navigation.setParams({num_stories: this.props.story_list.stories.length});
             this.props.navigation.setParams({numFaves: this.props.profiles.profile[this.props.profiles.profilesIdx].favorites.length});
-            this.props.navigation.setParams({activeProfile: this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name});
+            let aProfile = myfuncs.shortenName(this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name, 12);
+            this.props.navigation.setParams({activeProfile: aProfile});
             this.props.navigation.setParams({listType: this.state.listType});
-            // console.log("StoriesScreen DidMount:", this.props.story_list);
         } catch (error) {
             myfuncs.mySentry(error);
         }
@@ -79,7 +86,8 @@ class StoriesScreen extends React.Component {
     componentWillFocus() {
         try {
             myfuncs.myBreadCrumbs('Will Focus', this.props.navigation.state.routeName);
-            this.props.navigation.setParams({activeProfile: this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name});
+            let aProfile = myfuncs.shortenName(this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name, 12);
+            this.props.navigation.setParams({activeProfile: aProfile});
         } catch (error) {
             myfuncs.mySentry(error);
         }
@@ -164,16 +172,30 @@ class StoriesScreen extends React.Component {
             return null;
         }
     };
-    // componentDidUpdate(prevProps, prevState) {
-    //     // this.props.navigation.setParams({activeProfile: this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name});
-    //     // console.log("StoriesScreenDidUpdate");
-    // }
+    componentDidUpdate(prevProps, prevState) {
+        this.populateStateStoryList();
+
+        // this.props.navigation.setParams({activeProfile: this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name});
+        console.log("StoriesScreenDidUpdate");
+    }
     populateStateStoryList = () => {
         try {
             myfuncs.myBreadCrumbs('populateStateStoryList', this.props.navigation.state.routeName);
             if (MyDefines.log_details)
                 console.log("populateStoryList in StoriesScreen");
-            this.setState({story_list: this.props.story_list});
+
+            // let mylist = {...this.props.story_list};
+            let mylist = JSON.parse(JSON.stringify(this.props.story_list));
+
+            // mylist.stories.sort(function(a, b){  // This sorts reverse chronologically
+            //     return b.story_num-a.story_num
+            // });
+            mylist.stories.sort(function(a, b){
+                return a.sortIdx-b.sortIdx
+            });
+            // console.log("populate", this.props.story_list);
+
+            this.setState({stories: mylist.stories});
         } catch (error) {
             myfuncs.mySentry(error);
         }
@@ -200,11 +222,12 @@ class StoriesScreen extends React.Component {
             myfuncs.mySentry(error);
         }
     };
-    onPressStorySelection = (idx) => {
+    onPressStorySelection = async (idx) => {
         try {
             myfuncs.myBreadCrumbs('onPressStorySelection', this.props.navigation.state.routeName);
-            this.props.setListType(0);
-            this.props.setStoryIdx(idx);
+            await this.props.setListType(0);
+            await this.props.setStoryIdx(idx);
+            // console.log(this.props.story_list);
             this.props.navigation.navigate("Audio", {storySelected: true});
         } catch (error) {
             myfuncs.mySentry(error);
@@ -278,39 +301,48 @@ class StoriesScreen extends React.Component {
                     </View>
 
                     <View style={styles.showRow}>
-                        <Text style={styles.showTextGold}>Filter: </Text>
-                        <TouchableOpacity onPress={() => this.setState({showType: 0})}>
+                        {/*<Text style={styles.showTextGold}>Filter: </Text>*/}
+
+                        <TouchableOpacity onPress={() => this.setFilterType(0, "")}>
                             <Text style={(this.state.showType === 0) ? styles.showTextGold : styles.showText}>All</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.setState({showType: 1})}>
+                        <TouchableOpacity onPress={() => this.setFilterType(1, "Toddler")}>
                             <Text style={(this.state.showType === 1) ? styles.showTextGold : styles.showText}>Toddlers</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.setState({showType: 2})}>
+                        <TouchableOpacity onPress={() => this.setFilterType(2, "boy")}>
                             <Text style={(this.state.showType === 2) ? styles.showTextGold : styles.showText}>Boys</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.setState({showType: 3})}>
+                        <TouchableOpacity onPress={() => this.setFilterType(3, "girl")}>
                             <Text style={(this.state.showType === 3) ? styles.showTextGold : styles.showText}>Girls</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.setState({isOtherModalVisible: true})}>
+                            <Text style={(this.state.showType > 3) ? styles.showTextGold : styles.showText}>Other</Text>
                         </TouchableOpacity>
 
                     </View>
 
                     <View style={{paddingTop: 5}}/>
 
-                    {this.state.story_list.stories.length > 1 &&
+                    {this.state.stories.length > 1 &&
                     <MyListComponent navigation={this.props.navigation}
-                                     myList={this.state.story_list.stories}
+                                     myList={this.state.stories}
                                      screenType={'Stories'}
                                      updateParentStoriesCurrentProfile={this.updateStoriesProfiles}
                                      resetList={this.resetList}
                                      onPressItem={this.onPressStorySelection}
                                      listType={this.state.listType}
-                                     showType={this.state.showType}
+                                     otherFilter={this.state.otherFilter}
                     />
                     }
                     <MyHelpIcon onPress={this.onHelpPress}/>
                     <MyHelpModal screen={"Stories"}
                                  onExitPress={this.onHelpExitPress}
                                  isVisible={this.state.isModalVisible}/>
+
+                    <MyOtherModal onOtherPress={this.onOtherPress}
+                                 onExitPress={this.onOtherExitPress}
+                                 isVisible={this.state.isOtherModalVisible}/>
+
                 </View>
             );
         } catch (error) {
@@ -329,6 +361,29 @@ class StoriesScreen extends React.Component {
         try {
             myfuncs.myBreadCrumbs('onHelpExitPress', this.props.navigation.state.routeName);
             this.setState({isModalVisible: false});
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
+    };
+    setFilterType = (showType, otherFilter) => {
+        this.setState({showType: showType});
+        this.setState({otherFilter: otherFilter});
+    };
+    onOtherPress = async (otherFilter) => {
+        try {
+            myfuncs.myBreadCrumbs('onHelpPress', this.props.navigation.state.routeName);
+            this.setState({otherFilter: otherFilter});
+            this.setState({showType: 4});
+            this.setState({isOtherModalVisible: false});
+            // console.log("OnOtherPress", otherFilter);
+        } catch (error) {
+            myfuncs.mySentry(error);
+        }
+    };
+    onOtherExitPress = () => {
+        try {
+            myfuncs.myBreadCrumbs('onOtherExitPress', this.props.navigation.state.routeName);
+            this.setState({isOtherModalVisible: false});
         } catch (error) {
             myfuncs.mySentry(error);
         }

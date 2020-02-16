@@ -99,6 +99,7 @@ class AudioScreen extends React.Component {
             this.props.navigation.setParams({myProfile: this.props.profiles.profile[this.props.profiles.profilesIdx]});
             this.props.navigation.setParams({onPress: this.goToProfilesSetActive});
             myfuncs.setAwakeorNot(this.props.settings.keep_awake);
+
         } catch (error) {
             myfuncs.mySentry(error);
         }
@@ -108,9 +109,9 @@ class AudioScreen extends React.Component {
         try {
             myfuncs.myBreadCrumbs('getDerivedStateFromProps', "AudioScreen");
             let update = {};
-            // if (prevState.stories_list !== nextProps.stories_list) {
-            //     update.stories_list = nextProps.stories_list;
-            // }
+            if (prevState.stories_list !== nextProps.stories_list) {
+                update.stories_list = nextProps.stories_list;
+            }
             if (prevState.profiles !== nextProps.profiles) {
                 update.profiles = nextProps.profiles;
             }
@@ -357,7 +358,7 @@ class AudioScreen extends React.Component {
     determine_pause_secs = () => {
         let pause_seconds = pause_data[this.props.settings.pauseLineIdx].value;
 
-        if (this.props.story_list.stories[story_idx].toddler_pause !== null &&
+        if (this.props.story_list.stories[story_idx].toddler_pause !== undefined &&
             this.props.story_list.stories[story_idx].toddler_pause !== null &&
             this.props.story_list.stories[story_idx].toddler_pause !== 0)
             pause_seconds += this.props.story_list.stories[story_idx].toddler_pause;
@@ -590,7 +591,7 @@ class AudioScreen extends React.Component {
 
             let toddler = false;
             if (story_idx >= 0) {
-                if (this.props.story_list.stories[story_idx].toddler_pause !== null &&
+                if (this.props.story_list.stories[story_idx].toddler_pause !== undefined &&
                     this.props.story_list.stories[story_idx].toddler_pause !== null &&
                     this.props.story_list.stories[story_idx].toddler_pause !== 0) {
                     toddler = true;
@@ -808,8 +809,8 @@ const styles = StyleSheet.create({
         // position: 'absolute',
         // flexDirection: 'row',
         alignItems: 'center',
-        bottom: (MyDefines.myBottomTabBarHeight),
-        marginBottom: 15,
+        // bottom: (MyDefines.myBottomTabBarHeight),
+        marginBottom: 10,
     },
     audioButton: {
         marginVertical: 2,
@@ -841,6 +842,7 @@ const styles = StyleSheet.create({
         color: 'mediumpurple',
         marginHorizontal: 5,
         paddingTop: 15,
+        fontStyle: 'italic',
     },
     bigText: {
         fontSize: 23,
@@ -850,6 +852,7 @@ const styles = StyleSheet.create({
         color: 'mediumpurple',
         marginHorizontal: 5,
         paddingTop: 10,
+        fontStyle: 'italic',
     },
     smallText: {
         fontSize: 19,
@@ -859,6 +862,7 @@ const styles = StyleSheet.create({
         color: 'mediumpurple',
         marginHorizontal: 5,
         paddingTop: 10,
+        fontStyle: 'italic',
     },
 });
 

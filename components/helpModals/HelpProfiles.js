@@ -8,12 +8,10 @@ export const HelpProfiles = ( {} ) => {
     try {
 	myfuncs.myBreadCrumbs('HelpProfiles', 'HelpProfiles');
 		return (<KeyboardAwareScrollView
-			// style={helpStyles.container}
 			resetScrollToCoords={{x:0, y:0}}
-			// contentContainerStyle={helpStyles.container}
 		>
 
-			<Text  style={helpStyles.helpText}>
+				<Text  style={helpStyles.helpText}>
 				<Text style={helpStyles.helpBold}>Profiles: </Text>
 				 This screen presents several options to go to
 				 additional screens.

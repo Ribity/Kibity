@@ -8,12 +8,12 @@ export const ProfileHeader = ( {profile, onPress} ) => {
         let text = "";
         if (profile !== undefined && profile !== null) {
             if (profile.character[0].name !== undefined && profile.character[0].name !== null)
-                text = profile.character[0].name;
+                text = myfuncs.shortenName(profile.character[0].name, 12);
         }
         return (
             <View>
                 <TouchableOpacity onPress={() => onPress()} hitSlop={styles.hitSlop}>
-                    <Text style={styles.myText}>Active Profile</Text>
+                    <Text style={styles.myText}>Active</Text>
                     <Text style={styles.myText}>{text}</Text>
                 </TouchableOpacity>
             </View>
