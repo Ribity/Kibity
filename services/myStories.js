@@ -90,10 +90,6 @@ class myStories {
                 case 'pecanTree':
                     storyToUse = require('../assets/stories/pecanTree.json');
                     break;
-                case 'shortTest.json':
-                case 'shortTest':
-                    storyToUse = require('../assets/stories/shortTest.json');
-                    break;
                 default:
                     break;
             }

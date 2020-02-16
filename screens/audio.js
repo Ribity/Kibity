@@ -3,6 +3,7 @@ import {Alert,StyleSheet, View, Dimensions, Image} from 'react-native';
 import {SafeAreaView} from "react-navigation";
 import {Button, Layout, Text} from "@ui-kitten/components";
 import {Ionicons} from '@expo/vector-icons';
+import Toast from 'react-native-easy-toast';
 import * as Speech from "expo-speech";
 import MyDefines from '../constants/MyDefines';
 import myStyles from "../myStyles";
@@ -128,8 +129,10 @@ class AudioScreen extends React.Component {
             if (playIt) {
                 this.props.navigation.setParams({storySelected: false});
                 story_idx = this.props.profiles.profile[this.props.profiles.profilesIdx].currStoryIdx;
-                if (story_idx !== -1)
+
+                if (story_idx !== -1) {
                     this.getItAndPlay();
+                }
             }
         } catch (error) {
             myfuncs.mySentry(error);
@@ -190,16 +193,24 @@ class AudioScreen extends React.Component {
                 console.log("getItAndPlay:", story_idx);
             if (MyDefines.log_details)
                 console.log("getItAndPlaystories:", this.props.story_list);
-            myStory = mystories.getStory(this.props.story_list.stories[story_idx].filename);
-            if (MyDefines.log_details)
-                console.log("Mine", myStory);
 
-            if (myStory !== null) {
-                if (MyDefines.log_audio)
-                    console.log("Found local story");
-                this.playIt();
+            if (story_idx < this.props.story_list.stories.length) {
+                myStory = mystories.getStory(this.props.story_list.stories[story_idx].filename);
+                if (MyDefines.log_details)
+                    console.log("Mine", myStory);
+
+                if (myStory !== null) {
+                    if (MyDefines.log_audio)
+                        console.log("Found local story");
+                    this.playIt();
+                } else {
+                    this.getStoryFromServer();
+                }
             } else {
-                 this.getStoryFromServer();
+                this.refs.toast.show("Error accessing story", 4000);
+
+                if (this.isPlayingAList())
+                    nextStoryTimeout = setTimeout(() => {this.playNext()}, pause_data[this.props.settings.pauseStoryIdx].value*1000 * 2);
             }
         } catch (error) {
             myfuncs.mySentry(error);
@@ -208,6 +219,7 @@ class AudioScreen extends React.Component {
     getStoryFromServer = () => {
         try {
             myfuncs.myBreadCrumbs('getStoryFromServer', this.props.navigation.state.routeName);
+
             let story_url = MyDefines.stories_url_bucket + this.props.story_list.stories[story_idx].filename;
             if (MyDefines.log_audio)
                 console.log("mystory1", story_url);
@@ -225,11 +237,17 @@ class AudioScreen extends React.Component {
                 .catch(error => {
                     if (MyDefines.log_audio)
                         console.log("file NOT retrieved from server", story_url);
-                    Alert.alert("Error accessing the story you selected",
-                        "Please select a different story for now",
-                        );
+                    // Alert.alert("Error accessing the story you selected",
+                    //     "Please select a different story for now",
+                    //     );
+
                     if (MyDefines.log_details)
                         console.error(error);
+
+                    this.refs.toast.show("Error accessing story: '" + this.props.story_list.stories[story_idx].title + "'", 4000);
+
+                    if (this.isPlayingAList())
+                        nextStoryTimeout = setTimeout(() => {this.playNext()}, pause_data[this.props.settings.pauseStoryIdx].value*1000 * 2);
                 });
         } catch (error) {
             myfuncs.mySentry(error);
@@ -358,10 +376,12 @@ class AudioScreen extends React.Component {
     determine_pause_secs = () => {
         let pause_seconds = pause_data[this.props.settings.pauseLineIdx].value;
 
-        if (this.props.story_list.stories[story_idx].toddler_pause !== undefined &&
-            this.props.story_list.stories[story_idx].toddler_pause !== null &&
-            this.props.story_list.stories[story_idx].toddler_pause !== 0)
-            pause_seconds += this.props.story_list.stories[story_idx].toddler_pause;
+        if (story_idx > -1 && story_idx < this.props.story_list.stories.length) {
+            if (this.props.story_list.stories[story_idx].toddler_pause !== undefined &&
+                this.props.story_list.stories[story_idx].toddler_pause !== null &&
+                this.props.story_list.stories[story_idx].toddler_pause !== 0)
+                pause_seconds += this.props.story_list.stories[story_idx].toddler_pause;
+        }
         return pause_seconds;
     };
     playNextLine = () => {
@@ -585,12 +605,18 @@ class AudioScreen extends React.Component {
             myfuncs.mySentry(error);
         }
     };
+    isPlayingAList = () => {
+        if ( (this.props.profiles.profile[this.props.profiles.profilesIdx].currListType === 1) ||
+            (this.props.profiles.profile[this.props.profiles.profilesIdx].currListType === 2) )
+            return true;
+        return false;
+    };
     render() {
         try {
             myfuncs.myBreadCrumbs('render', this.props.navigation.state.routeName);
 
             let toddler = false;
-            if (story_idx >= 0) {
+            if (story_idx >= 0  &&  story_idx < this.props.story_list.stories.length) {
                 if (this.props.story_list.stories[story_idx].toddler_pause !== undefined &&
                     this.props.story_list.stories[story_idx].toddler_pause !== null &&
                     this.props.story_list.stories[story_idx].toddler_pause !== 0) {
@@ -737,6 +763,18 @@ class AudioScreen extends React.Component {
                                    </View>
                            </View>
                        }
+
+
+                       <Toast
+                           ref="toast"
+                           style={{backgroundColor:'mediumpurple',borderRadius: 20,padding: 10}}
+                           position='top'
+                           positionValue={0}
+                           fadeOutDuration={1000}
+                           opacity={.9}
+                           textStyle={{color:'gold',fontSize:21}}
+                       />
+
                        <MyHelpIcon onPress={this.onHelpPress}/>
                        <MyHelpModal screen={"Audio"}
                                     onExitPress={this.onHelpExitPress}

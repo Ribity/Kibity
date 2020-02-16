@@ -21,6 +21,8 @@ import {StoriesHeaderButton} from "../components/StoriesHeaderButton";
 Text.defaultProps = Text.defaultProps || {};
 Text.defaultProps.allowFontScaling = false;
 
+let populated_length = 0;
+
 class StoriesScreen extends React.Component {
     static navigationOptions = ({navigation}) => {
         try {
@@ -100,6 +102,30 @@ class StoriesScreen extends React.Component {
             myfuncs.mySentry(error);
         }
     };
+    static getDerivedStateFromProps(nextProps, prevState){
+        try {
+            myfuncs.myBreadCrumbs('getDerivedStateFromProps', "Stories");
+            let update = {};
+
+            if (MyDefines.log_details)
+                console.log("stories getDerivedStateFromProps");
+            if (prevState.profiles !== nextProps.profiles) {
+                update.profiles = nextProps.profiles;
+            }
+            if (MyDefines.log_details)
+                console.log("stories derivedState:", update);
+            return Object.keys(update).length ? update: null;
+        } catch (error) {
+            myfuncs.mySentry(error);
+            return null;
+        }
+    };
+    componentDidUpdate(prevProps, prevState) {
+        // console.log("popLength:", populated_length, "thisProps: ", this.props.story_list.stories.length)
+        if (this.props.story_list.stories.length !== populated_length) {
+            this.populateStateStoryList();
+        }
+    }
     listList = () => {
         try {
             myfuncs.myBreadCrumbs('listList', this.props.navigation.state.routeName);
@@ -143,48 +169,16 @@ class StoriesScreen extends React.Component {
             myfuncs.mySentry(error);
         }
     };
-
-    // static getDerivedStateFromProps(nextProps, prevState){
-    //     console.log("GetDerivedStateFromProps StoriesScreen");
-    //     if (prevState.story_list !== nextProps.story_list) {
-    //         // console.log("StoriesScreen next props:", nextProps.story_list);
-    //         return{data: nextProps.story_list};
-    //     } else return null;
-    // };
-    static getDerivedStateFromProps(nextProps, prevState){
-        try {
-            myfuncs.myBreadCrumbs('getDerivedStateFromProps', "Stories");
-            let update = {};
-
-            if (MyDefines.log_details)
-                console.log("stories getDerivedStateFromProps");
-            if (prevState.stories_list !== nextProps.stories_list) {
-                update.stories_list = nextProps.stories_list;
-            }
-            if (prevState.profiles !== nextProps.profiles) {
-                update.profiles = nextProps.profiles;
-            }
-            if (MyDefines.log_details)
-                console.log("stories derivedState:", update);
-            return Object.keys(update).length ? update: null;
-        } catch (error) {
-            myfuncs.mySentry(error);
-            return null;
-        }
-    };
-    componentDidUpdate(prevProps, prevState) {
-        this.populateStateStoryList();
-
-        // this.props.navigation.setParams({activeProfile: this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name});
-        console.log("StoriesScreenDidUpdate");
-    }
     populateStateStoryList = () => {
         try {
             myfuncs.myBreadCrumbs('populateStateStoryList', this.props.navigation.state.routeName);
             if (MyDefines.log_details)
                 console.log("populateStoryList in StoriesScreen");
 
-            // let mylist = {...this.props.story_list};
+            // console.log("PopulateStateStoryList");
+            populated_length = this.props.story_list.stories.length;
+
+                // let mylist = {...this.props.story_list};
             let mylist = JSON.parse(JSON.stringify(this.props.story_list));
 
             // mylist.stories.sort(function(a, b){  // This sorts reverse chronologically
@@ -196,6 +190,7 @@ class StoriesScreen extends React.Component {
             // console.log("populate", this.props.story_list);
 
             this.setState({stories: mylist.stories});
+            // console.log("StateList:", mylist.stories);
         } catch (error) {
             myfuncs.mySentry(error);
         }
@@ -262,6 +257,7 @@ class StoriesScreen extends React.Component {
     render() {
         try {
             myfuncs.myBreadCrumbs('render', this.props.navigation.state.routeName);
+            // console.log("render story list");
             return (
                 <View style={styles.container}>
 
@@ -323,7 +319,7 @@ class StoriesScreen extends React.Component {
 
                     <View style={{paddingTop: 5}}/>
 
-                    {this.state.stories.length > 1 &&
+                    {this.state.stories.length > 1  &&
                     <MyListComponent navigation={this.props.navigation}
                                      myList={this.state.stories}
                                      screenType={'Stories'}

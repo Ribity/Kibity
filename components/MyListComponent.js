@@ -16,7 +16,6 @@ import MyDefines from "../constants/MyDefines";
 const {height, width} = Dimensions.get('window');
 const pause_data = MyDefines.pause_data;
 
-
 class MyListComponent extends React.Component {
 
     constructor(props) {
@@ -24,8 +23,8 @@ class MyListComponent extends React.Component {
             super(props);
             this.state = {
                 data: [],
+                arrayholder: [],
             };
-            this.arrayholder = [];
             this.query = "";
 
         } catch (error) {
@@ -36,11 +35,21 @@ class MyListComponent extends React.Component {
         try {
             myfuncs.myBreadCrumbs('DidMount', "MyListComponent");
             this.setState({data: this.props.myList});
-            this.arrayholder = this.props.myList;
+            this.setState({arrayholder: this.props.myList});
         } catch (error) {
             myfuncs.mySentry(error);
         }
     }
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.myList.length !== this.state.arrayholder.length) {
+            setTimeout(this.refresh_list, 1);
+        }
+    }
+    refresh_list = async () => {
+        await this.setState({data: this.props.myList});
+        await this.setState({arrayholder: this.props.myList});
+        this.searchFilterFunction(this.query);
+    };
     renderSeparator = () => {
         try {
             myfuncs.myBreadCrumbs('renderSeparator', "MyListComponent");
@@ -68,7 +77,7 @@ class MyListComponent extends React.Component {
             const searchString = this.query.toLowerCase();
             const wordArray = searchString.split(" ");
 
-            const newData = this.arrayholder.filter(item => {
+            const newData = this.state.arrayholder.filter(item => {
                 let itemData = "";
                     if (item.title !== null && item.title !== undefined)
                         itemData = item.title.toLowerCase();

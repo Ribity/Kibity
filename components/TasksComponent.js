@@ -75,17 +75,14 @@ class TasksComponent extends React.Component {
             this.props.updateStoryList(local_story_list);
 
             this.getStoryListFromServer();
+            // setTimeout(() => {this.getStoryListFromServer()}, 10000);    // This is for testing
+
         } catch (error) {
             myfuncs.mySentry(error);
         }
     };
     getStoryListFromServer = () => {
         try {
-            return;
-
-
-
-
             myfuncs.myBreadCrumbs('getStoryListFromServer', "TasksComponent");
             let storyList_url = MyDefines.stories_url_bucket + "allStoriesList.json";
             console.log("serverStoryList url:", storyList_url);
@@ -108,22 +105,22 @@ class TasksComponent extends React.Component {
         }
     };
     appendServerStoryList = async (serverStoryList) => {
-        console.log("StoryList Server: ", serverStoryList.stories.length);
-        console.log("StoryList Props: ", this.props.story_list.stories.length);
+        // console.log("StoryList Server: ", serverStoryList.stories.length);
+        // console.log("StoryList Props: ", this.props.story_list.stories.length);
         if (serverStoryList.stories.length > this.props.story_list.stories.length) {
             let numExistingStories = this.props.story_list.stories.length;
             let numServerStories = serverStoryList.stories.length;
             console.log(numServerStories-numExistingStories, " new stories from serverStoryList:");
 
             // let newList = this.clone(this.props.story_list);
-            let newList = _.cloneDeep(this.props.story_list);
+            let newList = this.clone(this.props.story_list);
             for (let idx=numExistingStories; idx<numServerStories; idx++) {
-                let newStory = _.cloneDeep(serverStoryList.stories[idx]);
+                let newStory = this.clone(serverStoryList.stories[idx]);
                 newStory.remoteStory = true;
                 newList.stories.push(newStory);
             }
             await this.props.updateStoryList(newList);
-            console.log("NewStoryList:", this.props.story_list);
+            // console.log("NewStoryList:", this.props.story_list);
         } else {
             console.log("No new stories from serverStoryList");
         }
