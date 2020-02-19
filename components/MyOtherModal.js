@@ -26,7 +26,7 @@ export const MyOtherModal = ( {isVisible, onExitPress, onOtherPress} ) => {
                     <KeyboardAwareScrollView
                         resetScrollToCoords={{x:0, y:0}}
                     >
-                        <Text style={styles.helpBold}>Commonly used searches</Text>
+                        <Text style={styles.helpBold}>Quick Filters</Text>
 
                         <MyButton buttonStyle={styles.modalButton}
                                   textStyle={styles.ageButtonText}
@@ -56,10 +56,10 @@ export const MyOtherModal = ( {isVisible, onExitPress, onOtherPress} ) => {
                                   title={"Write-Ins"}/>
 
                         <View style={styles.addRow}>
-                            <MyButton buttonStyle={styles.modalButton}
-                                      textStyle={styles.ageButtonText}
-                                      onPress={() => onOtherPress("Science")}
-                                      title={"Science"}/>
+                            {/*<MyButton buttonStyle={styles.modalButton}*/}
+                                      {/*textStyle={styles.ageButtonText}*/}
+                                      {/*onPress={() => onOtherPress("Science")}*/}
+                                      {/*title={"Science"}/>*/}
 
                             <MyButton buttonStyle={styles.modalButton}
                                       textStyle={styles.ageButtonText}

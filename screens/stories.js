@@ -17,6 +17,7 @@ import {MyOtherModal} from "../components/MyOtherModal";
 import myfuncs from "../services/myFuncs";
 import {ScreenTitle} from "../components/screenTitle";
 import {StoriesHeaderButton} from "../components/StoriesHeaderButton";
+import Toast from "react-native-easy-toast";
 
 Text.defaultProps = Text.defaultProps || {};
 Text.defaultProps.allowFontScaling = false;
@@ -278,7 +279,9 @@ class StoriesScreen extends React.Component {
                         }
 
                         <View style={styles.title}>
-                            <Text style={styles.titleText}>Select a story</Text>
+                            <TouchableOpacity onPress={this.showToast}>
+                                <Text style={styles.titleText}>Select a story</Text>
+                            </TouchableOpacity>
                         </View>
 
                         {(this.state.profiles.profile[this.props.profiles.profilesIdx].playList.length > 0) &&
@@ -330,6 +333,17 @@ class StoriesScreen extends React.Component {
                                      otherFilter={this.state.otherFilter}
                     />
                     }
+
+                    <Toast
+                        ref="toast"
+                        style={{backgroundColor:'gold',borderRadius: 20,padding: 10}}
+                        position='bottom'
+                        positionValue={400}
+                        fadeOutDuration={3000}
+                        opacity={1}
+                        textStyle={{color:'purple',fontSize:20, fontWeight: 'bold'}}
+                    />
+
                     <MyHelpIcon onPress={this.onHelpPress}/>
                     <MyHelpModal screen={"Stories"}
                                  onExitPress={this.onHelpExitPress}
@@ -372,9 +386,18 @@ class StoriesScreen extends React.Component {
             this.setState({showType: 4});
             this.setState({isOtherModalVisible: false});
             // console.log("OnOtherPress", otherFilter);
+
+            if (otherFilter === 'write-in') {
+                this.showToast();
+            }
         } catch (error) {
             myfuncs.mySentry(error);
         }
+    };
+    showToast = () => {
+        this.refs.toast.show("We encourage you to write a story and send to:" +
+            "\r\n\nRibity@yahoo.com " +
+            "\r\n\nWe will publish it on Kibity and contact you when it is added to the Kibity list of stories.", 6000);
     };
     onOtherExitPress = () => {
         try {

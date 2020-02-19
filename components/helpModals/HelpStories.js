@@ -15,7 +15,7 @@ export const HelpStories = ( {} ) => {
 
 			<Text  style={helpStyles.helpText}>
 				<Text style={helpStyles.helpBold}>Stories: </Text>
-				The 'Stories' tab presents a full list of all stories in the Kibity
+				The 'Stories' tab presents a list of all stories in the Kibity
 				library. Simply tap a story and it will start playing.
 				{"\n"}
 				{"\n"}
@@ -23,6 +23,10 @@ export const HelpStories = ( {} ) => {
 				device are correct and the volume is turned up. On iPhones the
 				Ring/Silent switch on the left side must be ON/UP
 				for Kibity stories to be heard.
+				{"\n"}
+				{"\n"}
+				We encourage you to write your own story. Send it to us at Ribity@yahoo.com
+				and we will publish it for all Kibity users to enjoy.
 				{"\n"}
 				{"\n"}
 				You may utilize the search field to narrow the existing/current list of
@@ -60,12 +64,27 @@ export const HelpStories = ( {} ) => {
 				PlayList. Then play your PlayList.
 				{"\n"}
 				{"\n"}
-				What is 'Filter'?  Filter is independent of the ShowFaves and ShowPlayList.
-				Filter defaults to show ALL stories. If you tap 'Toddlers', the current list
+				What is 'ALL Toddlers Boys Girls Other'?
+				These are one-click filters that are independent of the ShowFaves and ShowPlayList.
+				It defaults to show ALL stories. If you tap 'Toddlers', the current list
 				will be narrowed to only stories that target toddlers.
 				If you tap 'Girls', the list will eliminate stories that target
 				Boys. We say 'eliminate Boys' because tapping 'Girls' will show
 				all stories targeted to girls as well as all generic stories, not just stories targeted for girls.
+				{"\n"}
+				{"\n"}
+				'Other' will present a screen of one-click buttons to filter the stories. For example, tap
+				'Other', then tap 'Kibity Originals'. That will filter the list of stories to show ONLY
+				the Kibity Original stories (stories that are exclusive to Kibity). Or tap 'Age/5' to list
+				all stories that are suggested for a five-year-old.
+				{"\n"}
+				{"\n"}
+				Summary/Example: There are three independent types of filters. The very top allows you to filter on
+				Favorites or Playlist.  The purple line allows you to quick-filter on subjects. And you
+				may use the Search field for your specific search. Let's say you have an eight-year-old son.
+				First, we suggest you customize his profile via the 'Profiles/Customize' tab. Then on this
+				stories list, tap 'Other' then hit the 'Age/8' button, then type 'science' in the search
+				field.
 				{"\n"}
 				{"\n"}
 				If you have an existing Favorites list, you'll see a 'Play Faves' button near the top. Tapping

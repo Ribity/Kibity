@@ -109,7 +109,7 @@ export default {
                 petName: "Cricket",
                 city: "Toronto, Canada",
                 celebrity: "Miley Cyrus",
-                event: "Jonas Brothers book signing",
+                event: "Wild Animal Circus",
                 favorites: [],
                 playList: [],
                 currStoryIdx: -1,

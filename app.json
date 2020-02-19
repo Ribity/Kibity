@@ -10,10 +10,10 @@
       "web"
     ],
     "scheme": "kibity",
-    "version": "1.0.0",
+    "version": "1.0.02",
     "orientation": "portrait",
     "primaryColor": "#008000",
-    "icon": "./assets/images/PurpleFace_512x512.png",
+    "icon": "./assets/images/PurpleFaceIconGold_1024x1024.png",
     "splash": {
       "image": "./assets/images/PurpleFaceSplash1024.png",
       "resizeMode": "contain",
@@ -28,12 +28,12 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.kibity.kibity",
-      "icon": "./assets/images/PurpleFaceIconApple.png"
+      "icon": "./assets/images/PurpleFaceIconGold_1024x1024.png"
     },
     "android": {
       "package": "com.kibity.kibity",
       "versionCode": 1,
-      "icon": "./assets/images/PurpleFace_512x512.png",
+      "icon": "./assets/images/PurpleFaceIconGold_1024x1024.png",
       "playStoreUrl": "https://play.google.com/store/apps/details?id=com.kibity.kibity"
     },
     "androidStatusBarColor": "#000000",

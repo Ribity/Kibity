@@ -37,13 +37,23 @@ class myFuncs  {
             new_user = await this.check_new_user();
 
             let retObj = await this.getUserSettingsFromLocalStorage();
-            if (retObj.profiles.profile[0].character.length === 3) {
-                for (let i=0; i<3; i++) {
+            for (let i=0; i<3; i++) {
+                if (retObj.profiles.profile[i].character.length === 3) {
                     retObj.profiles.profile[i].character[3] = JSON.parse(JSON.stringify(profiles.profile[i].character[3]));
                     retObj.profiles.profile[i].character[4] = JSON.parse(JSON.stringify(profiles.profile[i].character[4]));
                     retObj.profiles.profile[i].character[5] = JSON.parse(JSON.stringify(profiles.profile[i].character[5]));
                 }
+                if (retObj.profiles.profile[0].celebrity === null ||
+                    retObj.profiles.profile[0].celebrity === undefined ||
+                    retObj.profiles.profile[0].celebrity === "")
+                    retObj.profiles.profile[0].celebrity = JSON.parse(JSON.stringify(profiles.profile[i].celebrity));
+                if (retObj.profiles.profile[0].event === null ||
+                    retObj.profiles.profile[0].event === undefined ||
+                    retObj.profiles.profile[0].event === "")
+                    retObj.profiles.profile[0].event = JSON.parse(JSON.stringify(profiles.profile[i].event));
             }
+
+
             settings = {...settings, ...retObj.settings};
             profiles = { ...profiles, ...retObj.profiles};
 

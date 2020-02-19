@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert,StyleSheet, View, Dimensions, Image} from 'react-native';
+import {Alert, StyleSheet, View, Dimensions, Image, TouchableOpacity} from 'react-native';
 import {SafeAreaView} from "react-navigation";
 import {Button, Layout, Text} from "@ui-kitten/components";
 import {Ionicons} from '@expo/vector-icons';
@@ -631,7 +631,9 @@ class AudioScreen extends React.Component {
                        {this.state.num_lines > 0 ?
                            <View>
                                <View style={{alignSelf: 'center'}}>
-                               <Text style={styles.audioTitle}>{this.state.story_title}</Text>
+                                   <TouchableOpacity onPress={this.showToast}>
+                                    <Text style={styles.audioTitle}>{this.state.story_title}</Text>
+                                   </TouchableOpacity>
                                </View>
 
                                <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center'}}>
@@ -663,7 +665,7 @@ class AudioScreen extends React.Component {
                                                    style={styles.toddlerText}>{this.state.curr_text}</Text>
                                                :
                                                <Text
-                                                   style={height >= 500 ? styles.bigText : styles.smallText}>{this.state.curr_text}</Text>
+                                                   style={height >= 600 ? styles.bigText : styles.smallText}>{this.state.curr_text}</Text>
                                            }
                                        </View>
                                    }
@@ -733,8 +735,11 @@ class AudioScreen extends React.Component {
                            :
                            <View>
                                <View style={{padding: 25}}/>
-                               <Text style={styles.welcomeUser}>Welcome to Kibity</Text>
-                               <Image style={styles.kibityLogo} source={kibityLogo}/>
+                               <TouchableOpacity onPress={this.showToast}>
+                                   <Text style={styles.welcomeUser}>Welcome to Kibity</Text>
+                                   <Image style={styles.kibityLogo} source={kibityLogo}/>
+                               </TouchableOpacity>
+
                                <View style={{padding: 15}}/>
                                <View>
                                    <View style={{padding: 15}}/>
@@ -764,7 +769,6 @@ class AudioScreen extends React.Component {
                            </View>
                        }
 
-
                        <Toast
                            ref="toast"
                            style={{backgroundColor:'mediumpurple',borderRadius: 20,padding: 10}}
@@ -773,6 +777,16 @@ class AudioScreen extends React.Component {
                            fadeOutDuration={1000}
                            opacity={.9}
                            textStyle={{color:'gold',fontSize:21}}
+                       />
+
+                       <Toast
+                           ref="toaststory"
+                           style={{backgroundColor:'gold',borderRadius: 20,padding: 10}}
+                           position='top'
+                           positionValue={0}
+                           fadeOutDuration={5000}
+                           opacity={1}
+                           textStyle={{color:'purple',fontSize:20, fontWeight: 'bold'}}
                        />
 
                        <MyHelpIcon onPress={this.onHelpPress}/>
@@ -801,6 +815,11 @@ class AudioScreen extends React.Component {
         } catch (error) {
             myfuncs.mySentry(error);
         }
+    };
+    showToast = () => {
+        this.refs.toaststory.show("We encourage you to write a story and send to:" +
+            "\r\n\nRibity@yahoo.com " +
+            "\r\n\nWe will publish it on Kibity and contact you when it is added to the Kibity list of stories.", 2000);
     };
 };
 const styles = StyleSheet.create({
@@ -873,8 +892,8 @@ const styles = StyleSheet.create({
         marginVertical: 5,
     },
     toddlerText: {
-        fontSize: 30,
-        lineHeight: 34,
+        fontSize: 32,
+        lineHeight: 35,
         fontWeight: 'bold',
         // textAlign: 'justify',
         color: 'mediumpurple',
@@ -883,8 +902,8 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
     },
     bigText: {
-        fontSize: 23,
-        lineHeight: 25,
+        fontSize: 24,
+        lineHeight: 26,
         fontWeight: 'bold',
         // textAlign: 'justify',
         color: 'mediumpurple',

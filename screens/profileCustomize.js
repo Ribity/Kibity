@@ -22,6 +22,7 @@ import {ScreenTitle} from "../components/screenTitle";
 import MyDefines from "../constants/MyDefines";
 import {bindActionCreators} from "redux";
 import {updateProfiles} from "../actions/profilesActions";
+import * as Speech from "expo-speech";
 
 TextInput.defaultProps = TextInput.defaultProps || {};
 TextInput.defaultProps.allowFontScaling = false;
@@ -92,7 +93,7 @@ class ProfileCustomize extends React.Component {
             myfuncs.mySentry(error);
         }
     };
-    onSubmitPress = async () => {
+    onSubmitPress = async (test) => {
         try {
             myfuncs.myBreadCrumbs('onSubmitPress', this.props.navigation.state.routeName);
             let myProfile = this.state.profiles.profile[this.state.customizeIdx];
@@ -142,12 +143,41 @@ class ProfileCustomize extends React.Component {
                 return;
             }
 
-            this.refs.toast.show("Saved", 1000);
-            this.props.updateProfiles(this.state.profiles);
-            await myfuncs.writeUserDataToLocalStorage("user_profiles", this.state.profiles);
+            if (test) {
+                this.testInputFields(myProfile);
+            } else {
+                this.refs.toast.show("Saved", 1000);
+                this.refs.toast_bottom.show("Saved", 1000);
+                this.props.updateProfiles(this.state.profiles);
+                await myfuncs.writeUserDataToLocalStorage("user_profiles", this.state.profiles);
+            }
         } catch (error) {
             myfuncs.mySentry(error);
         }
+    };
+    testInputFields = (myProfile) => {
+        let text = "";
+
+        let pronoun = ['he', 'she', 'they'];
+        for (let i=0; i<6; i++)
+            text += myProfile.character[i].name + ', ' + pronoun[myProfile.character[i].pronoun] + ', ';
+        text +=  ' city is ' + myProfile.city + ', ' ;
+        text +=  ' pet is a ' + myProfile.pet + ', ' ;
+        text += 'named ' + myProfile.petName + ', ' ;
+        text +=  ' favorite celebrity is ' + myProfile.celebrity + ', ' ;
+        text += ' likes going to the ' + myProfile.event;
+        this.speak(text);
+    };
+    speak = (text) => {
+        Speech.stop();
+
+        // console.log(this.state.voice);
+        Speech.speak(text, {
+            voice: this.props.settings.voice.identifier,
+            // language: this.state.language,
+            // pitch: pitch_data[this.props.settings.pitchIdx].value,
+            // rate: pitch_data[this.props.settings.rateIdx].value,
+        });
     };
     render() {
         try {
@@ -240,11 +270,41 @@ class ProfileCustomize extends React.Component {
                                    onFocus={this.handleInputFocus}
                                    onBlur={this.handleInputBlur}
                         />
+                        <Text style={myStyles.iFieldLabel}>Favorite Living Celebrity</Text>
+                        <TextInput style={myStyles.iField}
+                                   value={this.state.profiles.profile[this.state.customizeIdx].celebrity}
+                                   onChangeText={(text) => this.updateState({celebrity: text})}
+                                   clearButtonMode='always'
+                                   placeholder={"Famous Person"}
+                                   returnKeyType='done'
+                                   placeholderTextColor={"grey"}
+                                   maxLength={100}
+                                   onFocus={this.handleInputFocus}
+                                   onBlur={this.handleInputBlur}
+                        />
+                        <Text style={myStyles.iFieldLabel}>Event:</Text>
+                        <TextInput style={myStyles.iField}
+                                   value={this.state.profiles.profile[this.state.customizeIdx].event}
+                                   onChangeText={(text) => this.updateState({event: text})}
+                                   clearButtonMode='always'
+                                   placeholder={"event"}
+                                   returnKeyType='done'
+                                   placeholderTextColor={"grey"}
+                                   maxLength={100}
+                                   onFocus={this.handleInputFocus}
+                                   onBlur={this.handleInputBlur}
+                        />
 
                         <View style={{paddingTop: 15}}/>
                         <MyButton buttonStyle={myStyles.selectButton}
                                   textStyle={myStyles.selectButtonText}
-                                  onPress={this.onSubmitPress}
+                                  onPress={() => this.onSubmitPress(true)}
+                                  title={"Test"}/>
+
+                        <View style={{paddingTop: 15}}/>
+                        <MyButton buttonStyle={myStyles.selectButton}
+                                  textStyle={myStyles.selectButtonText}
+                                  onPress={() => this.onSubmitPress(false)}
                                   title={"Save"}/>
 
                         <Toast
@@ -255,6 +315,15 @@ class ProfileCustomize extends React.Component {
                         fadeOutDuration={1000}
                         opacity={.8}
                         textStyle={{color:'gold',fontSize:21}}
+                        />
+                        <Toast
+                            ref="toast_bottom"
+                            style={{backgroundColor:'mediumpurple',borderRadius: 20,padding: 10}}
+                            position='bottom'
+                            positionValue={0}
+                            fadeOutDuration={1000}
+                            opacity={.8}
+                            textStyle={{color:'gold',fontSize:21}}
                         />
 
                     <MyHelpIcon onPress={this.onHelpPress}/>
@@ -352,7 +421,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     const { profiles } = state;
-    return { profiles }
+    const { settings } = state;
+    return { profiles, settings }
 };
 const mapDispatchToProps = dispatch => (
     bindActionCreators({

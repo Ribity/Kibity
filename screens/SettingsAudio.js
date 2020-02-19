@@ -7,8 +7,8 @@ import {
 } from 'react-native';
 import * as Speech from 'expo-speech';
 
-import myStyles from "../myStyles";
 import myfuncs from "../services/myFuncs";
+import Toast from 'react-native-easy-toast';
 
 import {MyButton} from "../components/MyButton";
 import {ScreenTitle} from "../components/screenTitle";
@@ -30,7 +30,7 @@ const rate_data = MyDefines.rate_data;
 
 class SettingsAudio extends React.Component {
     static navigationOptions = ({navigation}) => {
-        try {
+            try {
             myfuncs.myBreadCrumbs('navigationOptions', 'SettingsAudio');
             return {
                 headerTitle: () => <ScreenTitle title={"Settings"} second={"Audio"}/>,
@@ -44,7 +44,7 @@ class SettingsAudio extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            myText: "This is only a test. Save, if you like this voice",
+            myText: "This is only a test. If you like this voice, hit, save this voice",
             voice: JSON.parse(JSON.stringify(this.props.settings.voice)),
             voice_list: [],
         };
@@ -147,6 +147,16 @@ class SettingsAudio extends React.Component {
                     }
                     </Layout>
 
+                    <Toast
+                        ref="toast"
+                        style={{backgroundColor:'mediumpurple',borderRadius: 20,padding: 10}}
+                        position='top'
+                        positionValue={0}
+                        fadeOutDuration={1000}
+                        opacity={.9}
+                        textStyle={{color:'gold',fontSize:21}}
+                    />
+
                     <MyHelpIcon onPress={this.onHelpPress}/>
                     <MyHelpModal screen={"SettingsAudio"}
                                  onExitPress={this.onHelpExitPress}
@@ -178,6 +188,8 @@ class SettingsAudio extends React.Component {
             await this.props.updateSettings(new_settings);
             await this.updateStorage();
 
+            this.refs.toast.show("New voice saved", 2000);
+
         } catch (error) {
             // console.log(error);
             myfuncs.mySentry(error);
@@ -194,6 +206,8 @@ class SettingsAudio extends React.Component {
     };
 
     speak = () => {
+        Speech.stop();
+
         // console.log(this.state.voice);
         Speech.speak(this.state.myText, {
             voice: this.state.voice.identifier,

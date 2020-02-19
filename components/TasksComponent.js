@@ -85,12 +85,12 @@ class TasksComponent extends React.Component {
         try {
             myfuncs.myBreadCrumbs('getStoryListFromServer', "TasksComponent");
             let storyList_url = MyDefines.stories_url_bucket + "allStoriesList.json";
-            console.log("serverStoryList url:", storyList_url);
+            // console.log("serverStoryList url:", storyList_url);
             fetch(storyList_url)
                 .then(response => response.json())
                 .then(responseJson => {
                     // if (MyDefines.log_details)
-                    console.log("fetched remote storyList");
+                    // console.log("fetched remote storyList");
                     let serverStoryList = responseJson;
                     this.appendServerStoryList(serverStoryList);
                 })
@@ -122,7 +122,7 @@ class TasksComponent extends React.Component {
             await this.props.updateStoryList(newList);
             // console.log("NewStoryList:", this.props.story_list);
         } else {
-            console.log("No new stories from serverStoryList");
+            // console.log("No new stories from serverStoryList");
         }
     };
     clone = (obj) => {
