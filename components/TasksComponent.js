@@ -33,7 +33,7 @@ class TasksComponent extends React.Component {
             // sixtyMinute = setInterval(this.sixtyMinuteTask, 10 * 1000);
             // myfuncs.setAwakeorNot(this.props.settings.keep_awake);
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     }
     componentWillUnmount() {
@@ -46,7 +46,7 @@ class TasksComponent extends React.Component {
             AppState.removeEventListener('change', this._handleAppStateChange);
 
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     }
     _handleAppStateChange = (nextAppState) => {
@@ -65,7 +65,7 @@ class TasksComponent extends React.Component {
             }
             appState = nextAppState;
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     buildStoryList = () => {
@@ -78,7 +78,7 @@ class TasksComponent extends React.Component {
             // setTimeout(() => {this.getStoryListFromServer()}, 10000);    // This is for testing
 
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     getStoryListFromServer = () => {
@@ -101,7 +101,7 @@ class TasksComponent extends React.Component {
                 });
             return null;
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     appendServerStoryList = async (serverStoryList) => {
@@ -140,7 +140,7 @@ class TasksComponent extends React.Component {
                 console.log("sixtyMinuteTask");
             this.getStoryListFromServer();
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     render() {
@@ -150,7 +150,7 @@ class TasksComponent extends React.Component {
                 <View style={{padding:0}} />
             );
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     }
 }

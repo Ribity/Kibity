@@ -32,6 +32,6 @@ export const ThemeButton = () => {
                 </MyButton>
         );
     } catch (error) {
-        myfuncs.mySentry(error);
+        myfuncs.myRepo(error);
     }
 };

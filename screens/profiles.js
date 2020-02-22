@@ -23,11 +23,11 @@ class ProfilesScreen extends React.Component {
         try {
             myfuncs.myBreadCrumbs('navigationOptions', 'ProfilesScreen');
             return {
-                headerTitle: () => <ScreenTitle title={"Profiles"}/>,
+                headerTitle: () => <ScreenTitle title={"Profiles"} privacy={() => navigation.navigate("PrivacyProfiles")}/>,
                 headerRight: () => <ThemeButton/>,
             };
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     constructor(props) {
@@ -47,7 +47,7 @@ class ProfilesScreen extends React.Component {
             }
             return Object.keys(update).length ? update: null;
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     render () {
@@ -99,7 +99,7 @@ class ProfilesScreen extends React.Component {
                 </SafeAreaView>
             );
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     }
     goToSetActiveProfile = () => {
@@ -107,7 +107,7 @@ class ProfilesScreen extends React.Component {
             myfuncs.myBreadCrumbs('getToSetActiveProfile', this.props.navigation.state.routeName);
             this.props.navigation.navigate("ProfileSetActive");
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     goToSpecificProfile = (profileIdx) => {
@@ -115,7 +115,7 @@ class ProfilesScreen extends React.Component {
             myfuncs.myBreadCrumbs('goToSpecificProfile', this.props.navigation.state.routeName);
             this.props.navigation.navigate("ProfileCustomize", {customizeIdx: profileIdx});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     onHelpPress = () => {
@@ -123,7 +123,7 @@ class ProfilesScreen extends React.Component {
             myfuncs.myBreadCrumbs('onHelpPress', this.props.navigation.state.routeName);
             this.setState({isModalVisible: true});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     onHelpExitPress = () => {
@@ -131,7 +131,7 @@ class ProfilesScreen extends React.Component {
             myfuncs.myBreadCrumbs('onHelpExitPress', this.props.navigation.state.routeName);
             this.setState({isModalVisible: false});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
 }

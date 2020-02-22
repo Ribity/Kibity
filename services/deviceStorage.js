@@ -7,7 +7,7 @@ class deviceStorage  {
             await AsyncStorage.setItem(key, JSON.stringify(valueToSave));
         } catch (error) {
             console.log('AsyncStorage.setItem Error: ' + key + "|" + error.message);
-            // myfuncs.mySentry(error);
+            // myfuncs.myRepo(error);
         }
     };
 
@@ -19,7 +19,7 @@ class deviceStorage  {
         } catch (error) {
             if (ignoreNotFound !== true) {
                 console.log('AsyncStorage.getItem Error: ' + key + "|" + error.message);
-                // myfuncs.mySentry(error);
+                // myfuncs.myRepo(error);
             }
             return null;
         }
@@ -30,7 +30,7 @@ class deviceStorage  {
     //         await AsyncStorage.removeItem(key);
     //     } catch (error) {
     //         console.log('AsyncStorage.deleteKey Error: ' + error.message);
-    //         // myfuncs.mySentry(error);
+    //         // myfuncs.myRepo(error);
     //     }
     // };
 
@@ -39,7 +39,7 @@ class deviceStorage  {
             await AsyncStorage.clear();
         } catch (error) {
             console.log('AsyncStorage.clear Error: ' + error.message);
-            // myfuncs.mySentry(error);
+            // myfuncs.myRepo(error);
         }
     };
 

@@ -47,6 +47,6 @@ export const HelpSettings = ( {} ) => {
 			</KeyboardAwareScrollView>
 		);
     } catch (error) {
-	myfuncs.mySentry(error);
+	myfuncs.myRepo(error);
     }
 };

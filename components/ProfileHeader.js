@@ -19,7 +19,7 @@ export const ProfileHeader = ( {profile, onPress} ) => {
             </View>
         );
     } catch (error) {
-        myfuncs.mySentry(error);
+        myfuncs.myRepo(error);
     }
 };
 

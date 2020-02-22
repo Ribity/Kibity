@@ -42,6 +42,6 @@ export const HelpComponent= ( {screen, parm1} ) => {
         </View>
         );
     } catch (error) {
-        myfuncs.mySentry(error);
+        myfuncs.myRepo(error);
     }
 };

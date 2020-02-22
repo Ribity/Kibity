@@ -20,7 +20,7 @@ export const StoriesHeaderButton = ( {buttonType, listType, action} ) => {
             </View>
         );
     } catch (error) {
-        myfuncs.mySentry(error);
+        myfuncs.myRepo(error);
     }
 };
 

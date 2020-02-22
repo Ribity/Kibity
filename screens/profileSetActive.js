@@ -27,7 +27,7 @@ class ProfileSetActive extends React.Component {
                 headerRight: () => <ThemeButton/>,
             };
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     constructor(props) {
@@ -41,7 +41,7 @@ class ProfileSetActive extends React.Component {
             myfuncs.myBreadCrumbs('DidMount', this.props.navigation.state.routeName);
             this.updateActiveProfilesList();
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     }
     static getDerivedStateFromProps(nextProps, prevState){
@@ -54,7 +54,7 @@ class ProfileSetActive extends React.Component {
             }
             return Object.keys(update).length ? update: null;
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
             return null;
         }
     };
@@ -66,7 +66,7 @@ class ProfileSetActive extends React.Component {
             }
             this.setState({data_correct: true})
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     render () {
@@ -106,7 +106,7 @@ class ProfileSetActive extends React.Component {
                 </SafeAreaView>
             );
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     }
     updateActive = async (new_prop) => {
@@ -120,7 +120,7 @@ class ProfileSetActive extends React.Component {
             await myfuncs.writeUserDataToLocalStorage("user_profiles", this.props.profiles);
         } catch (error) {
             console.log(error);
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     onHelpPress = () => {
@@ -128,7 +128,7 @@ class ProfileSetActive extends React.Component {
             myfuncs.myBreadCrumbs('onHelpPress', this.props.navigation.state.routeName);
             this.setState({isModalVisible: true});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     onHelpExitPress = () => {
@@ -136,7 +136,7 @@ class ProfileSetActive extends React.Component {
             myfuncs.myBreadCrumbs('onHelpExitPress', this.props.navigation.state.routeName);
             this.setState({isModalVisible: false});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
 }

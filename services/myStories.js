@@ -25,7 +25,7 @@ class myStories {
         } catch (error) {
             console.log("exception for getStory:", storyName);
             console.log(error);
-            // myfuncs.mySentry(error);
+            // myfuncs.myRepo(error);
         }
     };
 
@@ -38,7 +38,7 @@ class myStories {
             }
         } catch (error) {
             console.log("exception for getstoryName:", storyName);
-            // myfuncs.mySentry(error);
+            // myfuncs.myRepo(error);
         }
         return storyToUse;
     };
@@ -60,7 +60,7 @@ class myStories {
             }
         } catch (error) {
             console.log("exception for getstoryName:", storyName);
-            // myfuncs.mySentry(error);
+            // myfuncs.myRepo(error);
         }
         return storyToUse;
     };
@@ -73,7 +73,7 @@ class myStories {
             }
         } catch (error) {
             console.log("exception for getstoryName:", storyName);
-            // myfuncs.mySentry(error);
+            // myfuncs.myRepo(error);
         }
         return storyToUse;
     };
@@ -95,7 +95,7 @@ class myStories {
             }
         } catch (error) {
             console.log("exception for getstoryName:", storyName);
-            // myfuncs.mySentry(error);
+            // myfuncs.myRepo(error);
         }
         return storyToUse;
     };
@@ -121,7 +121,7 @@ class myStories {
             }
         } catch (error) {
             console.log("exception for getstoryName:", storyName);
-            // myfuncs.mySentry(error);
+            // myfuncs.myRepo(error);
         }
         return storyToUse;
     };

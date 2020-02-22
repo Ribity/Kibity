@@ -52,7 +52,7 @@ export const HelpProfileCustomize = ( {} ) => {
 			</KeyboardAwareScrollView>
 		);
     } catch (error) {
-	myfuncs.mySentry(error);
+	myfuncs.myRepo(error);
     }
 };
 

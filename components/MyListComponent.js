@@ -28,7 +28,7 @@ class MyListComponent extends React.Component {
             this.query = "";
 
         } catch (error) {
-            // myfuncs.mySentry(error);
+            // myfuncs.myRepo(error);
         }
     };
     componentDidMount() {
@@ -37,7 +37,7 @@ class MyListComponent extends React.Component {
             this.setState({data: this.props.myList});
             this.setState({arrayholder: this.props.myList});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     }
     componentDidUpdate(prevProps, prevState) {
@@ -65,7 +65,7 @@ class MyListComponent extends React.Component {
                 />
             );
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
 
@@ -107,7 +107,7 @@ class MyListComponent extends React.Component {
             // console.log("newData");
             this.setState({data: newData});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     renderHeader = () => {
@@ -125,7 +125,7 @@ class MyListComponent extends React.Component {
                 />
             );
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     addToFaves = (index) => {
@@ -137,7 +137,7 @@ class MyListComponent extends React.Component {
             // this.setState({data: this.props.myList});
             this.props.updateParentStoriesCurrentProfile();
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     removeFromFaves = (index) => {
@@ -149,7 +149,7 @@ class MyListComponent extends React.Component {
             // this.setState({data: this.props.myList});
             this.props.updateParentStoriesCurrentProfile();
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     addToPlayList = (index) => {
@@ -161,7 +161,7 @@ class MyListComponent extends React.Component {
             // this.setState({data: this.props.myList});
             this.props.updateParentStoriesCurrentProfile();
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     removeFromPlayList = (index) => {
@@ -173,7 +173,7 @@ class MyListComponent extends React.Component {
             // this.setState({data: this.props.myList});
             this.props.updateParentStoriesCurrentProfile();
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     rightIcons = (index) => {
@@ -221,7 +221,7 @@ class MyListComponent extends React.Component {
                 </View>
             )
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     renderItem = (({item, index}) => {
@@ -402,7 +402,7 @@ class MyListComponent extends React.Component {
                 )
             }
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     });
 
@@ -451,7 +451,7 @@ class MyListComponent extends React.Component {
                 </View>
             );
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     }
 }

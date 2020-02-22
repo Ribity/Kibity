@@ -7,7 +7,7 @@ export default {
     log_audio: false,
     console_log_breadcrumbs: false,
 
-    sentry_logging: true,
+    // sentry_logging: true,
 
     myStatusBarHeight: Constants.statusBarHeight,
     myBottomTabBarHeight: 45,

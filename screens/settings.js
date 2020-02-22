@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Dimensions} from 'react-native'
+import {StyleSheet, View, Dimensions, TouchableOpacity} from 'react-native'
 import {SafeAreaView} from "react-navigation";
 import {Layout, Select, Text, Toggle} from "@ui-kitten/components";
 import myfuncs from "../services/myFuncs";
@@ -27,11 +27,12 @@ class SettingsScreen extends React.Component {
         try {
             myfuncs.myBreadCrumbs('navigationOptions', 'SettingsScreen');
             return {
-                headerTitle: () => <ScreenTitle title={"Settings"}/>,
+                headerLeft: () => <MyButton onPress={() => navigation.navigate("About")} title={"About"}/>,
+                headerTitle: () => <ScreenTitle title={"Settings"} privacy={() => navigation.navigate("PrivacySettings")}/>,
                 headerRight: () => <ThemeButton/>,
             };
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     constructor(props) {
@@ -46,7 +47,7 @@ class SettingsScreen extends React.Component {
             myfuncs.myBreadCrumbs('Did mount', this.props.navigation.state.routeName);
             this.getVoices();
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     }
     static getDerivedStateFromProps(nextProps, prevState){
@@ -59,7 +60,7 @@ class SettingsScreen extends React.Component {
             }
             return Object.keys(update).length ? update: null;
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     getVoices = async () => {
@@ -72,7 +73,7 @@ class SettingsScreen extends React.Component {
             myfuncs.myBreadCrumbs('goToSettingsAudio', this.props.navigation.state.routeName);
             this.props.navigation.navigate("SettingsAudio");
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     render() {
@@ -175,7 +176,7 @@ class SettingsScreen extends React.Component {
                 </SafeAreaView>
             );
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     }
     updateSettings = async (new_prop) => {
@@ -193,7 +194,7 @@ class SettingsScreen extends React.Component {
             }
         } catch (error) {
             console.log(error);
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     updateStorage = async () => {
@@ -202,7 +203,7 @@ class SettingsScreen extends React.Component {
             await myfuncs.writeUserDataToLocalStorage("user_settings", this.props.settings);
             // console.log("storage updated NewSettings:", this.props.settings);
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     onHelpPress = () => {
@@ -210,7 +211,7 @@ class SettingsScreen extends React.Component {
             myfuncs.myBreadCrumbs('onHelpPress', this.props.navigation.state.routeName);
             this.setState({isModalVisible: true});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     onHelpExitPress = () => {
@@ -218,7 +219,7 @@ class SettingsScreen extends React.Component {
             myfuncs.myBreadCrumbs('onHelpExitPress', this.props.navigation.state.routeName);
             this.setState({isModalVisible: false});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
 };

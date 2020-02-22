@@ -25,6 +25,6 @@ export const MyButton = ( {buttonStyle, textStyle, onPress, title} ) => {
             </View>
         );
     } catch (error) {
-        myfuncs.mySentry(error);
+        myfuncs.myRepo(error);
     }
 };

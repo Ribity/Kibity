@@ -17,7 +17,7 @@ class storyConversion {
             this.initText(profile);
             myStory = this.replacements(story, profile);
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
         return myStory;
     };
@@ -52,7 +52,7 @@ class storyConversion {
                 }
             }
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     replacements = (inStory, profile) => {
@@ -161,7 +161,7 @@ class storyConversion {
                 outStory.line[i] = this.capitalizeFirstChar(rLine);
             }
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
         return outStory;
     };
@@ -171,7 +171,7 @@ class storyConversion {
             myfuncs.myBreadCrumbs('capitalizeFirstChar', 'storyConversion');
             return s.charAt(0).toUpperCase() + s.substring(1);
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
             return s;
         }
     };

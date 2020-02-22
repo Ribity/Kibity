@@ -37,7 +37,8 @@ class StoriesScreen extends React.Component {
                                          listType={params.listType}
                     />,
                 headerTitle: () => <ScreenTitle title={params.num_stories + " Stories"}
-                                                second={"Active: " + params.activeProfile}/>,
+                                                second={"Active: " + params.activeProfile}
+                                                androidMoveLeft={20}/>,
                 headerRight: () =>
                     <StoriesHeaderButton buttonType={2}
                                          numItems={params.numList}
@@ -47,7 +48,7 @@ class StoriesScreen extends React.Component {
 
             };
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     constructor(props) {
@@ -83,7 +84,7 @@ class StoriesScreen extends React.Component {
             this.props.navigation.setParams({activeProfile: aProfile});
             this.props.navigation.setParams({listType: this.state.listType});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     }
     componentWillFocus() {
@@ -92,7 +93,7 @@ class StoriesScreen extends React.Component {
             let aProfile = myfuncs.shortenName(this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name, 12);
             this.props.navigation.setParams({activeProfile: aProfile});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     }
     componentWillUnmount() {
@@ -100,7 +101,7 @@ class StoriesScreen extends React.Component {
             myfuncs.myBreadCrumbs('Will UnMount', this.props.navigation.state.routeName);
             this.subs.forEach(sub => sub.remove());  // removes the componentWillFocus listener
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     static getDerivedStateFromProps(nextProps, prevState){
@@ -117,7 +118,7 @@ class StoriesScreen extends React.Component {
                 console.log("stories derivedState:", update);
             return Object.keys(update).length ? update: null;
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
             return null;
         }
     };
@@ -140,7 +141,7 @@ class StoriesScreen extends React.Component {
             if (MyDefines.log_details)
                 console.log("PressedRight");
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     listFaves = () => {
@@ -156,7 +157,7 @@ class StoriesScreen extends React.Component {
             if (MyDefines.log_details)
                 console.log("PressedLeft");
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     resetList = () => {
@@ -167,7 +168,7 @@ class StoriesScreen extends React.Component {
             if (MyDefines.log_details)
                 console.log("ResetList");
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     populateStateStoryList = () => {
@@ -193,7 +194,7 @@ class StoriesScreen extends React.Component {
             this.setState({stories: mylist.stories});
             // console.log("StateList:", mylist.stories);
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     updateStoriesProfiles = () => {
@@ -206,7 +207,7 @@ class StoriesScreen extends React.Component {
             this.props.navigation.setParams({numList: this.props.profiles.profile[this.props.profiles.profilesIdx].playList.length});
             this.updateStorage();
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     updateStorage = () => {
@@ -215,7 +216,7 @@ class StoriesScreen extends React.Component {
             myfuncs.writeUserDataToLocalStorage("user_profiles", this.props.profiles);
             // console.log("storage updated NewProfiles:", this.props.profiles);
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     onPressStorySelection = async (idx) => {
@@ -226,7 +227,7 @@ class StoriesScreen extends React.Component {
             // console.log(this.props.story_list);
             this.props.navigation.navigate("Audio", {storySelected: true});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     playFavorites = () => {
@@ -239,7 +240,7 @@ class StoriesScreen extends React.Component {
                 this.props.navigation.navigate("Audio", {storySelected: true});
             }
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     playPlayList = () => {
@@ -252,7 +253,7 @@ class StoriesScreen extends React.Component {
                 this.props.navigation.navigate("Audio", {storySelected: true});
             }
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     render() {
@@ -356,7 +357,7 @@ class StoriesScreen extends React.Component {
                 </View>
             );
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     }
     onHelpPress = () => {
@@ -364,7 +365,7 @@ class StoriesScreen extends React.Component {
             myfuncs.myBreadCrumbs('onHelpPress', this.props.navigation.state.routeName);
             this.setState({isModalVisible: true});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     onHelpExitPress = () => {
@@ -372,7 +373,7 @@ class StoriesScreen extends React.Component {
             myfuncs.myBreadCrumbs('onHelpExitPress', this.props.navigation.state.routeName);
             this.setState({isModalVisible: false});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     setFilterType = (showType, otherFilter) => {
@@ -391,7 +392,7 @@ class StoriesScreen extends React.Component {
                 this.showToast();
             }
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     showToast = () => {
@@ -404,7 +405,7 @@ class StoriesScreen extends React.Component {
             myfuncs.myBreadCrumbs('onOtherExitPress', this.props.navigation.state.routeName);
             this.setState({isOtherModalVisible: false});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
 }

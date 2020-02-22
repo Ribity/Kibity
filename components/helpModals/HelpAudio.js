@@ -44,7 +44,7 @@ export const HelpAudio = ( {} ) => {
 			</KeyboardAwareScrollView>
 		);
     } catch (error) {
-	myfuncs.mySentry(error);
+	myfuncs.myRepo(error);
     }
 }
 

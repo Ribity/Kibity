@@ -14,7 +14,7 @@ export const MyOtherModalExit = ( {onPress} ) => {
                 </TouchableOpacity>
         );
     } catch (error) {
-        myfuncs.mySentry(error);
+        myfuncs.myRepo(error);
     }
 };
 

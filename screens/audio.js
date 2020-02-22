@@ -58,11 +58,14 @@ class AudioScreen extends React.Component {
             const { params = {} } = navigation.state;
             return {
                 headerLeft: () => <ProfileHeader profile={params.myProfile} onPress={params.onPress}/>,
-                headerTitle: () => <ScreenTitle title={"Audio"}/>,
+                headerTitle: () => <ScreenTitle title={"Audio"}
+                                                androidMoveLeft={20}
+                                                // privacy={() => navigation.navigate("Privacy")}
+                />,
                 headerRight: () => <ThemeButton/>,
             };
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
 
@@ -87,7 +90,7 @@ class AudioScreen extends React.Component {
             if (MyDefines.log_audio)
                 console.log("height:", height, " width:", width, "statusbar:", MyDefines.myStatusBarHeight);
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     }
     getUserStoredData = async () => {
@@ -102,7 +105,7 @@ class AudioScreen extends React.Component {
             myfuncs.setAwakeorNot(this.props.settings.keep_awake);
 
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
 
@@ -118,7 +121,7 @@ class AudioScreen extends React.Component {
             }
             return Object.keys(update).length ? update: null;
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
             return null;
         }
     };
@@ -135,7 +138,7 @@ class AudioScreen extends React.Component {
                 }
             }
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     componentWillFocus() {
@@ -145,7 +148,7 @@ class AudioScreen extends React.Component {
             this.props.navigation.setParams({myProfile: this.props.profiles.profile[this.props.profiles.profilesIdx]});
             this.checkStorySelectedParm();
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     }
     componentWillUnmount() {
@@ -167,7 +170,7 @@ class AudioScreen extends React.Component {
             }
             this.subs.forEach(sub => sub.remove());  // removes the componentWillFocus listener
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     goToProfilesSetActive = () => {
@@ -175,7 +178,7 @@ class AudioScreen extends React.Component {
             myfuncs.myBreadCrumbs('goToProfilesSetActive', this.props.navigation.state.routeName);
             this.props.navigation.navigate("ProfileSetActive");
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     goToStoriesScreen = () => {
@@ -183,7 +186,7 @@ class AudioScreen extends React.Component {
             myfuncs.myBreadCrumbs('goToStoriesScreen', this.props.navigation.state.routeName);
             this.props.navigation.navigate("Stories");
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     getItAndPlay = () => {
@@ -213,7 +216,7 @@ class AudioScreen extends React.Component {
                     nextStoryTimeout = setTimeout(() => {this.playNext()}, pause_data[this.props.settings.pauseStoryIdx].value*1000 * 2);
             }
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     getStoryFromServer = () => {
@@ -250,7 +253,7 @@ class AudioScreen extends React.Component {
                         nextStoryTimeout = setTimeout(() => {this.playNext()}, pause_data[this.props.settings.pauseStoryIdx].value*1000 * 2);
                 });
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     playIt = () => {
@@ -279,7 +282,7 @@ class AudioScreen extends React.Component {
                 this.playLineNum(0);
             }
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
 
@@ -299,7 +302,7 @@ class AudioScreen extends React.Component {
             }
             this.playLine();
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     setOverrideToFalse = () => {
@@ -309,7 +312,7 @@ class AudioScreen extends React.Component {
                 console.log("setOverrideToFalse()");
             overrideTheNextLine = false;
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     playLine = () => {
@@ -361,7 +364,7 @@ class AudioScreen extends React.Component {
                 this.finishedStory();
             }
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     queueNextLine = () => {
@@ -370,7 +373,7 @@ class AudioScreen extends React.Component {
             let pause_seconds = this.determine_pause_secs();
             delayedPlay = setTimeout(() => {this.playNextLine()}, pause_seconds*1000);
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     determine_pause_secs = () => {
@@ -407,7 +410,7 @@ class AudioScreen extends React.Component {
                 }
             }
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     pauseIt = () => {
@@ -417,7 +420,7 @@ class AudioScreen extends React.Component {
             Speech.pause();
             this.setState({paused: true});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     resumeIt = () => {
@@ -438,7 +441,7 @@ class AudioScreen extends React.Component {
             }
             this.setState({paused: false});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     restartIt = () => {
@@ -446,7 +449,7 @@ class AudioScreen extends React.Component {
             myfuncs.myBreadCrumbs('restartIt', this.props.navigation.state.routeName);
             this.playIt();
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     backward = () => {
@@ -464,7 +467,7 @@ class AudioScreen extends React.Component {
                 console.log("backward playLineNum:", myIdx+1);
             this.playLineNum(myIdx);
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     forward = () => {
@@ -481,7 +484,7 @@ class AudioScreen extends React.Component {
                 console.log("forward playLineNum:", myIdx+1);
             this.playLineNum(myIdx);
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     clearPotentialPlay = () => {
@@ -492,7 +495,7 @@ class AudioScreen extends React.Component {
                 delayedPlay = null;
             }
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     finishedStory = () => {
@@ -500,7 +503,7 @@ class AudioScreen extends React.Component {
             myfuncs.myBreadCrumbs('finishedStory', this.props.navigation.state.routeName);
             nextStoryTimeout = setTimeout(() => {this.playNext()}, pause_data[this.props.settings.pauseStoryIdx].value*1000);
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     playFavorites = () => {
@@ -514,7 +517,7 @@ class AudioScreen extends React.Component {
                 this.getItAndPlay();
             }
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     playPlayList = () => {
@@ -528,7 +531,7 @@ class AudioScreen extends React.Component {
                 this.getItAndPlay();
             }
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     playPrevious = () => {
@@ -557,7 +560,7 @@ class AudioScreen extends React.Component {
             // nextStoryTimeout = setTimeout(() => {this.getItAndPlay()}, 2000);
             this.getItAndPlay();
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     validateListPlay = () => {
@@ -571,7 +574,7 @@ class AudioScreen extends React.Component {
                 this.props.setListType(0);
             }
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     playNext = () => {
@@ -602,7 +605,7 @@ class AudioScreen extends React.Component {
             // nextStoryTimeout = setTimeout(() => {this.getItAndPlay()}, 2000);
             this.getItAndPlay();
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     isPlayingAList = () => {
@@ -797,7 +800,7 @@ class AudioScreen extends React.Component {
                </SafeAreaView>
             );
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     }
     onHelpPress = () => {
@@ -805,7 +808,7 @@ class AudioScreen extends React.Component {
             myfuncs.myBreadCrumbs('onHelpPress', this.props.navigation.state.routeName);
             this.setState({isModalVisible: true});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     onHelpExitPress = () => {
@@ -813,7 +816,7 @@ class AudioScreen extends React.Component {
             myfuncs.myBreadCrumbs('onHelpExitPress', this.props.navigation.state.routeName);
             this.setState({isModalVisible: false});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     showToast = () => {

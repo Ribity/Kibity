@@ -122,7 +122,7 @@ export const MyOtherModal = ( {isVisible, onExitPress, onOtherPress} ) => {
             </Modal>
         );
     } catch (error) {
-        myfuncs.mySentry(error);
+        myfuncs.myRepo(error);
     }
 };
 

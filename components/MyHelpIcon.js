@@ -14,7 +14,7 @@ export const MyHelpIcon = ( {isAdmob, onPress, } ) => {
                 </TouchableOpacity>
         );
     } catch (error) {
-        myfuncs.mySentry(error);
+        myfuncs.myRepo(error);
     }
 };
 

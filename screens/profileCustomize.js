@@ -46,7 +46,7 @@ class ProfileCustomize extends React.Component {
                 headerTitle: () => <ScreenTitle title={"Customize"} second={params.profileNum}/>,
             };
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     constructor(props) {
@@ -66,7 +66,7 @@ class ProfileCustomize extends React.Component {
             // console.log(this.props.profiles);
             this.checkCustomizeIdxParm();
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     }
     // static getDerivedStateFromProps(nextProps, prevState){
@@ -78,7 +78,7 @@ class ProfileCustomize extends React.Component {
     //         }
     //         return Object.keys(update).length ? update: null;
     //     } catch (error) {
-    //         myfuncs.mySentry(error);
+    //         myfuncs.myRepo(error);
     //         return null;
     //     }
     // };
@@ -90,7 +90,7 @@ class ProfileCustomize extends React.Component {
             let profileNumText = "Profile #" + (customizeIdx+1);
             this.props.navigation.setParams({profileNum: profileNumText});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     onSubmitPress = async (test) => {
@@ -152,7 +152,7 @@ class ProfileCustomize extends React.Component {
                 await myfuncs.writeUserDataToLocalStorage("user_profiles", this.state.profiles);
             }
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     testInputFields = (myProfile) => {
@@ -200,7 +200,7 @@ class ProfileCustomize extends React.Component {
 
                         <MyButton buttonStyle={myStyles.selectButton}
                                   textStyle={myStyles.selectButtonText}
-                                  onPress={this.onSubmitPress}
+                                  onPress={() => this.onSubmitPress(false)}
                                   title={"Save"}/>
 
                         {this.state.profiles.profile[this.state.customizeIdx].character.map((character, index) => (
@@ -338,7 +338,7 @@ class ProfileCustomize extends React.Component {
                 </KeyboardAwareScrollView>
             );
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     }
     handleInputFocus = () => this.setState({ textIsFocused: true });
@@ -348,7 +348,7 @@ class ProfileCustomize extends React.Component {
             myfuncs.myBreadCrumbs('onHelpPress', this.props.navigation.state.routeName);
             this.setState({isModalVisible: true});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     onHelpExitPress = () => {
@@ -356,7 +356,7 @@ class ProfileCustomize extends React.Component {
             myfuncs.myBreadCrumbs('onHelpExitPress', this.props.navigation.state.routeName);
             this.setState({isModalVisible: false});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     updateStateGender = (isChecked, charIdx, value) => {
@@ -373,7 +373,7 @@ class ProfileCustomize extends React.Component {
                 }
             }
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     updateStateChar = (new_prop, charIdx) => {
@@ -384,7 +384,7 @@ class ProfileCustomize extends React.Component {
                 {...newProfiles.profile[this.state.customizeIdx].character[charIdx], ...new_prop};
             this.setState({profiles: newProfiles});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     updateState = (new_prop) => {
@@ -395,7 +395,7 @@ class ProfileCustomize extends React.Component {
                 {...newProfiles.profile[this.state.customizeIdx], ...new_prop};
             this.setState({profiles: newProfiles});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
 };

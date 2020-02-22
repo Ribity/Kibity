@@ -23,6 +23,6 @@ export const MyHelpModal = ( {isVisible, onExitPress, screen, parm1} ) => {
             </Modal>
         );
     } catch (error) {
-        myfuncs.mySentry(error);
+        myfuncs.myRepo(error);
     }
 };

@@ -28,7 +28,7 @@ export const HelpProfiles = ( {} ) => {
 			</KeyboardAwareScrollView>
 		);
     } catch (error) {
-	myfuncs.mySentry(error);
+	myfuncs.myRepo(error);
     }
 }
 

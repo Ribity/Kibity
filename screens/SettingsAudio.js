@@ -3,7 +3,7 @@ import {
     Text,
     View,
     Picker,
-    TextInput, StyleSheet, Dimensions,
+    StyleSheet, Dimensions,
 } from 'react-native';
 import * as Speech from 'expo-speech';
 
@@ -38,7 +38,7 @@ class SettingsAudio extends React.Component {
 
             };
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     constructor(props) {
@@ -54,7 +54,7 @@ class SettingsAudio extends React.Component {
             myfuncs.myBreadCrumbs('Did mount', this.props.navigation.state.routeName);
             this.getVoices();
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     }
     getVoices = async () => {
@@ -62,7 +62,7 @@ class SettingsAudio extends React.Component {
             myfuncs.myBreadCrumbs('Did mount', this.props.navigation.state.routeName);
             let list = await Speech.getAvailableVoicesAsync();
 
-            // myfuncs.mySentry(list);
+            // myfuncs.myRepo(list);
             // console.log(list);
             await this.setState({voice_list: list});
             if (this.state.voice === "" || this.state.voice === null) {
@@ -73,7 +73,7 @@ class SettingsAudio extends React.Component {
                 }
             }
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     render() {
@@ -164,7 +164,7 @@ class SettingsAudio extends React.Component {
                 </SafeAreaView>
             );
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     setVoiceState = (identifier) => {
@@ -192,7 +192,7 @@ class SettingsAudio extends React.Component {
 
         } catch (error) {
             // console.log(error);
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     updateStorage = async () => {
@@ -201,7 +201,7 @@ class SettingsAudio extends React.Component {
             await myfuncs.writeUserDataToLocalStorage("user_settings", this.props.settings);
             // console.log("storage updated NewSettings:", this.props.settings);
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
 
@@ -221,7 +221,7 @@ class SettingsAudio extends React.Component {
             myfuncs.myBreadCrumbs('onHelpPress', this.props.navigation.state.routeName);
             this.setState({isModalVisible: true});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
     onHelpExitPress = () => {
@@ -229,7 +229,7 @@ class SettingsAudio extends React.Component {
             myfuncs.myBreadCrumbs('onHelpExitPress', this.props.navigation.state.routeName);
             this.setState({isModalVisible: false});
         } catch (error) {
-            myfuncs.mySentry(error);
+            myfuncs.myRepo(error);
         }
     };
 

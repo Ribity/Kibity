@@ -95,6 +95,6 @@ export const HelpStories = ( {} ) => {
 			</KeyboardAwareScrollView>
 		);
     } catch (error) {
-	myfuncs.mySentry(error);
+	myfuncs.myRepo(error);
     }
 };
