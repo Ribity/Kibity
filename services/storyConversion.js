@@ -95,6 +95,7 @@ class storyConversion {
                 rLine = rLine.replace(/pet1/gi, profile.pet);
                 rLine = rLine.replace(/petname1/gi, profile.petName);
                 rLine = rLine.replace(/event1/gi, profile.event);
+                rLine = rLine.replace(/snack1/gi, profile.snack);
                 rLine = rLine.replace(/celebrity1/gi, profile.celebrity);
 
                 rLine = rLine.replace(/she1/gi, HeOrShe[0]);

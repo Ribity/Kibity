@@ -165,7 +165,9 @@ class ProfileCustomize extends React.Component {
         text +=  ' pet is a ' + myProfile.pet + ', ' ;
         text += 'named ' + myProfile.petName + ', ' ;
         text +=  ' favorite celebrity is ' + myProfile.celebrity + ', ' ;
-        text += ' likes going to the ' + myProfile.event;
+        text += '  ' + myProfile.event + ', ';
+        text +=  ' favorite snacks are ' + myProfile.snack + ', ' ;
+
         this.speak(text);
     };
     speak = (text) => {
@@ -288,6 +290,18 @@ class ProfileCustomize extends React.Component {
                                    onChangeText={(text) => this.updateState({event: text})}
                                    clearButtonMode='always'
                                    placeholder={"event"}
+                                   returnKeyType='done'
+                                   placeholderTextColor={"grey"}
+                                   maxLength={100}
+                                   onFocus={this.handleInputFocus}
+                                   onBlur={this.handleInputBlur}
+                        />
+                        <Text style={myStyles.iFieldLabel}>Favorite snacks (plural)</Text>
+                        <TextInput style={myStyles.iField}
+                                   value={this.state.profiles.profile[this.state.customizeIdx].snack}
+                                   onChangeText={(text) => this.updateState({snack: text})}
+                                   clearButtonMode='always'
+                                   placeholder={"snacks"}
                                    returnKeyType='done'
                                    placeholderTextColor={"grey"}
                                    maxLength={100}

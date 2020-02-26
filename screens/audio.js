@@ -905,8 +905,8 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
     },
     bigText: {
-        fontSize: 24,
-        lineHeight: 26,
+        fontSize: 26,
+        lineHeight: 28,
         fontWeight: 'bold',
         // textAlign: 'justify',
         color: 'mediumpurple',
@@ -915,8 +915,8 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
     },
     smallText: {
-        fontSize: 19,
-        lineHeight: 21,
+        fontSize: 20,
+        lineHeight: 22,
         fontWeight: 'bold',
         // textAlign: 'justify',
         color: 'mediumpurple',

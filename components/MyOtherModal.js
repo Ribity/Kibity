@@ -47,11 +47,6 @@ export const MyOtherModal = ( {isVisible, onExitPress, onOtherPress} ) => {
 
                         <MyButton buttonStyle={styles.modalButton}
                                   textStyle={styles.ageButtonText}
-                                  onPress={() => onOtherPress("Cricket")}
-                                  title={"Cricket Allen"}/>
-
-                        <MyButton buttonStyle={styles.modalButton}
-                                  textStyle={styles.ageButtonText}
                                   onPress={() => onOtherPress("write-in")}
                                   title={"Write-Ins"}/>
 
@@ -69,7 +64,7 @@ export const MyOtherModal = ( {isVisible, onExitPress, onOtherPress} ) => {
 
 
 
-                        <View style={{paddingTop: 15}}/>
+                        <View style={{paddingTop: 25}}/>
                         <Text style={styles.helpSmaller}>Ages</Text>
                         <View style={styles.addRow}>
                             <MyButton buttonStyle={styles.ageButton}
@@ -113,6 +108,21 @@ export const MyOtherModal = ( {isVisible, onExitPress, onOtherPress} ) => {
 
                         </View>
 
+
+                        <View style={{paddingTop: 25}}/>
+                        <Text style={styles.helpSmaller}>Authors</Text>
+
+                        <View style={styles.addRow}>
+                            <MyButton buttonStyle={styles.modalButton}
+                                      textStyle={styles.ageButtonText}
+                                      onPress={() => onOtherPress("Cricket")}
+                                      title={"Cricket Allen"}/>
+
+                            <MyButton buttonStyle={styles.modalButton}
+                                      textStyle={styles.ageButtonText}
+                                      onPress={() => onOtherPress("mark king")}
+                                      title={"Mark King"}/>
+                        </View>
 
 
                     </KeyboardAwareScrollView>

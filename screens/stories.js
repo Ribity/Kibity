@@ -403,6 +403,7 @@ class StoriesScreen extends React.Component {
     onOtherExitPress = () => {
         try {
             myfuncs.myBreadCrumbs('onOtherExitPress', this.props.navigation.state.routeName);
+            this.setFilterType(0, "");
             this.setState({isOtherModalVisible: false});
         } catch (error) {
             myfuncs.myRepo(error);

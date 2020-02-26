@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Dimensions, TouchableOpacity} from 'react-native'
+import {StyleSheet, View, Dimensions} from 'react-native'
 import {SafeAreaView} from "react-navigation";
 import {Layout, Select, Text, Toggle} from "@ui-kitten/components";
 import myfuncs from "../services/myFuncs";

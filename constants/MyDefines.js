@@ -66,6 +66,7 @@ export default {
                 city: "Raleigh, North Carolina",
                 celebrity: "Henry Hart",
                 event: "Washington Redskins game",
+                snack: "hershey bars",
                 favorites: [],      // list of story indexes (integers) 0-based, must match allStoriesList.json indexes
                 playList: [],       // list to story indexes (integers) 1-based, must match allStoriesList.json indexes
                 currStoryIdx: -1,
@@ -88,6 +89,7 @@ export default {
                 city: "Raleigh",
                 celebrity: "Diane Johnson",
                 event: "Jonas Brothers concert",
+                snack: "sweet tarts",
                 favorites: [],
                 playList: [],
                 currStoryIdx: -1,
@@ -110,6 +112,7 @@ export default {
                 city: "Toronto, Canada",
                 celebrity: "Miley Cyrus",
                 event: "Wild Animal Circus",
+                snack: "chocolate chip cookies and apple pies",
                 favorites: [],
                 playList: [],
                 currStoryIdx: -1,

@@ -1,11 +1,11 @@
 import hardStorage from "./deviceStorage";
-// import * as Sentry from "sentry-expo";
+import * as Sentry from "sentry-expo";
 import MyDefines from '../constants/MyDefines';
 import { Audio } from 'expo-av';
-// import * as Localization from 'expo-localization';
-// import ApiKeys from '../constants/ApiKeys';
-// import * as Constants from 'expo-constants';
-// import * as Device from 'expo-device';
+import * as Localization from 'expo-localization';
+import ApiKeys from '../constants/ApiKeys';
+import * as Constants from 'expo-constants';
+import * as Device from 'expo-device';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 
 const SOUNDS = {};
@@ -20,7 +20,7 @@ class myFuncs  {
         let profiles = MyDefines.default_profiles;
         let new_user = false;
         try {
-            // this.initRepo();
+            this.initRepo();
 
             myfuncs.myBreadCrumbs('init', "myfuncs");
 
@@ -36,14 +36,18 @@ class myFuncs  {
                     retObj.profiles.profile[i].character[4] = JSON.parse(JSON.stringify(profiles.profile[i].character[4]));
                     retObj.profiles.profile[i].character[5] = JSON.parse(JSON.stringify(profiles.profile[i].character[5]));
                 }
-                if (retObj.profiles.profile[0].celebrity === null ||
-                    retObj.profiles.profile[0].celebrity === undefined ||
-                    retObj.profiles.profile[0].celebrity === "")
-                    retObj.profiles.profile[0].celebrity = JSON.parse(JSON.stringify(profiles.profile[i].celebrity));
-                if (retObj.profiles.profile[0].event === null ||
-                    retObj.profiles.profile[0].event === undefined ||
-                    retObj.profiles.profile[0].event === "")
-                    retObj.profiles.profile[0].event = JSON.parse(JSON.stringify(profiles.profile[i].event));
+                if (retObj.profiles.profile[i].celebrity === null ||
+                    retObj.profiles.profile[i].celebrity === undefined ||
+                    retObj.profiles.profile[i].celebrity === "")
+                    retObj.profiles.profile[i].celebrity = JSON.parse(JSON.stringify(profiles.profile[i].celebrity));
+                if (retObj.profiles.profile[i].event === null ||
+                    retObj.profiles.profile[i].event === undefined ||
+                    retObj.profiles.profile[i].event === "")
+                    retObj.profiles.profile[i].event = JSON.parse(JSON.stringify(profiles.profile[i].event));
+                if (retObj.profiles.profile[i].snack === null ||
+                    retObj.profiles.profile[i].snack === undefined ||
+                    retObj.profiles.profile[i].snack === "")
+                    retObj.profiles.profile[i].snack = JSON.parse(JSON.stringify(profiles.profile[i].snack));
             }
 
 
@@ -75,7 +79,7 @@ class myFuncs  {
                 new_user = true;
                 hardStorage.setKey("kibity_user", true);
                 // console.log("new user");
-                // Sentry.captureMessage("New Kibity user", 'info');
+                Sentry.captureMessage("New Kibity user", 'info');
             }
         } catch (error) {
             this.myRepo(error);
@@ -121,64 +125,64 @@ class myFuncs  {
             this.myRepo(error);
         }
     };
-    // initRepo = () => {
-    //     try {
-    //         Sentry.init({
-    //             dsn: ApiKeys.sentry_dsn,
-    //             enableInExpoDevelopment: true,
-    //             debug: true,
-    //             beforeSend(event) {
-    //                 console.log("sending to Sentry");
-    //                 return event;
-    //             }
-    //         });
-    //         Sentry.setRelease("1.0.0");
-    //         Sentry.configureScope(function (scope) {
-    //             scope.setExtra("myExtraData", {
-    //                 // "releaseChannel": releaseChan,
-    //                 "local_timezone": Localization.timezone,
-    //             });
-    //         });
-    //         Sentry.configureScope(function (scope) {
-    //             scope.setExtra("expoConstants", {
-    //                 // "releaseChannel": releaseChan,
-    //                 "appOwnership": Constants.default.appOwnership,
-    //                 "debugMode": Constants.default.debugMode,
-    //                 "deviceId": Constants.default.deviceId,
-    //                 "deviceName": Constants.default.deviceName,
-    //                 "deviceYearClass": Constants.default.deviceYearClass,
-    //                 "experienceUrl": Constants.default.experienceUrl,
-    //                 "expoRuntimeVersion": Constants.default.expoRuntimeVersion,
-    //                 "expoVersion": Constants.default.expoVersion,
-    //                 "platform": Constants.default.platform,
-    //                 "installationId": Constants.default.installationId,
-    //                 "isDetached": Constants.default.isDetached,
-    //                 "isDevice": Constants.default.isDevice,
-    //                 "sessionId": Constants.default.sessionId,
-    //                 "isHeadless": Constants.default.isHeadless,
-    //                 "statusBarHeight": Constants.default.statusBarHeight,
-    //                 "supportedExpoSdks": Constants.default.supportedExpoSdks,
-    //                 "releaseChannel": Constants.default.releaseChannel,
-    //             });
-    //         });
-    //         Sentry.configureScope(function (scope) {
-    //             scope.setExtra("deviceInfo", {
-    //                 "brand": Device.brand,
-    //                 "manufacturer": Device.manufacturer,
-    //                 "modelId": Device.modelId,
-    //                 "modelName": Device.modelName,
-    //                 "osBuildId": Device.osBuildId,
-    //                 "osInternalBuildId": Device.osInternalBuildId,
-    //                 "osName": Device.osName,
-    //                 "osVersion": Device.osVersion,
-    //                 "osTotalMemory": Device.totalMemory,
-    //             });
-    //         });
-    //     } catch (error) {
-    //         console.log("Send Sentry");
-    //         this.myRepo(error);
-    //     }
-    // };
+    initRepo = () => {
+        try {
+            Sentry.init({
+                dsn: ApiKeys.sentry_dsn,
+                enableInExpoDevelopment: true,
+                debug: true,
+                beforeSend(event) {
+                    console.log("sending to Sentry");
+                    return event;
+                }
+            });
+            Sentry.setRelease("1.0.0");
+            Sentry.configureScope(function (scope) {
+                scope.setExtra("myExtraData", {
+                    // "releaseChannel": releaseChan,
+                    "local_timezone": Localization.timezone,
+                });
+            });
+            Sentry.configureScope(function (scope) {
+                scope.setExtra("expoConstants", {
+                    // "releaseChannel": releaseChan,
+                    "appOwnership": Constants.default.appOwnership,
+                    "debugMode": Constants.default.debugMode,
+                    "deviceId": Constants.default.deviceId,
+                    "deviceName": Constants.default.deviceName,
+                    "deviceYearClass": Constants.default.deviceYearClass,
+                    "experienceUrl": Constants.default.experienceUrl,
+                    "expoRuntimeVersion": Constants.default.expoRuntimeVersion,
+                    "expoVersion": Constants.default.expoVersion,
+                    "platform": Constants.default.platform,
+                    "installationId": Constants.default.installationId,
+                    "isDetached": Constants.default.isDetached,
+                    "isDevice": Constants.default.isDevice,
+                    "sessionId": Constants.default.sessionId,
+                    "isHeadless": Constants.default.isHeadless,
+                    "statusBarHeight": Constants.default.statusBarHeight,
+                    "supportedExpoSdks": Constants.default.supportedExpoSdks,
+                    "releaseChannel": Constants.default.releaseChannel,
+                });
+            });
+            Sentry.configureScope(function (scope) {
+                scope.setExtra("deviceInfo", {
+                    "brand": Device.brand,
+                    "manufacturer": Device.manufacturer,
+                    "modelId": Device.modelId,
+                    "modelName": Device.modelName,
+                    "osBuildId": Device.osBuildId,
+                    "osInternalBuildId": Device.osInternalBuildId,
+                    "osName": Device.osName,
+                    "osVersion": Device.osVersion,
+                    "osTotalMemory": Device.totalMemory,
+                });
+            });
+        } catch (error) {
+            console.log("Send Sentry");
+            this.myRepo(error);
+        }
+    };
     playRibbit = async (routeName) => {
         try {
             this.myBreadCrumbs('playRibbit', routeName);
@@ -259,7 +263,6 @@ class myFuncs  {
     resetSound = () => {
         bSoundIsPlaying = false;
     };
-
     myRepo = (error) => {
         // try {
         //     Sentry.captureException(error);
@@ -268,25 +271,25 @@ class myFuncs  {
         // }
     };
     myBreadCrumbs = (message, category) => {
-        // try {
-        //     if (MyDefines.sentry_logging  && MyDefines.console_log_breadcrumbs) {
-        //             let bc_object = {
-        //             message: message,
-        //         };
-        //         if (category !== undefined) {
-        //             bc_object.category = category;
-        //         }
-        //         Sentry.addBreadcrumb(bc_object);
-        //         if (MyDefines.console_log_breadcrumbs) {
-        //             if (category !== undefined)
-        //                 console.log(message, ":", category);
-        //             else
-        //                 console.log(message);
-        //         }
-        //     }
-        // } catch (error) {
-        //     console.log(error);
-        // }
+        try {
+            if (MyDefines.sentry_logging  && MyDefines.console_log_breadcrumbs) {
+                    let bc_object = {
+                    message: message,
+                };
+                if (category !== undefined) {
+                    bc_object.category = category;
+                }
+                Sentry.addBreadcrumb(bc_object);
+                if (MyDefines.console_log_breadcrumbs) {
+                    if (category !== undefined)
+                        console.log(message, ":", category);
+                    else
+                        console.log(message);
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
     setAwakeorNot = (bKeepAwake) => {
         if (bKeepAwake) {

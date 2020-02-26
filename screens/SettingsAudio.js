@@ -64,14 +64,13 @@ class SettingsAudio extends React.Component {
 
             // myfuncs.myRepo(list);
             // console.log(list);
-            await this.setState({voice_list: list});
             if (this.state.voice === "" || this.state.voice === null) {
-                let idx = list.length;
-                if (idx > 1) {
-                    idx = idx / 2;  // start with one in the middle of the list
-                    this.setState({voice: list[idx]});
+                if (list !== null && list.length > 0 ) {
+                    this.setState({voice: list[(list.length / 2)]});
                 }
             }
+            await this.setState({voice_list: list});
+
         } catch (error) {
             myfuncs.myRepo(error);
         }

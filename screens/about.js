@@ -52,40 +52,50 @@ export default class AboutScreen extends React.Component {
 							Welcome to Kibity.
 							{"\n"}
 							{"\n"}
-                            'Magical Adventures' was originally developed as an Alexa skill presenting personalized kid stories.
-							The participation and feedback on Alexa led to the development of the Kibity Mobile Application
+                            Kibity was originally developed as the 'Magical Adventures' skill on the Alexa Echo device.
+							The participation and feedback from the Alexa users led to the development of the Kibity Mobile Application
 							for iOS and Android devices.
 							The phone application allows us to display the words as they are spoken.
-                            We are pleased Kibity has become a tool to engage kids while learning to read.
+                            We are pleased Kibity has advanced to become a tool to engage kids while learning to read.
+                            {"\n"}
+                            {"\n"}
+                            As we receive new stories we will add them to the library of stories as time permits. We will also
+							add public domain stories periodically.
 							{"\n"}
 							{"\n"}
+							We love when users send us their own stories they have written to be published on Kibity.
+							You simply write the story with regular characters' names as you normally would write a story.
+							Once you email your story to us we will modify it into the correct format.
+							The Kibity logic will then insert other users' customized parameters.
+							Your story will be presented to other users with their own specified characters' names.
+							Your story may be as long or as short as you desire.
+							Please mail your stories to ribity@yahoo.com or mark_king@yahoo.com
+							{"\n"}
+							{"\n"}
+							Ribity LLC was formed to protect us from liabilities. We hope to never do anything
+							that would trigger a liability, but we were advised to create Ribity LLC just in case.
+                            {"\n"}
+                            {"\n"}
                             We value your privacy. We do not collect any data from your device. We are not
-                            interested in your data. We are just a couple of normal people with a hobby. We'd love to get
-                            to know our users, but we value your privacy. We will never ask for you EMail or any other data.
-                            Please enjoy the stories with no worries of your data being breached, because we do not have servers
-                            or anything to be hacked.
-                            {"\n"}
-                            {"\n"}
-                            Beth and I will write stories and add them to the library of stories as time permits. We will also
-							add public domain stories.
+                            interested in your data. We are just a couple of normal people with a hobby.
+                            We will never ask for you EMail or any other data.
+                            Please enjoy the stories with no worries of your data being breached. We do not have servers
+                            or anything to be hacked. Your data is safe, as it resides only on your device
 							{"\n"}
 							{"\n"}
-							We LOVE when users send us their own stories they have written to be publiYou simply write the story
-							with regular characters' names as you normally would write a story.  Once you email your story to
-							us we will modify it into the correct format.  The Kibity logic will then insert other users'
-							customized parameters. Your story will be presented to other users with their own specified
-							characters' names. Your story may be as long or as short as you desire. Please mail your stories to
-							ribity@yahoo.com or mark_king@yahoo.com
-							{"\n"}
-							{"\n"}
-							Ribity LLC was formed to protect us from liabilities. We cannot imagine us doing anything
-							that would trigger a liability, but we were advised to created Ribity LLC just in case.
+							Also, to protect your privacy we never collect data and we removed all third-party analytics.
+							Long story short: This means we do not have the means to collect application crashes
+							or similar programming issues.
+							This tremendously reduces our debugging capabilities.
+							It was a tough call to remove these tools, but we truly value
+							your privacy.
+							If you have an issue please send an EMail explaining the details.
 							{"\n"}
 							{"\n"}
 							EMail:  Ribity@yahoo.com
 							{"\n"}
 							{"\n"}
-							- Mark and Beth in Raleigh, North Carolina, USA
+							We sincere hope you enjoy Kibity.
 
 						</Text>
 						</View>
