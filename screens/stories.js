@@ -397,8 +397,8 @@ class StoriesScreen extends React.Component {
     };
     showToast = () => {
         this.refs.toast.show("We encourage you to write a story and send to:" +
-            "\r\n\nRibity@yahoo.com " +
-            "\r\n\nWe will publish it on Kibity and contact you when it is added to the Kibity list of stories.", 6000);
+            "\r\n\nStories@kibity.com " +
+            "\r\n\nWe will publish it on Kibity and contact you when it is added to the Kibity list of Write-In stories.", 6000);
     };
     onOtherExitPress = () => {
         try {

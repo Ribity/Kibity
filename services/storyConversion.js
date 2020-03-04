@@ -86,10 +86,10 @@ class storyConversion {
                 rLine = rLine.replace(/parent2/gi, profile.character[4].name);
                 rLine = rLine.replace(/boy5/gi, BoyOrGirl[4]);
                 rLine = rLine.replace(/girl5/gi, BoyOrGirl[4]);
-                rLine = rLine.replace(/char5/gi, profile.character[5].name);
+                rLine = rLine.replace(/char6/gi, profile.character[5].name);
                 rLine = rLine.replace(/parent3/gi, profile.character[5].name);
-                rLine = rLine.replace(/boy5/gi, BoyOrGirl[5]);
-                rLine = rLine.replace(/girl5/gi, BoyOrGirl[5]);
+                rLine = rLine.replace(/boy6/gi, BoyOrGirl[5]);
+                rLine = rLine.replace(/girl6/gi, BoyOrGirl[5]);
 
                 rLine = rLine.replace(/city1/gi, profile.city);
                 rLine = rLine.replace(/pet1/gi, profile.pet);

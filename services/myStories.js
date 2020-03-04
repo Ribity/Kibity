@@ -48,12 +48,16 @@ class myStories {
         try {
             switch (storyName) {    // images in assets/images
                 case 'hotelCaledonia.json':
-                case 'hotelCaledonia':
                     storyToUse = require('../assets/stories/hotelCaledonia.json');
                     break;
                 case 'classFieldTrip.json':
-                case 'classFieldTrip':
                     storyToUse = require('../assets/stories/classFieldTrip.json');
+                    break;
+                case 'homeUnderTheRainbow.json':
+                    storyToUse = require('../assets/stories/homeUnderTheRainbow.json');
+                    break;
+                case 'hushLittleBaby.json':
+                    storyToUse = require('../assets/stories/hushLittleBaby.json');
                     break;
                 default:
                     break;
@@ -68,6 +72,9 @@ class myStories {
         let storyToUse = -1;
         try {
             switch (storyName) {    // images in assets/images
+                case 'lambsTail.json':
+                    storyToUse = require('../assets/stories/lambsTail.json');
+                    break;
                 default:
                     break;
             }
@@ -83,12 +90,13 @@ class myStories {
         try {
             switch (storyName) {
                 case 'summerVacationAtGrandmas.json':
-                case 'summerVacationAtGrandmas':
                     storyToUse = require('../assets/stories/summerVacationAtGrandmas.json');
                     break;
                 case 'pecanTree.json':
-                case 'pecanTree':
                     storyToUse = require('../assets/stories/pecanTree.json');
+                    break;
+                case 'rockAByeBaby.json':
+                    storyToUse = require('../assets/stories/rockAByeBaby.json');
                     break;
                 default:
                     break;
@@ -105,16 +113,16 @@ class myStories {
         try {
             switch (storyName) {    // images in assets/images
                 case 'uncleNedsFireworks.json':
-                case 'uncleNedsFireworks':
                     storyToUse = require('../assets/stories/uncleNedsFireworks.json');
                     break;
                 case 'toysAndAnimals.json':
-                case 'toysAndAnimals':
                     storyToUse = require('../assets/stories/toysAndAnimals.json');
                     break;
                 case 'thisLittlePiggy.json':
-                case 'thisLittlePiggy':
                     storyToUse = require('../assets/stories/thisLittlePiggy.json');
+                    break;
+                case 'windAndToes.json':
+                    storyToUse = require('../assets/stories/windAndToes.json');
                     break;
                 default:
                     break;

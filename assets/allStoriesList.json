@@ -10,8 +10,8 @@
         "num_lines": 51,
         "filename": "uncleNedsFireworks.json",
         "date_published": "Jan 13, 2020",
-        "written_by": "Mark King",
-        "keywords": "River smell straw bridge gamma boy blue kibity",
+        "written_by": "Kibity",
+        "keywords": "River smell straw bridge gamma boy blue kibityA",
         "sortIdx": 100
     },
     {
@@ -48,8 +48,8 @@
         "num_lines": 112,
         "filename": "hotelCaledonia.json",
         "date_published": "Jan 24, 2020",
-        "written_by": "Mark King",
-        "keywords": "Haunted castle mansion volkswagen eagles song boy girl kibity",
+        "written_by": "Kibity",
+        "keywords": "Haunted castle mansion volkswagen eagles song boy girl kibityA",
         "sortIdx": 100
     },
     {
@@ -84,13 +84,76 @@
         "ages": "1-4",
         "ageSearch": "1#2#3#4#",
         "color": "lightgreen",
-        "num_lines": 6,
+        "num_lines": 8,
         "filename": "thisLittlePiggy.json",
         "date_published": "Feb 14, 2020",
-        "keywords": "wee home classic",
+        "keywords": "wee home classic nursery rhymes",
         "toddler_pause": 2,
+        "sortIdx": 500
+    },
+    {
+        "story_num": 8,
+        "title": "Home Under The Rainbow",
+        "ages": "4+",
+        "ageSearch": "4#5#6#7#8#9#",
+        "num_lines": 103,
+        "filename": "homeUnderTheRainbow.json",
+        "date_published": "March 1, 2020",
+        "written_by": "Kibity",
+        "keywords": "kibityA skippy science",
         "sortIdx": 200
-    }
-
+    },
+    {
+        "story_num": 9,
+        "title": "Lamb's Tail",
+        "ages": "4+",
+        "ageSearch": "4#5#6#7#8#9#",
+        "num_lines": 134,
+        "filename": "lambsTail.json",
+        "date_published": "March 1, 2020",
+        "written_by": "Cricket Allen",
+        "keywords": "kibity chores bikes",
+        "sortIdx": 200
+    },
+    {
+        "story_num": 10,
+        "title": "Wind and Toes",
+        "ages": "1-4",
+        "ageSearch": "1#2#3#4#",
+        "color": "lightgreen",
+        "num_lines": 29,
+        "filename": "windAndToes.json",
+        "date_published": "March 1, 2020",
+        "written_by": "Kibity",
+        "keywords": "kibityA nursery rhymes",
+        "toddler_pause": 2,
+        "sortIdx": 450
+    },
+    {
+        "story_num": 11,
+        "title": "Rock-A-Bye Baby",
+        "ages": "1-4",
+        "ageSearch": "1#2#3#4#",
+        "color": "lightgreen",
+        "num_lines": 11,
+        "filename": "rockAByeBaby.json",
+        "date_published": "March 3, 2020",
+        "keywords": "lullabies lullaby nursery rhymes classic",
+        "toddler_pause": 2,
+        "sortIdx": 500
+    },
+        {
+            "story_num": 12,
+            "title": "Hush Little Baby",
+            "ages": "1-4",
+            "ageSearch": "1#2#3#4#",
+            "color": "lightgreen",
+            "num_lines": 21,
+            "filename": "hushLittleBaby.json",
+            "date_published": "March 3, 2020",
+            "keywords": "lullabies lullaby nursery rhymes classic",
+            "toddler_pause": 2,
+            "sortIdx": 500
+        }
     ]
 }

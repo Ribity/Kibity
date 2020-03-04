@@ -85,12 +85,13 @@ class TasksComponent extends React.Component {
         try {
             myfuncs.myBreadCrumbs('getStoryListFromServer', "TasksComponent");
             let storyList_url = MyDefines.stories_url_bucket + "allStoriesList.json";
-            // console.log("serverStoryList url:", storyList_url);
+            if (MyDefines.log_details || MyDefines.log_server)
+                console.log("serverStoryList url:", storyList_url);
             fetch(storyList_url)
                 .then(response => response.json())
                 .then(responseJson => {
-                    // if (MyDefines.log_details)
-                    // console.log("fetched remote storyList");
+                    if (MyDefines.log_details || MyDefines.log_server)
+                        console.log("fetched remote storyList");
                     let serverStoryList = responseJson;
                     this.appendServerStoryList(serverStoryList);
                 })
@@ -105,12 +106,15 @@ class TasksComponent extends React.Component {
         }
     };
     appendServerStoryList = async (serverStoryList) => {
-        // console.log("StoryList Server: ", serverStoryList.stories.length);
-        // console.log("StoryList Props: ", this.props.story_list.stories.length);
+        if (MyDefines.log_details || MyDefines.log_server) {
+            console.log("StoryList Props: ", this.props.story_list.stories.length);
+            console.log("StoryList Server: ", serverStoryList.stories.length);
+        }
         if (serverStoryList.stories.length > this.props.story_list.stories.length) {
             let numExistingStories = this.props.story_list.stories.length;
             let numServerStories = serverStoryList.stories.length;
-            console.log(numServerStories-numExistingStories, " new stories from serverStoryList:");
+            if (MyDefines.log_details || MyDefines.log_server)
+                console.log(numServerStories-numExistingStories, " new stories from serverStoryList:");
 
             // let newList = this.clone(this.props.story_list);
             let newList = this.clone(this.props.story_list);
@@ -120,9 +124,13 @@ class TasksComponent extends React.Component {
                 newList.stories.push(newStory);
             }
             await this.props.updateStoryList(newList);
-            // console.log("NewStoryList:", this.props.story_list);
+            if (MyDefines.log_details || MyDefines.log_server) {
+                console.log("NewStoryList:", this.props.story_list);
+            }
         } else {
-            // console.log("No new stories from serverStoryList");
+            if (MyDefines.log_details || MyDefines.log_server) {
+                console.log("No new stories from serverStoryList");
+            }
         }
     };
     clone = (obj) => {

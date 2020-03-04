@@ -1,5 +1,6 @@
 import React from 'react';
 import {Alert, StyleSheet, View, Dimensions, Image, TouchableOpacity} from 'react-native';
+import * as StoreReview from 'expo-store-review';
 import {SafeAreaView} from "react-navigation";
 import {Button, Layout, Text} from "@ui-kitten/components";
 import {Ionicons} from '@expo/vector-icons';
@@ -23,7 +24,6 @@ import {ThemeButton} from "../components/themeButton";
 import {ScreenTitle} from "../components/screenTitle";
 import {ProfileHeader} from "../components/ProfileHeader";
 import {MyButton} from '../components/MyButton';
-
 
 let willUnmount = false;
 let myStory = null;
@@ -417,7 +417,8 @@ class AudioScreen extends React.Component {
         try {
             myfuncs.myBreadCrumbs('pauseIt', this.props.navigation.state.routeName);
             this.clearPotentialPlay();
-            Speech.pause();
+            // Speech.pause();
+            Speech.stop();
             this.setState({paused: true});
         } catch (error) {
             myfuncs.myRepo(error);
@@ -430,15 +431,15 @@ class AudioScreen extends React.Component {
                 console.log("resumeIt set overrideTheNextLine to true");
             overrideTheNextLine = true;
             this.clearPotentialPlay();
-            if (Speech.isSpeakingAsync() === true) {
-                if (MyDefines.log_audio)
-                    console.log("resumeIt speech.resume");
-                Speech.resume();
-            } else {
-                if (MyDefines.log_audio)
-                    console.log("resumeIt call playLineNum");
+            // if (Speech.isSpeakingAsync() === true) {
+            //     if (MyDefines.log_audio)
+            //         console.log("resumeIt speech.resume");
+            //     Speech.resume();
+            // } else {
+            //     if (MyDefines.log_audio)
+            //         console.log("resumeIt call playLineNum");
                 this.playLineNum(myIdx);
-            }
+            // }
             this.setState({paused: false});
         } catch (error) {
             myfuncs.myRepo(error);
@@ -502,8 +503,29 @@ class AudioScreen extends React.Component {
         try {
             myfuncs.myBreadCrumbs('finishedStory', this.props.navigation.state.routeName);
             nextStoryTimeout = setTimeout(() => {this.playNext()}, pause_data[this.props.settings.pauseStoryIdx].value*1000);
+
+            this.checkReview();
         } catch (error) {
             myfuncs.myRepo(error);
+        }
+    };
+    checkReview = async () => {
+        let numPlayed = await myfuncs.incrementNumStoriesPlayed();
+        // console.log("numPlayed: ", numPlayed);
+        if ( (numPlayed === 10) || (numPlayed % 50 === 0) ) {
+            if (await StoreReview.hasAction && StoreReview.isAvailableAsync()) {
+                if (!myfuncs.isAndroid())
+                    StoreReview.requestReview();
+                else if (await myfuncs.hasUserReviewed() === false) {
+                    Alert.alert("Thanks for listening to Kibity Stories",
+                        "Would you like to pop over to GooglePlayStore and give Kibity a review?",
+                        [
+                            {text: 'No'},
+                            {text: 'Yes', onPress: () => {myfuncs.reviewChosen(); StoreReview.requestReview()}},
+                        ]);
+                    return;
+                }
+            }
         }
     };
     playFavorites = () => {
@@ -821,8 +843,8 @@ class AudioScreen extends React.Component {
     };
     showToast = () => {
         this.refs.toaststory.show("We encourage you to write a story and send to:" +
-            "\r\n\nRibity@yahoo.com " +
-            "\r\n\nWe will publish it on Kibity and contact you when it is added to the Kibity list of stories.", 2000);
+            "\r\n\nStories@kibity.com.com " +
+            "\r\n\nWe will publish it on Kibity and contact you when it is added to the Kibity list of Write-In stories.", 2000);
     };
 };
 const styles = StyleSheet.create({

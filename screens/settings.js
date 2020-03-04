@@ -64,9 +64,16 @@ class SettingsScreen extends React.Component {
         }
     };
     getVoices = async () => {
-        let list = await Speech.getAvailableVoicesAsync();
-        if (list !== null && list.length > 1 )
-            this.setState({bVoicesAvailable: true});
+        try {
+            myfuncs.myBreadCrumbs('getDerivedStateFromProps', "Settings");
+            let list = await Speech.getAvailableVoicesAsync();
+            if (list !== null  && list !== undefined && list.length > 1 ) {
+                // console.log(list);
+                this.setState({bVoicesAvailable: true});
+            }
+        } catch (error) {
+            myfuncs.myRepo(error);
+        }
     };
     goToSettingsAudio = () => {
         try {
@@ -158,7 +165,7 @@ class SettingsScreen extends React.Component {
                                 />
                             </View>
                         }
-                        {this.state.bVoicesAvailable === true &&
+                        {(!myfuncs.isAndroid() && this.state.bVoicesAvailable === true) &&
                         <View style={{alignSelf: 'center'}}>
                             <View style={{padding: 5}}/>
                             <MyButton buttonStyle={myStyles.selectButton}

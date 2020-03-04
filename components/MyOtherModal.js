@@ -51,18 +51,16 @@ export const MyOtherModal = ( {isVisible, onExitPress, onOtherPress} ) => {
                                   title={"Write-Ins"}/>
 
                         <View style={styles.addRow}>
-                            {/*<MyButton buttonStyle={styles.modalButton}*/}
-                                      {/*textStyle={styles.ageButtonText}*/}
-                                      {/*onPress={() => onOtherPress("Science")}*/}
-                                      {/*title={"Science"}/>*/}
+                            <MyButton buttonStyle={styles.modalButton}
+                                      textStyle={styles.ageButtonText}
+                                      onPress={() => onOtherPress("Lullab")}
+                                      title={"Lullabies"}/>
 
                             <MyButton buttonStyle={styles.modalButton}
                                       textStyle={styles.ageButtonText}
                                       onPress={() => onOtherPress("song")}
                                       title={"Songs"}/>
                         </View>
-
-
 
                         <View style={{paddingTop: 25}}/>
                         <Text style={styles.helpSmaller}>Ages</Text>
@@ -120,8 +118,8 @@ export const MyOtherModal = ( {isVisible, onExitPress, onOtherPress} ) => {
 
                             <MyButton buttonStyle={styles.modalButton}
                                       textStyle={styles.ageButtonText}
-                                      onPress={() => onOtherPress("mark king")}
-                                      title={"Mark King"}/>
+                                      onPress={() => onOtherPress("kibitya")}
+                                      title={"Kibity"}/>
                         </View>
 
 

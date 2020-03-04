@@ -1,4 +1,5 @@
 import hardStorage from "./deviceStorage";
+import {Platform} from 'react-native'
 import * as Sentry from "sentry-expo";
 import MyDefines from '../constants/MyDefines';
 import { Audio } from 'expo-av';
@@ -139,7 +140,6 @@ class myFuncs  {
             Sentry.setRelease("1.0.0");
             Sentry.configureScope(function (scope) {
                 scope.setExtra("myExtraData", {
-                    // "releaseChannel": releaseChan,
                     "local_timezone": Localization.timezone,
                 });
             });
@@ -162,7 +162,7 @@ class myFuncs  {
                     "isHeadless": Constants.default.isHeadless,
                     "statusBarHeight": Constants.default.statusBarHeight,
                     "supportedExpoSdks": Constants.default.supportedExpoSdks,
-                    "releaseChannel": Constants.default.releaseChannel,
+                    // "releaseChannel": Constants.default.releaseChannel,
                 });
             });
             Sentry.configureScope(function (scope) {
@@ -317,7 +317,29 @@ class myFuncs  {
         else
             return false;
     };
+    reviewChosen = async () => {
+        await hardStorage.setKey("reviewedApp", true);
+    };
+    hasUserReviewed = async () => {
+        let reviewedApp = await hardStorage.getKey("reviewedApp");
+        if (reviewedApp !== null) {
+            if (reviewedApp === true)
+                return true;
+        }
+        return false;
+    };
+    incrementNumStoriesPlayed = async () => {
+        let numPlayed = await hardStorage.getKey("numPlayed");
 
+        if (numPlayed !== null) {
+            numPlayed++;
+        } else {
+            numPlayed = 1;
+        }
+        await hardStorage.setKey("numPlayed", numPlayed);
+
+        return numPlayed;
+    }
 }
 
 const myfuncs = new myFuncs();

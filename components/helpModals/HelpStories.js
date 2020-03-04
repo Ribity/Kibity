@@ -25,7 +25,7 @@ export const HelpStories = ( {} ) => {
 				for Kibity stories to be heard.
 				{"\n"}
 				{"\n"}
-				We encourage you to write your own story. Send it to us at Ribity@yahoo.com
+				We encourage you to write your own story. Send it to us at Stories@kibity.com
 				and we will publish it for all Kibity users to enjoy.
 				{"\n"}
 				{"\n"}

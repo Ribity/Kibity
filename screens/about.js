@@ -69,7 +69,7 @@ export default class AboutScreen extends React.Component {
 							The Kibity logic will then insert other users' customized parameters.
 							Your story will be presented to other users with their own specified characters' names.
 							Your story may be as long or as short as you desire.
-							Please mail your stories to ribity@yahoo.com or mark_king@yahoo.com
+							Please mail your stories to Stories@kibity.com
 							{"\n"}
 							{"\n"}
 							Ribity LLC was formed to protect us from liabilities. We hope to never do anything
@@ -92,7 +92,7 @@ export default class AboutScreen extends React.Component {
 							If you have an issue please send an EMail explaining the details.
 							{"\n"}
 							{"\n"}
-							EMail:  Ribity@yahoo.com
+							EMail:  Stories@kibity.com
 							{"\n"}
 							{"\n"}
 							We sincere hope you enjoy Kibity.

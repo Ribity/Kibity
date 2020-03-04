@@ -5,6 +5,7 @@ export default {
     clearAllStorage: false,
     log_details: false,
     log_audio: false,
+    log_server: false,
     console_log_breadcrumbs: false,
 
     // sentry_logging: true,
