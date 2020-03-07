@@ -264,11 +264,11 @@ class myFuncs  {
         bSoundIsPlaying = false;
     };
     myRepo = (error) => {
-        // try {
-        //     Sentry.captureException(error);
-        // } catch (error) {
-        //     console.log(error);
-        // }
+        try {
+            Sentry.captureException(error);
+        } catch (error) {
+            console.log(error);
+        }
     };
     myBreadCrumbs = (message, category) => {
         try {

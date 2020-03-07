@@ -85,8 +85,8 @@ class MyListComponent extends React.Component {
                     if (item.date_published !== null && item.date_published !== undefined)
                         itemData += item.date_published.toLowerCase();
 
-                    if (item.snippet !== null && item.snippet !== undefined)
-                        itemData += item.snippet.toLowerCase();
+                    // if (item.snippet !== null && item.snippet !== undefined)
+                    //     itemData += item.snippet.toLowerCase();
 
                     if (item.written_by !== null && item.written_by !== undefined)
                         itemData += item.written_by.toLowerCase();

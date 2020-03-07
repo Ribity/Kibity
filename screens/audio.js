@@ -503,7 +503,6 @@ class AudioScreen extends React.Component {
         try {
             myfuncs.myBreadCrumbs('finishedStory', this.props.navigation.state.routeName);
             nextStoryTimeout = setTimeout(() => {this.playNext()}, pause_data[this.props.settings.pauseStoryIdx].value*1000);
-
             this.checkReview();
         } catch (error) {
             myfuncs.myRepo(error);

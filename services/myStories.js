@@ -59,6 +59,9 @@ class myStories {
                 case 'hushLittleBaby.json':
                     storyToUse = require('../assets/stories/hushLittleBaby.json');
                     break;
+                case 'grandmaAndGrandpaHouse.json':
+                    storyToUse = require('../assets/stories/grandmaAndGrandpaHouse.json');
+                    break;
                 default:
                     break;
             }
