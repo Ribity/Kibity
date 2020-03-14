@@ -160,11 +160,37 @@
             "color": "mistyrose",
             "ages": "3+",
             "ageSearch": "3#4#5#6#7#8#9#",
-            "num_lines": 164,
+            "num_lines": 165,
             "filename": "grandmaAndGrandpaHouse.json",
             "date_published": "March 5, 2020",
             "written_by": "Cricket Allen",
             "keywords": "doll cooking girl pink kibity",
+            "sortIdx": 100
+        },
+        {
+            "story_num": 14,
+            "title": "The Dashcam",
+            "color": "powderblue",
+            "ages": "5+",
+            "ageSearch": "5#6#7#8#9#",
+            "num_lines": 128,
+            "filename": "dashcam.json",
+            "date_published": "March 14, 2020",
+            "written_by": "Kibity",
+            "keywords": "frog pond flashlight brilliant boy blue kibityA",
+            "sortIdx": 100
+        },
+        {
+            "story_num": 15,
+            "title": "New Friend",
+            "color": "mistyrose",
+            "ages": "3+",
+            "ageSearch": "3#4#5#6#7#8#9#",
+            "num_lines": 71,
+            "filename": "newFriend.json",
+            "date_published": "March 14, 2020",
+            "written_by": "Cricket Allen",
+            "keywords": "neighbor dolls disabled wheelchair girl pink kibity",
             "sortIdx": 100
         }
     ]

@@ -62,6 +62,9 @@ class myStories {
                 case 'grandmaAndGrandpaHouse.json':
                     storyToUse = require('../assets/stories/grandmaAndGrandpaHouse.json');
                     break;
+                case 'dashcam.json':
+                    storyToUse = require('../assets/stories/dashcam.json');
+                    break;
                 default:
                     break;
             }
@@ -77,6 +80,9 @@ class myStories {
             switch (storyName) {    // images in assets/images
                 case 'lambsTail.json':
                     storyToUse = require('../assets/stories/lambsTail.json');
+                    break;
+                case 'newFriend.json':
+                    storyToUse = require('../assets/stories/newFriend.json');
                     break;
                 default:
                     break;

@@ -23,7 +23,7 @@ class myFuncs  {
         try {
             this.initRepo();
 
-            myfuncs.myBreadCrumbs('init', "myfuncs");
+            this.myBreadCrumbs('init', "myfuncs");
 
             if (MyDefines.clearAllStorage === true)
                 await hardStorage.clearAll();
@@ -74,7 +74,7 @@ class myFuncs  {
     check_new_user = async () => {
         let new_user = false;
         try {
-            myfuncs.myBreadCrumbs('check_new_user', "myfuncs");
+            this.myBreadCrumbs('check_new_user', "myfuncs");
             let registered_user = await hardStorage.getKey("kibity_user");
             if (registered_user === null) {
                 new_user = true;
@@ -91,7 +91,7 @@ class myFuncs  {
         let settings = MyDefines.default_settings;
         let profiles = MyDefines.default_profiles;
         try {
-            myfuncs.myBreadCrumbs('getUserSettingsFromLocalStorage', "myfuncs");
+            this.myBreadCrumbs('getUserSettingsFromLocalStorage', "myfuncs");
             let user_settings = await hardStorage.getKey("user_settings");
             if (user_settings !== null) {
                 settings = {...settings, ...user_settings};
@@ -115,7 +115,7 @@ class myFuncs  {
     };
     writeUserDataToLocalStorage = async (key, data) => {
         try {
-            myfuncs.myBreadCrumbs('writeUserDataToLocalStorage', "myfuncs");
+            this.myBreadCrumbs('writeUserDataToLocalStorage', "myfuncs");
 
             await hardStorage.setKey(key, data);
             // console.log("storage updated ", key, ":", data );
@@ -338,6 +338,12 @@ class myFuncs  {
         }
         await hardStorage.setKey("numPlayed", numPlayed);
 
+        if (Constants.isDevice || Constants.default.isDevice) {
+            if (numPlayed === 5 || numPlayed === 20 || numPlayed % 100 === 0) {
+                let msg = 'Number of Stories Played = ' + numPlayed.toString();
+                Sentry.captureMessage(msg, 'info');
+            }
+        }
         return numPlayed;
     }
 }
