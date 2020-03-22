@@ -95,7 +95,7 @@ export default class AboutScreen extends React.Component {
 							EMail:  Stories@kibity.com
 							{"\n"}
 							{"\n"}
-							We sincere hope you enjoy Kibity.
+							We sincerely hope you enjoy Kibity.
 
 						</Text>
 						</View>
