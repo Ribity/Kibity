@@ -42,7 +42,7 @@ export const HelpSettings = ( {} ) => {
 				{"\n"}
 				{"\n"}
 				If your device offers addtional voices, you'll see a 'Select Voice' button. Click
-				that to see a list of additional voices you can use.
+				that button to see a list of additional voices you can use.
 			   </Text>
 			</KeyboardAwareScrollView>
 		);

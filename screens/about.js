@@ -96,6 +96,10 @@ export default class AboutScreen extends React.Component {
 							{"\n"}
 							{"\n"}
 							We sincerely hope you enjoy Kibity.
+                            {"\n"}
+                            {"\n"}
+                            (eVersion 37)
+
 
 						</Text>
 						</View>
