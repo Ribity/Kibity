@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Dimensions, Image} from 'react-native'
-import {Layout, Select} from '@ui-kitten/components';
+import {Layout, Select, SelectItem} from '@ui-kitten/components';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import myfuncs from "../services/myFuncs";
@@ -80,18 +80,30 @@ class ProfileSetActive extends React.Component {
                             (this.state.profiles.retrieved_user_data === true) ) &&
                         <View  style={{alignItems: 'flex-start'}}>
 
+                            {/*<Select*/}
+                                {/*style={styles.select}*/}
+                                {/*data={profiles_data}*/}
+                                {/*status='warning'*/}
+                                {/*label='Active Profile'*/}
+                                {/*onSelect={(event) =>*/}
+                                    {/*this.updateActive({profilesIdx: event.idx})}*/}
+                                {/*selectedOption={profiles_data[this.state.profiles.profilesIdx]}*/}
+                                {/*textStyle={styles.textStyle}*/}
+                                {/*labelStyle={styles.labelStyle}*/}
+                                {/*controlStyle={styles.controlStyle}*/}
+                            {/*/>*/}
+
+
                             <Select
                                 style={styles.select}
-                                data={profiles_data}
                                 status='warning'
                                 label='Active Profile'
-                                onSelect={(event) =>
-                                    this.updateActive({profilesIdx: event.idx})}
-                                selectedOption={profiles_data[this.state.profiles.profilesIdx]}
-                                textStyle={styles.textStyle}
-                                labelStyle={styles.labelStyle}
-                                controlStyle={styles.controlStyle}
-                            />
+                                value={profiles_data[this.state.profiles.profilesIdx].text}
+                                onSelect={(index) => this.updateActive({profilesIdx: index-1})} >
+
+                                {profiles_data.map((profile, index) => <SelectItem key={index} title={profile.text} />)}
+                            </Select>
+
                         </View>
                         }
 
@@ -148,6 +160,7 @@ const styles = StyleSheet.create({
     },
     select: {
         margin: 8,
+        width: width-30,
     },
     text: {
         color: 'mediumpurple',

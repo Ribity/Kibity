@@ -48,6 +48,13 @@ export default {
     //     currListType: 0,
     //     },
 
+
+    profiles_data: [
+        {idx: 0, text: ' ', value: 0},
+        {idx: 1, text: ' ', value: 1},
+        {idx: 2, text: ' ', value: 2},
+    ],
+
     default_profiles: {
         profilesIdx: 0,
         profile: [
@@ -182,10 +189,5 @@ export default {
         {idx: 12, text: 'Super Duper slow', value: .1},
     ],
 
-    profiles_data: [
-        {idx: 0, text: ' ', value: 0},
-        {idx: 1, text: ' ', value: 1},
-        {idx: 2, text: ' ', value: 2},
-    ],
 }
 

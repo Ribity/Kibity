@@ -2,7 +2,8 @@ import React from 'react';
 import {View, Text, StyleSheet, FlatList, TouchableOpacity, Dimensions,} from 'react-native';
 import { ListItem, SearchBar} from 'react-native-elements';
 import {Ionicons} from '@expo/vector-icons';
-import Toast from 'react-native-easy-toast';
+import Toast from 'react-native-root-toast';
+
 import {MyButton} from "./MyButton";
 
 import { connect } from 'react-redux';
@@ -131,8 +132,19 @@ class MyListComponent extends React.Component {
     addToFaves = (index) => {
         try {
             myfuncs.myBreadCrumbs('addToFaves', "MyListComponent");
-            let msg = "Added to " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s Favorites";
-            this.refs.toast.show(msg, 500);
+            let tMsg = "Added to " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s Favorites";
+            Toast.show(tMsg, {
+                duration: 1500,
+                position: Toast.positions.TOP,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+                textColor: 'white',
+                backgroundColor: 'red',
+                shadowColor: 'purple',
+                opacity: 0.9,
+            });
+
             this.props.addFavorite(index);
             // this.setState({data: this.props.myList});
             this.props.updateParentStoriesCurrentProfile();
@@ -143,8 +155,18 @@ class MyListComponent extends React.Component {
     removeFromFaves = (index) => {
         try {
             myfuncs.myBreadCrumbs('removeFromFaves', "MyListComponent");
-            let msg = "Removed from " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s Favorites";
-            this.refs.toast.show(msg, 500);
+            let tMsg = "Removed from " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s Favorites";
+            Toast.show(tMsg, {
+                duration: 1500,
+                position: Toast.positions.TOP,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+                textColor: 'white',
+                backgroundColor: 'red',
+                shadowColor: 'purple',
+                opacity: 0.9,
+            });
             this.props.removeFavorite(index);
             // this.setState({data: this.props.myList});
             this.props.updateParentStoriesCurrentProfile();
@@ -155,8 +177,18 @@ class MyListComponent extends React.Component {
     addToPlayList = (index) => {
         try {
             myfuncs.myBreadCrumbs('addToPlayList', "MyListComponent");
-            let msg = "Added to " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s PlayList";
-            this.refs.toastPlay.show(msg, 500);
+            let tMsg = "Added to " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s PlayList";
+            Toast.show(tMsg, {
+                duration: 1500,
+                position: Toast.positions.TOP,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+                textColor: 'gold',
+                backgroundColor: 'purple',
+                shadowColor: 'gold',
+                opacity: 0.9,
+            });
             this.props.addPlayList(index);
             // this.setState({data: this.props.myList});
             this.props.updateParentStoriesCurrentProfile();
@@ -167,8 +199,18 @@ class MyListComponent extends React.Component {
     removeFromPlayList = (index) => {
         try {
             myfuncs.myBreadCrumbs('removeFromPlayList', "MyListComponent");
-            let msg = "Removed from " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s PlayList";
-            this.refs.toastPlay.show(msg, 500);
+            let tMsg = "Removed from " + this.props.profiles.profile[this.props.profiles.profilesIdx].character[0].name + "'s PlayList";
+            Toast.show(tMsg, {
+                duration: 1500,
+                position: Toast.positions.TOP,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+                textColor: 'gold',
+                backgroundColor: 'purple',
+                shadowColor: 'gold',
+                opacity: 0.9,
+            });
             this.props.removePlayList(index);
             // this.setState({data: this.props.myList});
             this.props.updateParentStoriesCurrentProfile();
@@ -411,24 +453,6 @@ class MyListComponent extends React.Component {
             myfuncs.myBreadCrumbs('render', "MyListComponent");
             return (
                 <View>
-                    <Toast
-                        ref="toast"
-                        style={{backgroundColor:'red',borderRadius: 20,padding: 10}}
-                        position='top'
-                        positionValue={0}
-                        fadeOutDuration={1000}
-                        opacity={.8}
-                        textStyle={{color:'white',fontSize:15}}
-                    />
-                    <Toast
-                        ref="toastPlay"
-                        style={{backgroundColor:'purple',borderRadius: 20,padding: 10}}
-                        position='top'
-                        positionValue={0}
-                        fadeOutDuration={1000}
-                        opacity={.7}
-                        textStyle={{color:'gold',fontSize:15}}
-                    />
                     {this.props.myList.length > 0 ?
                         <View>
                             <FlatList

@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native'
 import {SafeAreaView} from "react-navigation";
-import {Layout, Select, Text, Toggle} from "@ui-kitten/components";
+import {Layout, Select, SelectItem, Text, Toggle} from "@ui-kitten/components";
 import myfuncs from "../services/myFuncs";
 import MyDefines from "../constants/MyDefines";
 import {MyHelpIcon} from "../components/MyHelpIcon";
@@ -93,76 +93,65 @@ class SettingsScreen extends React.Component {
                         <Toggle
                             style={styles.toggle}
                             status='warning'
-
-                            text='Keep Screen Awake'
-                            textStyle={styles.text}
                             checked={this.state.settings.keep_awake}
-                            onChange={(bEvent) => this.updateSettings({keep_awake: bEvent})}
-                        />
+                            onChange={(bEvent) => this.updateSettings({keep_awake: bEvent})}>
+                            Keep Screen Awake
+                        </Toggle>
+
 
                         <Toggle
                             style={styles.toggle}
                             status='warning'
 
-                            text='Play Ribbit After Each Story'
                             textStyle={styles.text}
                             checked={this.state.settings.playEndOfStoryRibbit}
-                            onChange={(bEvent) => this.updateSettings({playEndOfStoryRibbit: bEvent})}
-                        />
+                            onChange={(bEvent) => this.updateSettings({playEndOfStoryRibbit: bEvent})}>
+                            Play Ribbit After Each Story
+                        </Toggle>
 
                         <View style={{paddingTop: 5}}/>
 
                         { (this.state.settings.retrieved_user_data === true) &&
                             <View>
                                 <Select
-                                style={styles.select}
-                                data={pause_data}
-                                status='warning'
-                                label='Pause between each line'
-                                onSelect={(event) =>
-                                    this.updateSettings({pauseLineIdx: event.idx})}
-                                selectedOption={pause_data[this.state.settings.pauseLineIdx]}
-                                textStyle={styles.textStyle}
-                                labelStyle={styles.labelStyle}
-                                controlStyle={styles.controlStyle}
-                                />
-                                <Select
                                     style={styles.select}
-                                    data={pause_data}
                                     status='warning'
-                                    label='Pause between each story'
-                                    onSelect={(event) =>
-                                        this.updateSettings({pauseStoryIdx: event.idx})}
-                                    selectedOption={pause_data[this.state.settings.pauseStoryIdx]}
-                                    textStyle={styles.textStyle}
-                                    labelStyle={styles.labelStyle}
-                                    controlStyle={styles.controlStyle}
-                                />
+                                    label='Pause between each line'
+                                    value={pause_data[this.state.settings.pauseLineIdx].text}
+                                    onSelect={(index) => this.updateSettings({pauseLineIdx: index-1})} >
+
+                                    {pause_data.map((pause, index) => <SelectItem key={index} title={pause.text} />)}
+                                </Select>
 
                                 <Select
                                     style={styles.select}
-                                    data={pitch_data}
                                     status='warning'
-                                    label='Voice pitch'
-                                    onSelect={(event) =>
-                                        this.updateSettings({pitchIdx: event.idx})}
-                                    selectedOption={pitch_data[this.state.settings.pitchIdx]}
-                                    textStyle={styles.textStyle}
-                                    labelStyle={styles.labelStyle}
-                                    controlStyle={styles.controlStyle}
-                                />
+                                    label='Pause between each story'
+                                    value={pause_data[this.state.settings.pauseStoryIdx].text}
+                                    onSelect={(index) => this.updateSettings({pauseStoryIdx: index-1})} >
+
+                                    {pause_data.map((pause, index) => <SelectItem key={index} title={pause.text} />)}
+                                </Select>
+
                                 <Select
                                     style={styles.select}
-                                    data={rate_data}
+                                    status='warning'
+                                    label='Voice pitch'
+                                    value={pitch_data[this.state.settings.pitchIdx].text}
+                                    onSelect={(index) => this.updateSettings({pitchIdx: index-1})} >
+
+                                    {pitch_data.map((pitch, index) => <SelectItem key={index} title={pitch.text} />)}
+                                </Select>
+                                <Select
+                                    style={styles.select}
                                     status='warning'
                                     label='Voice speed'
-                                    onSelect={(event) =>
-                                        this.updateSettings({rateIdx: event.idx})}
-                                    selectedOption={rate_data[this.state.settings.rateIdx]}
-                                    textStyle={styles.textStyle}
-                                    labelStyle={styles.labelStyle}
-                                    controlStyle={styles.controlStyle}
-                                />
+                                    value={rate_data[this.state.settings.rateIdx].text}
+                                    onSelect={(index) => this.updateSettings({rateIdx: index-1})}>
+
+                                    {rate_data.map((rate, index) => <SelectItem key={index} title={rate.text} />)}
+                                </Select>
+
                             </View>
                         }
                         {(!myfuncs.isAndroid() && this.state.bVoicesAvailable === true) &&
@@ -240,6 +229,7 @@ const styles = StyleSheet.create({
     },
     select: {
         margin: 6,
+        width: width-30,
     },
     text: {
         color: 'mediumpurple',

@@ -8,7 +8,7 @@ import {
 import {Layout, Text, Radio} from '@ui-kitten/components';
 
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import Toast from 'react-native-easy-toast';
+import Toast from 'react-native-root-toast';
 
 import { connect } from 'react-redux';
 
@@ -146,8 +146,43 @@ class ProfileCustomize extends React.Component {
             if (test) {
                 this.testInputFields(myProfile);
             } else {
-                this.refs.toast.show("Saved", 1000);
-                this.refs.toast_bottom.show("Saved", 1000);
+                let tMsg = "Saved";
+                Toast.show(tMsg, {
+                    duration: 2000,
+                    position: Toast.positions.TOP,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                    textColor: 'gold',
+                    backgroundColor: 'purple',
+                    shadowColor: 'gold',
+                    opacity: 0.8,
+                });
+
+                Toast.show(tMsg, {
+                    duration: 2000,
+                    position: Toast.positions.CENTER,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                    textColor: 'gold',
+                    backgroundColor: 'purple',
+                    shadowColor: 'gold',
+                    opacity: 0.8,
+                });
+
+                Toast.show(tMsg, {
+                    duration: 2000,
+                    position: Toast.positions.BOTTOM,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                    textColor: 'gold',
+                    backgroundColor: 'purple',
+                    shadowColor: 'gold',
+                    opacity: 0.8,
+                });
+
                 this.props.updateProfiles(this.state.profiles);
                 await myfuncs.writeUserDataToLocalStorage("user_profiles", this.state.profiles);
             }
@@ -320,25 +355,6 @@ class ProfileCustomize extends React.Component {
                                   textStyle={myStyles.selectButtonText}
                                   onPress={() => this.onSubmitPress(false)}
                                   title={"Save"}/>
-
-                        <Toast
-                        ref="toast"
-                        style={{backgroundColor:'mediumpurple',borderRadius: 20,padding: 10}}
-                        position='top'
-                        positionValue={0}
-                        fadeOutDuration={1000}
-                        opacity={.8}
-                        textStyle={{color:'gold',fontSize:21}}
-                        />
-                        <Toast
-                            ref="toast_bottom"
-                            style={{backgroundColor:'mediumpurple',borderRadius: 20,padding: 10}}
-                            position='bottom'
-                            positionValue={0}
-                            fadeOutDuration={1000}
-                            opacity={.8}
-                            textStyle={{color:'gold',fontSize:21}}
-                        />
 
                     <MyHelpIcon onPress={this.onHelpPress}/>
                     <MyHelpModal screen={"ProfileCustomize"}

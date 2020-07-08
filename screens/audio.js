@@ -4,7 +4,7 @@ import * as StoreReview from 'expo-store-review';
 import {SafeAreaView} from "react-navigation";
 import {Button, Layout, Text} from "@ui-kitten/components";
 import {Ionicons} from '@expo/vector-icons';
-import Toast from 'react-native-easy-toast';
+import Toast from 'react-native-root-toast';
 import * as Speech from "expo-speech";
 import MyDefines from '../constants/MyDefines';
 import myStyles from "../myStyles";
@@ -210,7 +210,18 @@ class AudioScreen extends React.Component {
                     this.getStoryFromServer();
                 }
             } else {
-                this.refs.toast.show("Error accessing story", 4000);
+                let tMsg = "Error accessing story";
+                Toast.show(tMsg, {
+                    duration: 4000,
+                    position: Toast.positions.TOP,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                    textColor: 'gold',
+                    backgroundColor: 'purple',
+                    shadowColor: 'gold',
+                    opacity: 0.9,
+                });
 
                 if (this.isPlayingAList())
                     nextStoryTimeout = setTimeout(() => {this.playNext()}, pause_data[this.props.settings.pauseStoryIdx].value*1000 * 2);
@@ -247,8 +258,18 @@ class AudioScreen extends React.Component {
                     if (MyDefines.log_details)
                         console.error(error);
 
-                    this.refs.toast.show("Error accessing story: '" + this.props.story_list.stories[story_idx].title + "'", 4000);
-
+                    let tMsg = "Error accessing story: '" + this.props.story_list.stories[story_idx].title + "'";
+                    Toast.show(tMsg, {
+                        duration: 4000,
+                        position: Toast.positions.TOP,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                        textColor: 'gold',
+                        backgroundColor: 'purple',
+                        shadowColor: 'gold',
+                        opacity: 0.9,
+                    });
                     if (this.isPlayingAList())
                         nextStoryTimeout = setTimeout(() => {this.playNext()}, pause_data[this.props.settings.pauseStoryIdx].value*1000 * 2);
                 });
@@ -793,26 +814,6 @@ class AudioScreen extends React.Component {
                            </View>
                        }
 
-                       <Toast
-                           ref="toast"
-                           style={{backgroundColor:'mediumpurple',borderRadius: 20,padding: 10}}
-                           position='top'
-                           positionValue={0}
-                           fadeOutDuration={1000}
-                           opacity={.9}
-                           textStyle={{color:'gold',fontSize:21}}
-                       />
-
-                       <Toast
-                           ref="toaststory"
-                           style={{backgroundColor:'gold',borderRadius: 20,padding: 10}}
-                           position='top'
-                           positionValue={0}
-                           fadeOutDuration={5000}
-                           opacity={1}
-                           textStyle={{color:'purple',fontSize:20, fontWeight: 'bold'}}
-                       />
-
                        <MyHelpIcon onPress={this.onHelpPress}/>
                        <MyHelpModal screen={"Audio"}
                                     onExitPress={this.onHelpExitPress}
@@ -841,9 +842,20 @@ class AudioScreen extends React.Component {
         }
     };
     showToast = () => {
-        this.refs.toaststory.show("We encourage you to write a story and send to:" +
+        let tMsg = "We encourage you to write a story and send to:" +
             "\r\n\nStories@kibity.com.com " +
-            "\r\n\nWe will publish it on Kibity and contact you when it is added to the Kibity list of Write-In stories.", 2000);
+            "\r\n\nWe will publish it on Kibity and contact you when it is added to the Kibity list of Write-In stories.";
+        Toast.show(tMsg, {
+            duration: 6000,
+            position: Toast.positions.TOP,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            textColor: 'gold',
+            backgroundColor: 'purple',
+            shadowColor: 'gold',
+            opacity: 0.9,
+        });
     };
 };
 const styles = StyleSheet.create({

@@ -8,7 +8,7 @@ import {
 import * as Speech from 'expo-speech';
 
 import myfuncs from "../services/myFuncs";
-import Toast from 'react-native-easy-toast';
+import Toast from 'react-native-root-toast';
 
 import {MyButton} from "../components/MyButton";
 import {ScreenTitle} from "../components/screenTitle";
@@ -146,16 +146,6 @@ class SettingsAudio extends React.Component {
                     }
                     </Layout>
 
-                    <Toast
-                        ref="toast"
-                        style={{backgroundColor:'mediumpurple',borderRadius: 20,padding: 10}}
-                        position='top'
-                        positionValue={0}
-                        fadeOutDuration={1000}
-                        opacity={.9}
-                        textStyle={{color:'gold',fontSize:21}}
-                    />
-
                     <MyHelpIcon onPress={this.onHelpPress}/>
                     <MyHelpModal screen={"SettingsAudio"}
                                  onExitPress={this.onHelpExitPress}
@@ -187,7 +177,20 @@ class SettingsAudio extends React.Component {
             await this.props.updateSettings(new_settings);
             await this.updateStorage();
 
-            this.refs.toast.show("New voice saved", 2000);
+            let tMsg = "New voice saved";
+
+            Toast.show(tMsg, {
+                duration: 3000,
+                position: Toast.positions.TOP,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+                textColor: 'gold',
+                backgroundColor: 'purple',
+                shadowColor: 'gold',
+                opacity: 0.8,
+            });
+
 
         } catch (error) {
             // console.log(error);

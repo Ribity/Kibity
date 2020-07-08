@@ -17,7 +17,7 @@ import {MyOtherModal} from "../components/MyOtherModal";
 import myfuncs from "../services/myFuncs";
 import {ScreenTitle} from "../components/screenTitle";
 import {StoriesHeaderButton} from "../components/StoriesHeaderButton";
-import Toast from "react-native-easy-toast";
+import Toast from 'react-native-root-toast';
 
 Text.defaultProps = Text.defaultProps || {};
 Text.defaultProps.allowFontScaling = false;
@@ -335,16 +335,6 @@ class StoriesScreen extends React.Component {
                     />
                     }
 
-                    <Toast
-                        ref="toast"
-                        style={{backgroundColor:'gold',borderRadius: 20,padding: 10}}
-                        position='bottom'
-                        positionValue={400}
-                        fadeOutDuration={3000}
-                        opacity={1}
-                        textStyle={{color:'purple',fontSize:20, fontWeight: 'bold'}}
-                    />
-
                     <MyHelpIcon onPress={this.onHelpPress}/>
                     <MyHelpModal screen={"Stories"}
                                  onExitPress={this.onHelpExitPress}
@@ -388,17 +378,29 @@ class StoriesScreen extends React.Component {
             this.setState({isOtherModalVisible: false});
             // console.log("OnOtherPress", otherFilter);
 
-            if (otherFilter === 'write-in') {
+            if (otherFilter === 'write-in')
                 this.showToast();
-            }
+
         } catch (error) {
             myfuncs.myRepo(error);
         }
     };
     showToast = () => {
-        this.refs.toast.show("We encourage you to write a story and send to:" +
+        let tMsg = "We encourage you to write a story and send to:" +
             "\r\n\nStories@kibity.com " +
-            "\r\n\nWe will publish it on Kibity and contact you when it is added to the Kibity list of Write-In stories.", 6000);
+            "\r\n\nWe will publish it on Kibity and contact you when it is added to the Kibity list of Write-In stories.";
+
+        Toast.show(tMsg, {
+            duration: 6000,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            textColor: 'gold',
+            backgroundColor: 'purple',
+            shadowColor: 'gold',
+            opacity: 0.9,
+        });
     };
     onOtherExitPress = () => {
         try {

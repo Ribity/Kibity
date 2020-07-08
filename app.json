@@ -9,7 +9,7 @@
       "web"
     ],
     "scheme": "kibity",
-    "version": "1.0.05",
+    "version": "1.0.06",
     "orientation": "portrait",
     "primaryColor": "#008000",
     "icon": "./assets/images/PurpleFaceIconGold_1024x1024.png",
@@ -32,7 +32,7 @@
     },
     "android": {
       "package": "com.kibity.kibity",
-      "versionCode": 2,
+      "versionCode": 3,
       "icon": "./assets/images/PurpleFaceIconGold_1024x1024.png",
       "playStoreUrl": "https://play.google.com/store/apps/details?id=com.kibity.kibity",
       "permissions": []
