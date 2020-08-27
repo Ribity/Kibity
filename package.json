@@ -16,7 +16,7 @@
     "@ui-kitten/eva-icons": "^5.0.0",
     "expo": "^38.0.0",
     "expo-av": "~8.2.1",
-    "expo-cli": "^3.21.13",
+    "expo-cli": "^3.23.2",
     "expo-constants": "~9.1.1",
     "expo-device": "~2.2.1",
     "expo-keep-awake": "~8.2.1",

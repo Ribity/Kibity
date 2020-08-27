@@ -256,17 +256,24 @@ class ProfileCustomize extends React.Component {
                                 />
                                 <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                                     <Radio style={styles.radioHe}
-                                           text='He' status='warning'
+                                           status='warning'
                                            onChange={(isChecked) => this.updateStateGender(isChecked,index, 0 )}
-                                           checked={this.state.profiles.profile[this.state.customizeIdx].character[index].pronoun === 0}/>
+                                           checked={this.state.profiles.profile[this.state.customizeIdx].character[index].pronoun === 0}>
+                                        He
+
+                                    </Radio>
                                     <Radio style={styles.radioShe}
-                                           text='She' status='warning'
+                                           status='warning'
                                            onChange={(isChecked) => this.updateStateGender(isChecked,index, 1 )}
-                                           checked={this.state.profiles.profile[this.state.customizeIdx].character[index].pronoun === 1}/>
+                                           checked={this.state.profiles.profile[this.state.customizeIdx].character[index].pronoun === 1}>
+                                        She
+                                    </Radio>
                                     <Radio style={styles.radioThey}
-                                           text='They' status='warning'
+                                           status='warning'
                                            onChange={(isChecked) => this.updateStateGender(isChecked,index, 2 )}
-                                           checked={this.state.profiles.profile[this.state.customizeIdx].character[index].pronoun === 2}/>
+                                           checked={this.state.profiles.profile[this.state.customizeIdx].character[index].pronoun === 2}>
+                                        They
+                                    </Radio>
                                 </View>
                             </View>
                         ))}
