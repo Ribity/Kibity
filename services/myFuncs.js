@@ -3,7 +3,7 @@ import {Platform} from 'react-native'
 import * as Sentry from "sentry-expo";
 import MyDefines from '../constants/MyDefines';
 import { Audio } from 'expo-av';
-import * as Localization from 'expo-localization';
+// import * as Localization from 'expo-localization';
 import ApiKeys from '../constants/ApiKeys';
 import * as Constants from 'expo-constants';
 import * as Device from 'expo-device';
@@ -138,11 +138,11 @@ class myFuncs  {
                 }
             });
             Sentry.setRelease("1.0.0");
-            Sentry.configureScope(function (scope) {
-                scope.setExtra("myExtraData", {
-                    "local_timezone": Localization.timezone,
-                });
-            });
+            // Sentry.configureScope(function (scope) {
+            //     scope.setExtra("myExtraData", {
+            //         "local_timezone": Localization.timezone,
+            //     });
+            // });
             Sentry.configureScope(function (scope) {
                 scope.setExtra("expoConstants", {
                     // "releaseChannel": releaseChan,
