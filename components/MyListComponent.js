@@ -243,14 +243,14 @@ class MyListComponent extends React.Component {
                         :
                         <View>
                             <TouchableOpacity hitSlop={styles.hitSlop} onPress={() => this.addToFaves(index)}>
-                                <Ionicons name={"ios-heart-empty"}  size={40} color={'gray'}/>
+                                <Ionicons name={"ios-heart-outline"}  size={40} color={'gray'}/>
                             </TouchableOpacity>
                         </View>
                     }
                     {bPlayList ?
                         <View>
                             <TouchableOpacity hitSlop={styles.hitSlop} onPress={() => this.removeFromPlayList(index)}>
-                                <Ionicons name={"ios-list-box"}  size={40} color={'goldenrod'}/>
+                                <Ionicons name={"ios-list-circle"}  size={40} color={'goldenrod'}/>
                             </TouchableOpacity>
                         </View>
                         :

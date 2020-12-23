@@ -1,9 +1,10 @@
 import hardStorage from "./deviceStorage";
 import {Platform} from 'react-native'
 import * as Sentry from "sentry-expo";
+// import { Native as Sentry } from 'sentry-expo'
 import MyDefines from '../constants/MyDefines';
 import { Audio } from 'expo-av';
-// import * as Localization from 'expo-localization';
+import * as Localization from 'expo-localization';
 import ApiKeys from '../constants/ApiKeys';
 import * as Constants from 'expo-constants';
 import * as Device from 'expo-device';
@@ -80,7 +81,7 @@ class myFuncs  {
                 new_user = true;
                 hardStorage.setKey("kibity_user", true);
                 // console.log("new user");
-                Sentry.captureMessage("New Kibity user", 'info');
+                Sentry.Native.captureMessage("New Kibity user", 'info');
             }
         } catch (error) {
             this.myRepo(error);
@@ -135,15 +136,16 @@ class myFuncs  {
                 beforeSend(event) {
                     console.log("sending to Sentry");
                     return event;
-                }
+                },
+                // enableNative: false
             });
-            Sentry.setRelease("1.0.0");
-            // Sentry.configureScope(function (scope) {
-            //     scope.setExtra("myExtraData", {
-            //         "local_timezone": Localization.timezone,
-            //     });
-            // });
-            Sentry.configureScope(function (scope) {
+            Sentry.Native.setRelease("1.0.0");
+            Sentry.Native.configureScope(function (scope) {
+                scope.setExtra("myExtraData", {
+                    "local_timezone": Localization.timezone,
+                });
+            });
+            Sentry.Native.configureScope(function (scope) {
                 scope.setExtra("expoConstants", {
                     // "releaseChannel": releaseChan,
                     "appOwnership": Constants.default.appOwnership,
@@ -165,7 +167,7 @@ class myFuncs  {
                     // "releaseChannel": Constants.default.releaseChannel,
                 });
             });
-            Sentry.configureScope(function (scope) {
+            Sentry.Native.configureScope(function (scope) {
                 scope.setExtra("deviceInfo", {
                     "brand": Device.brand,
                     "manufacturer": Device.manufacturer,
@@ -265,7 +267,7 @@ class myFuncs  {
     };
     myRepo = (error) => {
         try {
-            Sentry.captureException(error);
+            Sentry.Native.captureException(error);
         } catch (error) {
             console.log(error);
         }
@@ -279,7 +281,7 @@ class myFuncs  {
                 if (category !== undefined) {
                     bc_object.category = category;
                 }
-                Sentry.addBreadcrumb(bc_object);
+                Sentry.Native.addBreadcrumb(bc_object);
                 if (MyDefines.console_log_breadcrumbs) {
                     if (category !== undefined)
                         console.log(message, ":", category);
@@ -341,7 +343,7 @@ class myFuncs  {
         if (Constants.isDevice || Constants.default.isDevice) {
             if (numPlayed === 5 || numPlayed === 20 || numPlayed % 100 === 0) {
                 let msg = 'Number of Stories Played = ' + numPlayed.toString();
-                Sentry.captureMessage(msg, 'info');
+                Sentry.Native.captureMessage(msg, 'info');
             }
         }
         return numPlayed;

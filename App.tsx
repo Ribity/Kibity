@@ -11,12 +11,6 @@ import { Provider } from 'react-redux';
 import { rootReducer } from './reducers/RootReducer'
 import { createStore } from 'redux';
 
-// The yellowBox thing hides warning on Android
-// import { YellowBox } from 'react-native';
-// YellowBox.ignoreWarnings(['Setting a timer']);
-// Text.defaultProps = Text.defaultProps || {};
-// Text.defaultProps.allowFontScaling = false;
-
 const store = createStore(rootReducer);
 
 const themes = { light, dark };
