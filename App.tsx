@@ -15,6 +15,11 @@ const store = createStore(rootReducer);
 
 const themes = { light, dark };
 
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs([
+    'objects will be removed'      // This gets rid of Expo v40 warning about global constants in react-native-reanimated
+]);
+
 const App = () => {
     const [theme, setTheme] = React.useState('light');
     const currentTheme = themes[theme];

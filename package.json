@@ -11,6 +11,7 @@
     "@eva-design/eva": "^2.0.0",
     "@expo/vector-icons": "^12.0.0",
     "@react-native-community/masked-view": "0.1.10",
+    "@react-navigation/native": "^5.8.10",
     "@types/react-native-settings-list": "^1.8.0",
     "@ui-kitten/components": "^5.0.0",
     "@ui-kitten/eva-icons": "^5.0.0",
@@ -40,8 +41,8 @@
     "react-native-svg": "12.1.0",
     "react-native-web": "~0.13.12",
     "react-navigation": "^4.4.0",
-    "react-navigation-stack": "^2.8.2",
-    "react-navigation-tabs": "^2.9.0",
+    "react-navigation-stack": "^2.10.2",
+    "react-navigation-tabs": "^2.10.1",
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
     "sentry-expo": "^3.0.4"
