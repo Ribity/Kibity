@@ -25,7 +25,7 @@
     "expo-sms": "~8.4.0",
     "expo-speech": "~8.5.0",
     "expo-store-review": "~2.3.0",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.0.tar.gz",
